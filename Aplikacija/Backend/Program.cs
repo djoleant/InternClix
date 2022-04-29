@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddDbContext<IspitDbContext>(options =>
+builder.Services.AddDbContext<InternClixDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("InternClixCS"));
 });

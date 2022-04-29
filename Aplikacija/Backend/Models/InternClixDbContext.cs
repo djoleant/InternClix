@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Models
 {
-    public class IspitDbContext : DbContext
+    public class InternClixDbContext : DbContext
     {
         // DbSet...
         public DbSet<Student> Students { get; set; }
@@ -38,7 +38,7 @@ namespace Models
 
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public IspitDbContext(DbContextOptions options) : base(options)
+        public InternClixDbContext(DbContextOptions options) : base(options)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             
