@@ -16,7 +16,7 @@ namespace Models
         [Required]
         public string LastName { get; set; } = default!;
 
-        [Required]
+
         public CV CV { get; set; } = default!;
     }
 

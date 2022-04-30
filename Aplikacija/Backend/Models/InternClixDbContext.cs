@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Models
 {
-    public class InternClixDbContext : DbContext
+    public class InternClixDbContext : IdentityDbContext<ApplicationUser>
     {
         // DbSet...
         public DbSet<Student> Students { get; set; }

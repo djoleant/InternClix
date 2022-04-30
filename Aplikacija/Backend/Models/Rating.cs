@@ -20,7 +20,6 @@ namespace Models
         [Required]
         public string Comment { get; set; } = default!;
 
-        [Required]
         public Employer Employer { get; set; } = default!;
 
     }

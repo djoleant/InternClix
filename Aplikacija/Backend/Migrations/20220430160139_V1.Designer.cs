@@ -12,7 +12,7 @@ using Models;
 namespace Backend.Migrations
 {
     [DbContext(typeof(InternClixDbContext))]
-    [Migration("20220429125319_V1")]
+    [Migration("20220430160139_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

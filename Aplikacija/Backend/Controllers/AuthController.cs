@@ -58,7 +58,11 @@ namespace Backend.Controllers
                     UserName = info.Username,
                     Email = info.Email,
                     FirstName = info.FirstName,
-                    LastName = info.LastName
+                    LastName = info.LastName,
+                    CV = new CV
+                    {
+                        Picture=""
+                    }
                 };
             }
             else if ((int)info.Role == 2)
@@ -77,7 +81,10 @@ namespace Backend.Controllers
 
             var result = await UserManager.CreateAsync(user, info.Password);
             if (result.Succeeded)
+            {
+                await Context.SaveChangesAsync();
                 return new JsonResult(new { succeeded = true });
+            }
             else
             {
                 var err = new List<string>();
@@ -91,7 +98,6 @@ namespace Backend.Controllers
 
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         [Route("Login")]
         public async Task<JsonResult> Login([FromBody] SignInModel info)
         {
@@ -155,7 +161,8 @@ namespace Backend.Controllers
                     }
                 });
             }
-            else{
+            else
+            {
                 return new JsonResult(new
                 {
                     logged = true,
@@ -165,7 +172,7 @@ namespace Backend.Controllers
                         id = applicationUser.Id,
                         username = applicationUser.UserName,
                         email = applicationUser.Email,
-                        companyName=((Employer)applicationUser).CompanyName,
+                        companyName = ((Employer)applicationUser).CompanyName,
                         roles = userRoles
                     }
                 });
