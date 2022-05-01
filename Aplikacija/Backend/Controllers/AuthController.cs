@@ -61,9 +61,11 @@ namespace Backend.Controllers
                     LastName = info.LastName,
                     CV = new CV
                     {
-                        Picture=""
+                        Picture = ""
                     }
                 };
+                //await Context.SaveChangesAsync();
+                //await AssignRoleToUser(user, "Student");
             }
             else if ((int)info.Role == 2)
             {
@@ -73,6 +75,9 @@ namespace Backend.Controllers
                     Email = info.Email,
                     CompanyName = info.CompanyName
                 };
+                //await Context.SaveChangesAsync();
+                //await AssignRoleToUser(user, "Employer");
+
             }
             else
             {
@@ -82,7 +87,7 @@ namespace Backend.Controllers
             var result = await UserManager.CreateAsync(user, info.Password);
             if (result.Succeeded)
             {
-                await Context.SaveChangesAsync();
+                //await Context.SaveChangesAsync();
                 return new JsonResult(new { succeeded = true });
             }
             else
@@ -180,23 +185,50 @@ namespace Backend.Controllers
 
         }
 
-        /*[Authorize(Roles = "Administrator")]
-        [Route("OpenForAdministrator")]
-        public async Task<JsonResult> OpenForAdministrator()
+        [Authorize(Roles = "Admin")]
+        [Route("OpenForAdmin")]
+        [HttpGet]
+        public async Task<JsonResult> OpenForAdmin()
         {
             var applicationUser = await UserManager.GetUserAsync(User);
             return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
         }
 
-        [Authorize(Roles = "Organiser")]
-        [Route("OpenForOrganiser")]
-        public async Task<JsonResult> OpenForOrganiser()
+        [Authorize(Roles = "Employer")]
+        [Route("OpenForEmployer")]
+        [HttpPost]
+        public async Task<JsonResult> OpenForEmployer()
         {
             var applicationUser = await UserManager.GetUserAsync(User);
             return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
         }
 
-        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public async Task<JsonResult> AssignRoleToUser(string roleToAssign)
+        {
+            var user = await UserManager.GetUserAsync(User);
+            bool x = await RoleManager.RoleExistsAsync(roleToAssign);
+            if (!x)
+            {
+                var role = new IdentityRole()
+                {
+                    Name = roleToAssign
+                };
+                await RoleManager.CreateAsync(role);
+            }
+            if (await UserManager.IsInRoleAsync(user, roleToAssign))
+            {
+                var err = new List<string>()
+                {
+                    "User is already an "+ roleToAssign
+                };
+                return new JsonResult(new { success = false, error = err });
+            }
+            await UserManager.AddToRoleAsync(user, roleToAssign);
+            return new JsonResult(new { success = true });
+        }
+
+        /*[Authorize(Roles = "Employee")]
         [Route("OpenForEmployee")]
         public async Task<JsonResult> OpenForEmployee()
         {

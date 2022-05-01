@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -6,12 +7,13 @@ namespace Backend.Controllers
     [Route("[controller]")]
     public class StudentController : ControllerBase
     {
-        
-       [HttpGet]
-       [Route("Proba")]
-       public ActionResult Proba()
-       {
-           return Ok("Proba");
-       }
+
+        [HttpGet]
+        [Route("Proba")]
+        [Authorize(Roles = "Student")]
+        public ActionResult Proba()
+        {
+            return Ok("Proba");
+        }
     }
 }
