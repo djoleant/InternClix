@@ -61,7 +61,10 @@ namespace Backend.Controllers
                     LastName = info.LastName,
                     CV = new CV
                     {
-                        Picture = ""
+                        Picture = "",
+                        Experiences = new List<Experience>(),
+                        Skills = new List<Skill>(),
+                        AdditionalInfos = new List<AdditionalInfo>()
                     }
                 };
                 //await Context.SaveChangesAsync();
@@ -85,13 +88,13 @@ namespace Backend.Controllers
             }
 
             var result = await UserManager.CreateAsync(user, info.Password);
-            if(info.Role==Role.Student)
+            if (info.Role == Role.Student)
             {
-                await AssignRoleToUser(user,"Student");
+                await AssignRoleToUser(user, "Student");
             }
-            else if(info.Role==Role.Employer)
+            else if (info.Role == Role.Employer)
             {
-                 await AssignRoleToUser(user,"Employer");
+                await AssignRoleToUser(user, "Employer");
             }
             if (result.Succeeded)
             {
@@ -212,7 +215,7 @@ namespace Backend.Controllers
         // }
 
         [HttpPost]
-        public async Task<JsonResult> AssignRoleToUser(ApplicationUser user,string roleToAssign)
+        public async Task<JsonResult> AssignRoleToUser(ApplicationUser user, string roleToAssign)
         {
             //var user = await UserManager.GetUserAsync(User);
             bool x = await RoleManager.RoleExistsAsync(roleToAssign);
