@@ -100,7 +100,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetCategory")]
+        [Route("GetCategories")]
         [Authorize(Roles = "Student, Admin, Employer")]
         public async Task<JsonResult> GetCategories()
         {
@@ -115,6 +115,46 @@ namespace Backend.Controllers
                 .ToListAsync()
             });
 
+        }
+
+        [HttpGet]
+        [Route("GetInternship/{internshipId}")]
+        [Authorize(Roles="Student, Employer, Admin")]
+        public async Task<JsonResult> GetInternship(int internshipId)
+        {
+            var internship = await Context.Internships
+                .Where(i => i.ID == internshipId)
+                .Include(i=>i.Employer)
+                .Include(i=>i.Categories)
+                .Include(i=>i.Skills)
+                .FirstOrDefaultAsync();
+            if (internship != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internship = new
+                    {
+                        internship.ID,
+                        internship.Title,
+                        internship.Description,
+                        internship.Duration,
+                        internship.Compensation,
+                        EmployerName = internship.Employer.CompanyName,
+                        internship.Skills,
+                        Categories = internship.Categories
+                            .Select(c => new { c.ID, c.Name })
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship Not Found"
+                });
+            }
         }
 
 
