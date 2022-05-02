@@ -85,6 +85,14 @@ namespace Backend.Controllers
             }
 
             var result = await UserManager.CreateAsync(user, info.Password);
+            if(info.Role==Role.Student)
+            {
+                await AssignRoleToUser(user,"Student");
+            }
+            else if(info.Role==Role.Employer)
+            {
+                 await AssignRoleToUser(user,"Employer");
+            }
             if (result.Succeeded)
             {
                 //await Context.SaveChangesAsync();
@@ -185,28 +193,28 @@ namespace Backend.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        [Route("OpenForAdmin")]
-        [HttpGet]
-        public async Task<JsonResult> OpenForAdmin()
-        {
-            var applicationUser = await UserManager.GetUserAsync(User);
-            return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
-        }
+        // [Authorize(Roles = "Admin")]
+        // [Route("OpenForAdmin")]
+        // [HttpGet]
+        // public async Task<JsonResult> OpenForAdmin()
+        // {
+        //     var applicationUser = await UserManager.GetUserAsync(User);
+        //     return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
+        // }
 
-        [Authorize(Roles = "Employer")]
-        [Route("OpenForEmployer")]
-        [HttpPost]
-        public async Task<JsonResult> OpenForEmployer()
-        {
-            var applicationUser = await UserManager.GetUserAsync(User);
-            return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
-        }
+        // [Authorize(Roles = "Employer")]
+        // [Route("OpenForEmployer")]
+        // [HttpPost]
+        // public async Task<JsonResult> OpenForEmployer()
+        // {
+        //     var applicationUser = await UserManager.GetUserAsync(User);
+        //     return new JsonResult(await UserManager.GetRolesAsync(applicationUser));
+        // }
 
         [HttpPost]
-        public async Task<JsonResult> AssignRoleToUser(string roleToAssign)
+        public async Task<JsonResult> AssignRoleToUser(ApplicationUser user,string roleToAssign)
         {
-            var user = await UserManager.GetUserAsync(User);
+            //var user = await UserManager.GetUserAsync(User);
             bool x = await RoleManager.RoleExistsAsync(roleToAssign);
             if (!x)
             {

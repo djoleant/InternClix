@@ -15,5 +15,13 @@ namespace Backend.Controllers
         {
             return Ok("Proba");
         }
+
+        [HttpGet]
+        [Route("Proba2")]
+        [Authorize(Roles = "Employer")]
+        public ActionResult Proba2()
+        {
+            return Ok("ProbaEmp");
+        }
     }
 }
