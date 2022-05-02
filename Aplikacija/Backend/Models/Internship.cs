@@ -14,6 +14,11 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
+        [MaxLength(50)]
+        public string Title { get; set; } = default!;
+
+        public string Description { get; set; } = default!;
+
         [Required]
         public int Duration { get; set; }
 
