@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -19,6 +20,7 @@ namespace Models
         public string Info { get; set; } = default!;
 
         [Required]
+        [JsonIgnore]
         public CV CV { get; set; } = default!;
     }
 

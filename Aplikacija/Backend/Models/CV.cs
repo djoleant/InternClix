@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,17 @@ namespace Models
         public List<AdditionalInfo> AdditionalInfos { get; set; } = default!;
 
         //public Student Student { get; set; }
+
+        // public JsonResult GetCVInfo()
+        // {
+        //         return new JsonResult(new { succeeded = true,
+        //         cv=new {
+        //            this.Experiences,
+        //            this.Skills,
+        //            this.AdditionalInfos
+        //         }});
+
+        // }
     }
 
 }
