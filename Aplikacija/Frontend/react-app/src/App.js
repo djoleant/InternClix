@@ -4,6 +4,8 @@ import SignIn from './SignIn';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { Routes, Route, Link } from "react-router-dom";
+import Header from "./components/Header";
+
 
 const themeOptions = createTheme({
   palette: {
@@ -122,7 +124,7 @@ function App() {
       <ThemeProvider theme={themes[0]}>
 
         <Routes>
-          <Route path="/" element={<SignIn />} />
+          <Route path="/SignIn" element={ <Header Component={SignIn}/>} />
         </Routes>
 
       </ThemeProvider>
