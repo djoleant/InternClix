@@ -14,7 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
-import Switch from "./ThemeSwitch"
+import Switch from "./ThemeSwitch";
+import {changeTheme} from "../App";
 
 const pages = ['Internships', 'Employers', 'About'];
 const settings = ['Account', 'CV', 'Logout'];
@@ -39,7 +40,7 @@ export const Header = (props) => {
         setAnchorElUser(null);
     };
 
-    const { Component } = props;
+    const { Component, ThemeHandler } = props;
 
     return (
         <React.Fragment>
@@ -141,17 +142,17 @@ export const Header = (props) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <React.Fragment>
+                                
                                     {settings.map((setting) => (
                                         <MenuItem key={setting} onClick={handleCloseUserMenu}>
                                             <Typography textAlign="center">{setting}</Typography>
                                         </MenuItem>
                                     ))}
 
-                                    <MenuItem /*onClick={handleCloseUserMenu}*/>
+                                    <MenuItem onClick={ThemeHandler}>
                                         <Switch />
                                     </MenuItem>
-                                </React.Fragment>
+                                
 
 
 
