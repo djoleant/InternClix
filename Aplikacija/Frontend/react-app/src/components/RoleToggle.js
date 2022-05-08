@@ -5,7 +5,10 @@ import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import { Typography } from "@mui/material";
 
-export default function ColorToggleButton() {
+export default function ColorToggleButton(props) {
+
+  const { setStudent, setEmployer } = props;
+
   const [alignment, setAlignment] = React.useState("web");
 
   const handleChange = (event, newAlignment) => {
@@ -20,11 +23,11 @@ export default function ColorToggleButton() {
       exclusive
       onChange={handleChange}
     >
-      <ToggleButton sx={{ width: 1 }} value="student">
+      <ToggleButton sx={{ width: 1 }} value="student" onClick={setStudent} >
         <SchoolRoundedIcon />
         <Typography sx={{ ml: 1 }}> Student</Typography>
       </ToggleButton>
-      <ToggleButton sx={{ width: 1 }} value="employer">
+      <ToggleButton sx={{ width: 1 }} value="employer" onClick={setEmployer}>
         <WorkRoundedIcon />
         <Typography sx={{ ml: 1 }}> Employer</Typography>
       </ToggleButton>
