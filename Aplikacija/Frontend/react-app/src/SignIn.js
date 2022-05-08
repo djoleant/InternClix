@@ -41,12 +41,15 @@ export default function SignIn() {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Box
+            <Box 
                 sx={{
                     marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    //bgcolor: '#EEEEEE',
+                    //borderRadius:'20px',
+                    //padding:2,
                 }}
             >
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
