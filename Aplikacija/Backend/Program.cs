@@ -26,7 +26,13 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins("http://localhost:5500",
                                     "http://127.0.0.1:5500",
                                     "https://localhost:5500",
-                                    "https://127.0.0.1:5500");
+                                    "https://127.0.0.1:5500",
+                                    "http://localhost:3000/")
+                                    .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowAnyOrigin();
+                          // policy.AllowAnyOrigin();
+                          // policy.AllowAnyHeader();
                       });
 });
 
@@ -67,21 +73,21 @@ builder.Services.ConfigureApplicationCookie(options =>
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
             });
-            builder.Services.Configure<IdentityOptions>(options =>
-            {
+builder.Services.Configure<IdentityOptions>(options =>
+{
                 // Default Password settings.
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-                options.User.AllowedUserNameCharacters =
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
-            });
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.User.AllowedUserNameCharacters =
+"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;
+});
 
 // builder.Services.AddAntiforgery(options =>
 //             {

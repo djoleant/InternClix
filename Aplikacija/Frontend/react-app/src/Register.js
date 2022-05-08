@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
+import { NavLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,12 +16,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RoleToggle from './components/RoleToggle';
 import { useState } from 'react';
 
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Runtime Terror
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -154,9 +156,9 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/SignIn" variant="body2">
+              <NavLink to="/SignIn" style={{ color: '#f50057' }} >
                 Already have an account? Sign in
-              </Link>
+              </NavLink>
             </Grid>
           </Grid>
         </Box>

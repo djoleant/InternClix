@@ -17,7 +17,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import Switch from "./ThemeSwitch";
 import {changeTheme} from "../App";
 
-const pages = ['Internships', 'Employers', 'About'];
+const pages = ['Home','Internships', 'Employers', 'About'];
 const settings = ['Account', 'CV', 'Logout'];
 
 

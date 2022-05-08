@@ -6,11 +6,14 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch, useSelector } from "react-redux";
+import * as authActions from "./actions/Auth";
+
 
 function Copyright(props) {
     return (
@@ -25,9 +28,21 @@ function Copyright(props) {
     );
 }
 
-const theme = createTheme();
 
 export default function SignIn() {
+
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+
+    const history = useNavigate();
+    const dispatch = useDispatch();
+    
+    const loginButtonHandler = async () => {
+        const response = await dispatch(authActions.login(email, password));
+
+
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -41,7 +56,7 @@ export default function SignIn() {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Box 
+            <Box
                 sx={{
                     marginTop: 8,
                     display: 'flex',
@@ -68,6 +83,7 @@ export default function SignIn() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
                         margin="normal"
@@ -78,6 +94,7 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
@@ -88,6 +105,7 @@ export default function SignIn() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        onClick = {loginButtonHandler}
                     >
                         Sign In
                     </Button>
@@ -98,9 +116,10 @@ export default function SignIn() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="/Register" variant="body2">
+                            <NavLink style={{ color: '#f50057' }}
+                                to="/Register" >
                                 {"Don't have an account? Register"}
-                            </Link>
+                            </NavLink>
                         </Grid>
                     </Grid>
                 </Box>
