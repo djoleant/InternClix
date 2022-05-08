@@ -1,7 +1,8 @@
 import logo from "./logo.svg";
-import * as React from 'react';
+import * as React from "react";
 import "./App.css";
 import SignIn from "./SignIn";
+import Register from "./Register";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { Routes, Route, Link } from "react-router-dom";
@@ -11,7 +12,7 @@ import { Component } from "react";
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
-    ...(mode === 'light'
+    ...(mode === "light"
       ? {
           // palette values for light mode
           primary: {
@@ -190,34 +191,44 @@ export let changeTheme;
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 export default function App() {
-  
-    const [mode, setMode] = React.useState('light');
-    const colorMode = React.useMemo(
+  const [mode, setMode] = React.useState("light");
+  const colorMode = React.useMemo(
     () => ({
       // The dark mode switch would invoke this method
       toggleColorMode: () => {
-        setMode((prevMode) =>
-          prevMode === 'light' ? 'dark' : 'light',
-        );
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
   // Update the theme only if the mode changes
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
-    return (
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route
-              path="/SignIn"
-              element={<Header Component={SignIn} ThemeHandler={colorMode.toggleColorMode} />}
-            />
-          </Routes>
-        </ThemeProvider>
-      </div>
-    );
-  }
-
+  return (
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route
+            path="/SignIn"
+            element={
+              <Header
+                Component={SignIn}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/Register"
+            element={
+              <Header
+                Component={Register}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+        </Routes>
+      </ThemeProvider>
+    </div>
+  );
+}
