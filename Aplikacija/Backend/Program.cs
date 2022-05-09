@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 
-
+var CORS = "_cors";
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -35,6 +35,8 @@ builder.Services.AddCors(options =>
                           // policy.AllowAnyHeader();
                       });
 });
+
+
 
 builder.Services.AddDbContext<InternClixDbContext>(options =>
 {
@@ -121,6 +123,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors(CORS);
 
 app.UseHttpsRedirection();
 

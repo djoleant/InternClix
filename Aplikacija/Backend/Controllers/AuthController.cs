@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -112,7 +113,7 @@ namespace Backend.Controllers
             }
         }
 
-
+        [EnableCors("CORS")]
         [HttpPost]
         [Route("Login")]
         public async Task<JsonResult> Login([FromBody] SignInModel info)
