@@ -16,7 +16,7 @@ namespace Models
         [Required]
         public string LastName { get; set; } = default!;
 
-
+        public string Picture { get; set; } = default!;
         public CV CV { get; set; } = default!;
     }
 

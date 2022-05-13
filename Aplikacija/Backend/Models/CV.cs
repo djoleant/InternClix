@@ -15,8 +15,6 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
-        public string Picture { get; set; } = default!;
-
         public List<Experience> Experiences { get; set; } = default!;
 
         public List<Skill> Skills { get; set; } = default!;

@@ -18,6 +18,8 @@ namespace Models
 
         public List<Rating> Ratings { get; set; } = default!;
 
+        public string Picture { get; set; } = default!;
+
     }
 
 }

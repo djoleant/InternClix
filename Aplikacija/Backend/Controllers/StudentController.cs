@@ -63,10 +63,10 @@ namespace Backend.Controllers
                     {
                         student.FirstName,
                         student.LastName,
+                        student.Picture,
                         student.CV.Experiences,
                         student.CV.Skills,
-                        student.CV.AdditionalInfos,
-                        student.CV.Picture
+                        student.CV.AdditionalInfos
                     }
                 });
             }

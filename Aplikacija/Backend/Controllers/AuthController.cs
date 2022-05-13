@@ -60,9 +60,9 @@ namespace Backend.Controllers
                     Email = info.Email,
                     FirstName = info.FirstName,
                     LastName = info.LastName,
+                    Picture = "",
                     CV = new CV
                     {
-                        Picture = "",
                         Experiences = new List<Experience>(),
                         Skills = new List<Skill>(),
                         AdditionalInfos = new List<AdditionalInfo>()
