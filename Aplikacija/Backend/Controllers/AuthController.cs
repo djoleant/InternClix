@@ -113,7 +113,53 @@ namespace Backend.Controllers
             }
         }
 
-        [EnableCors("CORS")]
+        [Route("AddAdmin/{email}/{username}/{password}/{key}")]
+        [HttpPost]
+        public async Task<JsonResult> AddAdmin(string email, string username, string password, string key)
+        {
+            if (!ModelState.IsValid)
+            {
+                var modelErrors = new List<string>();
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var modelError in modelState.Errors)
+                    {
+                        modelErrors.Add(modelError.ErrorMessage);
+                    }
+                }
+                return new JsonResult(new { succeeded = false, errors = modelErrors });
+            }
+
+            if (key != "INTERNCLIXADMINKEY")
+            {
+                return new JsonResult(new { succeeded = false, errors = "Invalid admin key" });
+            }
+
+            ApplicationUser user = new Admin
+            {
+                UserName = username,
+                Email = email,
+
+            };
+            var result = await UserManager.CreateAsync(user, password);
+            await AssignRoleToUser(user, "Admin");
+            if (result.Succeeded)
+            {
+                //await Context.SaveChangesAsync();
+                return new JsonResult(new { succeeded = true });
+            }
+            else
+            {
+                var err = new List<string>();
+                foreach (var e in result.Errors)
+                {
+                    err.Add(e.Description);
+                }
+                return new JsonResult(new { succeeded = false, errors = result.Errors });
+            }
+        }
+
+        //[EnableCors("CORS")]
         [HttpPost]
         [Route("Login")]
         public async Task<JsonResult> Login([FromBody] SignInModel info)
@@ -178,7 +224,7 @@ namespace Backend.Controllers
                     }
                 });
             }
-            else
+            else if (applicationUser is Employer)
             {
                 return new JsonResult(new
                 {
@@ -190,6 +236,21 @@ namespace Backend.Controllers
                         username = applicationUser.UserName,
                         email = applicationUser.Email,
                         companyName = ((Employer)applicationUser).CompanyName,
+                        roles = userRoles
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    logged = true,
+                    user =
+                    new
+                    {
+                        id = applicationUser.Id,
+                        username = applicationUser.UserName,
+                        email = applicationUser.Email,
                         roles = userRoles
                     }
                 });

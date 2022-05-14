@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 
-var CORS = "_cors";
+var CORS = "CORS";
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -77,7 +77,7 @@ builder.Services.ConfigureApplicationCookie(options =>
             });
 builder.Services.Configure<IdentityOptions>(options =>
 {
-                // Default Password settings.
+    // Default Password settings.
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
