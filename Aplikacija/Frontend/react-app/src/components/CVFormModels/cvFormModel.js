@@ -16,11 +16,11 @@ export default {
             label: 'Address ',
             requiredErrorMsg: 'Address  is required'
         },
-
         city: {
             name: 'city',
             label: 'City*',
             requiredErrorMsg: 'City is required'
-        }
+        },
+        education:[]
     }
 }

@@ -21,25 +21,33 @@ import PersonalInfoForm from './components/CVForms/PersonalInfoForm';
 const steps = ['Personal info', 'Work experience', 'Aditional info', 'Rewiew'];
 const { formId, formField } = cvFormModel;
 
-function _renderStepContent(step) {
-    switch (step) {
-        case 0:
-            return <React.Fragment><PersonalInfoForm formField={formField} /></React.Fragment>;
-        case 1:
-            return <React.Fragment>Bla2</React.Fragment>;
-        case 2:
-            return <React.Fragment>Bla3</React.Fragment>;
-        case 3:
-            return <React.Fragment>Bla4</React.Fragment>;
-        default:
-            return <React.Fragment>Bla5</React.Fragment>;
-    }
-}
+
 
 export default function CVCreator(props) {
     //const { children } = props;
     //const classes = useStyle();
+    function _renderStepContent(step) {
+        switch (step) {
+            case 0:
+                return <React.Fragment><PersonalInfoForm formField={formField} education={education} setEducation={setEducation} /></React.Fragment>;
+            case 1:
+                return <React.Fragment>Bla2</React.Fragment>;
+            case 2:
+                return <React.Fragment>Bla3</React.Fragment>;
+            case 3:
+                return <React.Fragment>Bla4</React.Fragment>;
+            default:
+                return <React.Fragment>Bla5</React.Fragment>;
+        }
+    }
+
     const [activeStep, setActiveStep] = useState(0);
+    const [education, setEducation] = useState([{
+        title: "",
+        description: "",
+        fromDate: 0,
+        toDate: 0
+    }]);
     //const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
 
@@ -49,7 +57,7 @@ export default function CVCreator(props) {
 
     async function _submitForm(values, actions) {
         await _sleep(1000);
-        alert(JSON.stringify(values, null, 2));
+        console.log(JSON.stringify(values, null, 2));
         actions.setSubmitting(false);
 
         setActiveStep(activeStep + 1);
@@ -74,7 +82,7 @@ export default function CVCreator(props) {
         <Container component="main"  >
             <CssBaseline />
             <React.Fragment>
-                <Typography component="h1" variant="h4" align="center">
+                <Typography component="h1" variant="h4" align="center" sx={{ m: 2 }}>
                     CV Creator
                 </Typography>
                 <Stepper activeStep={activeStep} >
