@@ -8,29 +8,30 @@ import Button from "@mui/material/Button";
 import { Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import { Component } from "react";
+import CVCreator from "./CVCreator";
 
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
     ...(mode === "light"
       ? {
-          // palette values for light mode
-          primary: {
-            main: "#228a8a",
-          },
-          secondary: {
-            main: "#f50057",
-          },
-        }
+        // palette values for light mode
+        primary: {
+          main: "#228a8a",
+        },
+        secondary: {
+          main: "#f50057",
+        },
+      }
       : {
-          // palette values for dark mode
-          primary: {
-            main: "#228a8a",
-          },
-          secondary: {
-            main: "#f50057",
-          },
-        }),
+        // palette values for dark mode
+        primary: {
+          main: "#228a8a",
+        },
+        secondary: {
+          main: "#f50057",
+        },
+      }),
   },
   overrides: {
     MuiSwitch: {
@@ -188,7 +189,7 @@ const themeOptions2 = createTheme({
 const themes = [themeOptions, themeOptions2];
 export let changeTheme;
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 export default function App() {
   const [mode, setMode] = React.useState("light");
@@ -223,6 +224,15 @@ export default function App() {
             element={
               <Header
                 Component={Register}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/CVCreator"
+            element={
+              <Header
+                Component={CVCreator}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
