@@ -1,4 +1,4 @@
-import { Grid, Typography, Button, Divider } from '@mui/material';
+import { Grid, Typography, Button, Divider, Box } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
@@ -9,46 +9,50 @@ import CVCard from './CVCard';
 import { FieldArray, useFormikContext } from 'formik';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousServicesRounded';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import ChipTransferList from './ChipTransferList';
 
 
-export default function ProfessionalSkillsForm(props) {
-    const {
-        formField: {
-            email,
-            phone,
-            address,
-            city
-
-        },
-        educationCount,
-        setEducationCount
-    } = props;
-    const [chipData, setChipData] = React.useState([ //ucitavanje iz baze
-        { key: 0, label: 'Angular' },
-        { key: 1, label: 'jQuery' },
-        { key: 2, label: 'Polymer' },
-        { key: 3, label: 'React' },
-        { key: 4, label: 'Vue.js' },
-        { key: 5, label: 'Angular' },
-        { key: 6, label: 'jQuery' },
-        { key: 7, label: 'Polymer' },
-        { key: 8, label: 'React' },
-        { key: 9, label: 'Vue.js' },
-        { key: 10, label: 'Angular' },
-        { key: 11, label: 'jQuery' },
-        { key: 12, label: 'Polymer' },
-        { key: 13, label: 'React' },
-        { key: 14, label: 'Vue.js' },
-        { key: 15, label: 'Angular' },
-        { key: 16, label: 'jQuery' },
-        { key: 17, label: 'Polymer' },
-        { key: 18, label: 'React' },
-        { key: 19, label: 'Vue.js' },
+export default function ProfessionalSkillsForm() {
+    
+    const [skillData/*, setChipData*/] = React.useState([ //ucitavanje iz baze
+        { id: 0, label: 'Angular' },
+        { id: 1, label: 'jQuery' },
+        { id: 2, label: 'Polymer' },
+        { id: 3, label: 'React' },
+        { id: 4, label: 'Vue.js' },
+        { id: 5, label: 'Angular' },
+        { id: 6, label: 'jQuery' },
+        { id: 7, label: 'Polymer' },
+        { id: 8, label: 'React' },
+        { id: 9, label: 'Vue.js' },
+        { id: 10, label: 'Angular' },
+        { id: 11, label: 'jQuery' },
+        { id: 12, label: 'Polymer' },
+        { id: 13, label: 'React' },
+        { id: 14, label: 'Vue.js' },
+        { id: 15, label: 'Angular' },
+        { id: 16, label: 'jQuery' },
+        { id: 17, label: 'Polymer' },
+        { id: 18, label: 'React' },
+        { id: 19, label: 'Vue.js' }
     ]);
+
     const { values } = useFormikContext();
-    const handleDelete = (chipToDelete) => () => {
-        setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-    };
+
+    const [categoryData/*, setChipData*/] = React.useState([ //ucitavanje iz baze
+        { id: 0, label: 'Web developmer' },
+        { id: 1, label: 'Artificial Intelligence' },
+        { id: 2, label: 'DevOps' },
+        { id: 3, label: 'Software Quality Assurance Specialist' },
+        { id: 4, label: 'Title1' },
+        { id: 5, label: 'Title2' },
+        { id: 6, label: 'Title3' },
+        { id: 7, label: 'Title4' }
+
+    ]);
+
 
     return (
         <React.Fragment>
@@ -61,145 +65,49 @@ export default function ProfessionalSkillsForm(props) {
                 <Grid item xs={12} >
 
                     <Paper
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            flexWrap: 'wrap',
-                            listStyle: 'none',
-                            p: 3,
-                            m: 0,
-                            width: 1,
-                            gap: 1,
-                        }}
+                        sx={{ p: 3 }}
                         variant="outlined"
                     >
+                        <Divider sx={{ mb: 3 }} >SKILLS</Divider>
+                        <ChipTransferList chipData={skillData} leftTitle={"Choose skills:"} rightTitle={"My skills:"} fieldName={"skills"} />
+                        <Divider sx={{ mt: 5, mb: 3 }} >CATEGORIES</Divider>
+                        <ChipTransferList chipData={categoryData} leftTitle={"Choose category of work:"} rightTitle={"My categories:"} fieldName={"categories"} />
+                        <Divider sx={{ mt: 5, mb: 3 }} >LANGUAGES</Divider>
                         <FieldArray
-                            name="skills"
+                            name="languages"
                             render={(arrayHelpers) => (
-                                <Grid container spacing={3}>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography gutterBottom >
-                                            Choose skills:
-                                        </Typography>
-                                        <Paper
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                flexWrap: 'wrap',
-                                                listStyle: 'none',
-                                                p: 3,
-                                                m: 0,
-                                                width: 1,
-                                                gap: 1,
-                                            }}
-                                            variant="outlined"
-                                        >
-                                            {chipData.map((data) => {
-                                                let icon;
-
-                                                let selected = values.skills.find(skill => skill.key == data.key) != null;
-
-                                                return (
-                                                    <Chip
-                                                        key={data.key}
-                                                        icon={icon}
-                                                        label={data.label}
-                                                        onClick={() => {
-                                                            if (!selected)
-                                                                arrayHelpers.push(data);
-                                                            //handleDelete(data);
-                                                        }}
-                                                        variant={selected ? "outlined" : "filled"}
-                                                    /*onDelete={//handleDelete(data)}*/
-
-                                                    />
-                                                );
-                                            })}
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} >
-                                        <Typography gutterBottom >
-                                            My skills:
-                                        </Typography>
-                                        <Paper
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                flexWrap: 'wrap',
-                                                listStyle: 'none',
-                                                p: 3,
-                                                m: 0,
-                                                width: 1,
-                                                gap: 1,
-                                            }}
-                                            variant="outlined"
-                                        >
-                                            {
-                                                values.skills.map((skill, index) => (
-                                                    <Chip
-                                                        key={index}
-                                                        label={skill.label}
-                                                        onDelete={() => { arrayHelpers.remove(index) }}
-
-                                                    />
-                                                ))
-                                            }
-                                        </Paper>
-                                    </Grid>
-                                </Grid>
-
-                            )}
-                        >
-
-                        </FieldArray>
-                    </Paper>
-                </Grid >
-                {
-                    /*
-                    <Grid item xs={12} >
-                        <FieldArray
-                            name="education"
-                            render={(arrayHelpers) => (
-                                <React.Fragment>
+                                <>
                                     {
-                                        (() => {
-                                            const fields = []
-                                            for (let index = 0; index < educationCount; index++) {
-                                                fields.push(
-                                                    <React.Fragment key={index}>
-                                                        <CVCard name={`education[${index}]`} title="Education" />
-                                                    </React.Fragment>
-                                                );
-                                            }
-                                            return fields;
-                                        })()
+                                        values.languages.map((language, index) => (
+                                            <Grid container spacing={3} key={index} sx={{ mb: 3 }}>
+                                                <Grid item xs={5} >
+                                                    <TextInputField name={`languages[${index}].name`} label={"Language"} fullWidth />
+                                                </Grid>
+                                                <Grid item xs={7}>
+                                                    <TextInputField name={`languages[${index}].description`} label={"Level"} fullWidth />
+                                                </Grid>
+                                            </Grid>
+                                        ))
                                     }
                                     <Button onClick={() => {
                                         arrayHelpers.push({
-                                            title: "",
+                                            name: "",
                                             description: "",
-                                            fromDate: 0,
-                                            toDate: 0
                                         });
-                                        setEducationCount(educationCount + 1);
                                     }
                                     }
                                         variant="outlined"
                                         startIcon={<AddCircleRoundedIcon />}
                                     >
-                                        Add education
+                                        Add language
                                     </Button>
-                                </React.Fragment>
-             
+                                </>
+
+
                             )}
-                        >
-             
-                        </FieldArray>
-             
-             
-                                </Grid>*/
-                }
+                        ></FieldArray>
+                    </Paper>
+                </Grid >
             </Grid >
         </React.Fragment >
     );

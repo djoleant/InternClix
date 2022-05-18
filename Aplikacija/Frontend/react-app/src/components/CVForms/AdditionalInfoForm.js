@@ -5,9 +5,9 @@ import CVCard from './CVCard';
 import { FieldArray, useFormikContext } from 'formik';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
-export default function PersonalInfoForm() {
+export default function AdditionalInfoForm() {
 
 
     const { values } = useFormikContext();
@@ -16,30 +16,18 @@ export default function PersonalInfoForm() {
     return (
         <React.Fragment>
             <Typography variant="h5" gutterBottom sx={{ mt: 2, mb: 2 }}>
-                <AccountCircleRoundedIcon sx={{ mr: 2 }} />
-                Personal info
+                <InfoRoundedIcon sx={{ mr: 2 }} />
+                Additional info
             </Typography>
             <Paper
-                sx={{ p: 3, mb: 4 }}
+                sx={{ p: 3, pt: 0, mb:4 }}
                 variant="outlined"
             >
                 <Grid container spacing={3} sx={{ mb: 4 }}>
-                    <Grid item xs={12} sm={6}>
-                        <TextInputField name={"address"} label={"Address"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextInputField name={"city"} label={"City"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextInputField type="tel" name={"phone"} label={"Phone number"} fullWidth />
-                    </Grid>
 
                     <Grid item xs={12} >
-                        <TextInputField name={"email"} label={"E-mail"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12} >
                         <FieldArray
-                            name="education"
+                            name="additionalInfo"
                             render={(arrayHelpers) => (
                                 <React.Fragment>
                                     {
@@ -47,10 +35,10 @@ export default function PersonalInfoForm() {
                                         //  const fields = []
                                         //for (let index = 0; index < educationCount; index++) {
                                         //fields.push(
-                                        values.education.map((edu, index) => {
+                                        values.additionalInfo.map((inf, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <CVCard name={`education[${index}]`} title="EDUCATION" type="education" />
+                                                    <CVCard name={`additionalInfo[${index}]`} title="ADDITIONAL INFO" type="additional" />
                                                 </React.Fragment>
                                             )
                                         })
@@ -64,15 +52,16 @@ export default function PersonalInfoForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
-                                            fromDate: "",
-                                            toDate: ""
+
                                         });
                                     }
+
                                     }
                                         variant="outlined"
                                         startIcon={<AddCircleRoundedIcon />}
+                                        sx={{ mt: (values.additionalInfo.length == 0) ? 5 : 0 }}
                                     >
-                                        Add education
+                                        Add info
                                     </Button>
                                 </React.Fragment>
 
@@ -84,7 +73,7 @@ export default function PersonalInfoForm() {
 
                     </Grid>
                 </Grid>
-            </Paper>
-        </React.Fragment>
+            </Paper >
+        </React.Fragment >
     );
 }
