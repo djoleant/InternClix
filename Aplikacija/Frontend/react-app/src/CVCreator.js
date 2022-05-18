@@ -10,9 +10,9 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Formik, Form } from 'formik';
-import cvFormInitialValues from './components/CVFormModels/cvFormInitialValues';
 import cvFormModel from './components/CVFormModels/cvFormModel';
 import PersonalInfoForm from './components/CVForms/PersonalInfoForm';
+import ProfessionalSkillsForm from './components/CVForms/ProfessionalSkillsForm';
 
 
 
@@ -29,9 +29,9 @@ export default function CVCreator(props) {
     function _renderStepContent(step) {
         switch (step) {
             case 0:
-                return <React.Fragment><PersonalInfoForm formField={formField} education={education} setEducation={setEducation} /></React.Fragment>;
+                return <PersonalInfoForm formField={formField} />
             case 1:
-                return <React.Fragment>Bla2</React.Fragment>;
+                return <ProfessionalSkillsForm formField={formField} />;
             case 2:
                 return <React.Fragment>Bla3</React.Fragment>;
             case 3:
@@ -42,12 +42,6 @@ export default function CVCreator(props) {
     }
 
     const [activeStep, setActiveStep] = useState(0);
-    const [education, setEducation] = useState([{
-        title: "",
-        description: "",
-        fromDate: 0,
-        toDate: 0
-    }]);
     //const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
 
@@ -107,7 +101,18 @@ export default function CVCreator(props) {
                         </Typography>
                     ) : (
                         <Formik
-                            initialValues={cvFormInitialValues}
+                            initialValues={
+                                {
+                                    phone: "",
+                                    address: "",
+                                    city: "",
+                                    email: "",
+                                    education: [
+                                        { title: "", description: "" }
+                                    ],
+                                    skills: []
+                                }
+                            }
                             //validationSchema={currentValidationSchema}
                             onSubmit={_handleSubmit}
                         >
@@ -146,6 +151,6 @@ export default function CVCreator(props) {
                 </React.Fragment>
             </React.Fragment>
 
-        </Container>
+        </Container >
     );
 }

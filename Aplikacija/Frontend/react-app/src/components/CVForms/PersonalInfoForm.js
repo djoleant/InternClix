@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Grid, Typography, Button } from '@mui/material';
 import TextInputField from '../CVFormFields/TextInputField';
 import CVCard from './CVCard';
-import { FieldArray } from 'formik';
+import { FieldArray, useFormikContext } from 'formik';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 
 export default function PersonalInfoForm(props) {
     const {
@@ -14,14 +15,16 @@ export default function PersonalInfoForm(props) {
             address,
             city
 
-        },
-        education,
-        setEducation
+        }
     } = props;
+
+    const { values } = useFormikContext();
+    //console.log(values);
 
     return (
         <React.Fragment>
             <Typography variant="h5" gutterBottom sx={{ mt: 2, mb: 2 }}>
+                <AccountCircleRoundedIcon sx={{ mr: 2 }} />
                 Personal info
             </Typography>
             <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -44,11 +47,22 @@ export default function PersonalInfoForm(props) {
                         render={(arrayHelpers) => (
                             <React.Fragment>
                                 {
-                                    education.map((edu, index) => (
-                                        <React.Fragment key={index}>
-                                            <CVCard name={`education[${index}]`} title="Education" />
-                                        </React.Fragment>
-                                    ))
+                                    //(() => {
+                                    //  const fields = []
+                                    //for (let index = 0; index < educationCount; index++) {
+                                    //fields.push(
+                                    values.education.map((edu, index) => {
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <CVCard name={`education[${index}]`} title="Education" icon={<SchoolRoundedIcon sx={{ mr: 2 }} />} />
+                                            </React.Fragment>
+                                        )
+                                    })
+
+                                    //);
+                                    // }
+                                    // return fields;
+                                    //})()
                                 }
                                 <Button onClick={() => {
                                     arrayHelpers.push({
@@ -57,12 +71,6 @@ export default function PersonalInfoForm(props) {
                                         fromDate: 0,
                                         toDate: 0
                                     });
-                                    setEducation([...education, {
-                                        title: "",
-                                        description: "",
-                                        fromDate: 0,
-                                        toDate: 0
-                                    }]);
                                 }
                                 }
                                     variant="outlined"
