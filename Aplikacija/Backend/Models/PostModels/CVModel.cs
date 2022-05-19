@@ -17,8 +17,8 @@ namespace Models
         public string Title { get; set; } = "";
         public string InstitutionName { get; set; } = "";
         public string Description { get; set; } = "";
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
     }
 
     public class CVModel
@@ -27,6 +27,7 @@ namespace Models
         public string Address { get; set; } = "";
         public string City { get; set; } = "";
         public List<ExperienceModel> Education { get; set; } = default!;
+        public List<ExperienceModel> Experience { get; set; } = default!;
         public List<SkillCategoryModel> Skills { get; set; } = default!;
         public List<SkillCategoryModel> Categories { get; set; } = default!;
         public List<AdditionalInfoModel> Languages { get; set; } = default!;
