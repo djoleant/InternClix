@@ -21,6 +21,12 @@ namespace Models
 
         public List<AdditionalInfo> AdditionalInfos { get; set; } = default!;
 
+        public string PhoneNumber { get; set; } = default!;
+
+        public string Address { get; set; } = default!;
+
+        public string City { get; set; } = default!;
+
         //public Student Student { get; set; }
 
         // public JsonResult GetCVInfo()

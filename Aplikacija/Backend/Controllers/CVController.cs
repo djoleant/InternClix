@@ -158,5 +158,37 @@ namespace Backend.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("CreateCV")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> CreateCV(CVModel cv)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            /*var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.CV)
+            .ThenInclude(u => u.AdditionalInfos)
+            .FirstOrDefaultAsync();
+
+            if (student != null)
+            {
+                student.CV.AdditionalInfos.Add(new AdditionalInfo
+                {
+                    Title = title,
+                    Info = info,
+                    CV = student.CV
+                });
+
+                await Context.SaveChangesAsync();*/
+
+            return new JsonResult(new { succeeded = true });
+            /*}
+            else
+            {
+                return new JsonResult(new { succeeded = false, errors = "Student Not Found" });
+            }*/
+
+        }
     }
 }

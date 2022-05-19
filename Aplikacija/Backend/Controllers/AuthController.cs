@@ -65,7 +65,10 @@ namespace Backend.Controllers
                     {
                         Experiences = new List<Experience>(),
                         Skills = new List<Skill>(),
-                        AdditionalInfos = new List<AdditionalInfo>()
+                        AdditionalInfos = new List<AdditionalInfo>(),
+                        PhoneNumber = "",
+                        Address = "",
+                        City = ""
                     }
                 };
                 //await Context.SaveChangesAsync();

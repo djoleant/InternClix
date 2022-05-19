@@ -13,8 +13,13 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
+        public string Type { get; set; } = default!; //education or work (dodati regex kasnije)
+
         [MaxLength(50)]
         public String Title { get; set; } = default!;
+
+        [MaxLength(100)]
+        public string InstitutionName { get; set; } = default!; //company name for work, school name for education
 
         [Required]
         public string Description { get; set; } = default!;

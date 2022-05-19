@@ -1,4 +1,4 @@
-import { Paper, CssBaseline } from '@mui/material';
+import { Paper, CssBaseline, Box } from '@mui/material';
 import Container from '@mui/material/Container';
 import React, { useState } from 'react';
 import {
@@ -10,16 +10,17 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Formik, Form } from 'formik';
-import cvFormModel from './components/CVFormModels/cvFormModel';
 import PersonalInfoForm from './components/CVForms/PersonalInfoForm';
 import ProfessionalSkillsForm from './components/CVForms/ProfessionalSkillsForm';
+import WorkExperienceForm from './components/CVForms/WorkExperienceForm';
+import AdditionalInfoForm from './components/CVForms/AdditionalInfoForm';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
 
 
 
 //import { theme, useStyle } from './styles';
-const steps = ['Personal info', 'Work experience', 'Aditional info', 'Rewiew'];
-const { formId, formField } = cvFormModel;
+const steps = ['Personal info', 'Professional skills', "Work experience", 'Aditional info'];
 
 
 
@@ -29,15 +30,15 @@ export default function CVCreator(props) {
     function _renderStepContent(step) {
         switch (step) {
             case 0:
-                return <PersonalInfoForm formField={formField} />
+                return <PersonalInfoForm />
             case 1:
-                return <ProfessionalSkillsForm formField={formField} />;
+                return <ProfessionalSkillsForm />;
             case 2:
-                return <React.Fragment>Bla3</React.Fragment>;
+                return <WorkExperienceForm />;
             case 3:
-                return <React.Fragment>Bla4</React.Fragment>;
+                return <AdditionalInfoForm />;
             default:
-                return <React.Fragment>Bla5</React.Fragment>;
+                return <React.Fragment>Not Found</React.Fragment>;
         }
     }
 
@@ -55,6 +56,7 @@ export default function CVCreator(props) {
         actions.setSubmitting(false);
 
         setActiveStep(activeStep + 1);
+        alert("Objekat je u console log")
     }
 
     function _handleSubmit(values, actions) {
@@ -96,8 +98,10 @@ export default function CVCreator(props) {
                 </Stepper>
                 <React.Fragment>
                     {activeStep === steps.length ? (
-                        <Typography component="h1" variant="h4" align="center">
-                            Kraj
+                        <Typography component="h1" variant="h2" align="center">
+                            <CheckCircleOutlineRoundedIcon color="success" sx={{ fontSize: 100, mt: 10 }} />
+                            <br />
+                            CV successfully created
                         </Typography>
                     ) : (
                         <Formik
@@ -108,21 +112,33 @@ export default function CVCreator(props) {
                                     city: "",
                                     email: "",
                                     education: [
-                                        { title: "", description: "" }
+                                        { title: "", description: "", fromDate: "", toDate: "" }
                                     ],
-                                    skills: []
+                                    skills: [],
+                                    categories: [],
+                                    languages: [{ name: "", description: "" }],
+                                    experience: [
+                                        { title: "", description: "", companyName: "", fromDate: "", toDate: "" }
+                                    ],
+                                    additionalInfo: []
                                 }
                             }
                             //validationSchema={currentValidationSchema}
                             onSubmit={_handleSubmit}
                         >
                             {({ isSubmitting }) => (
-                                <Form id={formId}>
+                                <Form id={"cvForm"}>
                                     {_renderStepContent(activeStep)}
 
-                                    <div >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-around",
+                                            mb: 5
+                                        }}
+                                    >
                                         {activeStep !== 0 && (
-                                            <Button onClick={_handleBack} >
+                                            <Button onClick={_handleBack} variant="outlined" size="large" >
                                                 Back
                                             </Button>
                                         )}
@@ -132,6 +148,7 @@ export default function CVCreator(props) {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
+                                                size="large"
 
                                             >
                                                 {isLastStep ? 'Submit' : 'Next'}
@@ -139,11 +156,12 @@ export default function CVCreator(props) {
                                             {isSubmitting && (
                                                 <CircularProgress
                                                     size={24}
+                                                    sx={{ ml: 4 }}
 
                                                 />
                                             )}
                                         </div>
-                                    </div>
+                                    </Box>
                                 </Form>
                             )}
                         </Formik>

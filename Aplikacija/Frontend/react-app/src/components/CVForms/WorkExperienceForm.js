@@ -5,9 +5,9 @@ import CVCard from './CVCard';
 import { FieldArray, useFormikContext } from 'formik';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 
-export default function PersonalInfoForm() {
+export default function WorkExperienceForm() {
 
 
     const { values } = useFormikContext();
@@ -16,30 +16,18 @@ export default function PersonalInfoForm() {
     return (
         <React.Fragment>
             <Typography variant="h5" gutterBottom sx={{ mt: 2, mb: 2 }}>
-                <AccountCircleRoundedIcon sx={{ mr: 2 }} />
-                Personal info
+                <WorkRoundedIcon sx={{ mr: 2 }} />
+                Work experience
             </Typography>
             <Paper
-                sx={{ p: 3, mb: 4 }}
+                sx={{ p: 3, pt: 0, mb: 4 }}
                 variant="outlined"
             >
                 <Grid container spacing={3} sx={{ mb: 4 }}>
-                    <Grid item xs={12} sm={6}>
-                        <TextInputField name={"address"} label={"Address"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextInputField name={"city"} label={"City"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextInputField type="tel" name={"phone"} label={"Phone number"} fullWidth />
-                    </Grid>
 
                     <Grid item xs={12} >
-                        <TextInputField name={"email"} label={"E-mail"} fullWidth />
-                    </Grid>
-                    <Grid item xs={12} >
                         <FieldArray
-                            name="education"
+                            name="experience"
                             render={(arrayHelpers) => (
                                 <React.Fragment>
                                     {
@@ -47,10 +35,10 @@ export default function PersonalInfoForm() {
                                         //  const fields = []
                                         //for (let index = 0; index < educationCount; index++) {
                                         //fields.push(
-                                        values.education.map((edu, index) => {
+                                        values.experience.map((exp, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <CVCard name={`education[${index}]`} title="EDUCATION" type="education" />
+                                                    <CVCard name={`experience[${index}]`} title="WORK EXPERIENCE" type="work" />
                                                 </React.Fragment>
                                             )
                                         })
@@ -64,6 +52,7 @@ export default function PersonalInfoForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
+                                            companyName: "",
                                             fromDate: "",
                                             toDate: ""
                                         });
@@ -72,7 +61,7 @@ export default function PersonalInfoForm() {
                                         variant="outlined"
                                         startIcon={<AddCircleRoundedIcon />}
                                     >
-                                        Add education
+                                        Add experience
                                     </Button>
                                 </React.Fragment>
 
