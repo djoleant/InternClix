@@ -19,6 +19,8 @@ namespace Models
         [Required]
         public string Info { get; set; } = default!;
 
+        public string Type { get; set; } = default!;//languages, projects, memberships...
+
         [Required]
         [JsonIgnore]
         public CV CV { get; set; } = default!;
