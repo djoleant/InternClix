@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Button, Paper } from '@mui/material';
+import { Grid, Typography, Button, Paper, Divider } from '@mui/material';
 import TextInputField from '../CVFormFields/TextInputField';
 import CVCard from './CVCard';
 import { FieldArray, useFormikContext } from 'formik';
@@ -23,7 +23,9 @@ export default function PersonalInfoForm() {
                 sx={{ p: 3, mb: 4 }}
                 variant="outlined"
             >
+                <Divider sx={{ mb: 3 }} >CONTACT INFO</Divider>
                 <Grid container spacing={3} sx={{ mb: 4 }}>
+
                     <Grid item xs={12} sm={6}>
                         <TextInputField name={"address"} label={"Address"} fullWidth />
                     </Grid>
@@ -34,9 +36,7 @@ export default function PersonalInfoForm() {
                         <TextInputField type="tel" name={"phone"} label={"Phone number"} fullWidth />
                     </Grid>
 
-                    <Grid item xs={12} >
-                        <TextInputField name={"email"} label={"E-mail"} fullWidth />
-                    </Grid>
+
                     <Grid item xs={12} >
                         <FieldArray
                             name="education"
@@ -64,6 +64,7 @@ export default function PersonalInfoForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
+                                            institutionName: "",
                                             fromDate: "",
                                             toDate: ""
                                         });

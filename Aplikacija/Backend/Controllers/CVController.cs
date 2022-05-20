@@ -282,15 +282,15 @@ namespace Backend.Controllers
                     City = student.CV.City,
                     Education = student.CV.Experiences
                         .Where(e => e.Type == "education")
-                        .Select(e => new { e.Title, e.Description, e.InstitutionName, e.StartDate, e.EndDate }),
-                    Skills = student.CV.Skills.Select(s => new { s.ID, s.Name }),
+                        .Select(e => new { e.Title, e.Description, e.InstitutionName, FromDate = e.StartDate.ToString("yyyy-MM-dd"), ToDate = e.EndDate.ToString("yyyy-MM-dd") }),
+                    Skills = student.CV.Skills.Select(s => new { s.ID, Label = s.Name }),
                     Categories = new List<Category>(),
                     Languages = student.CV.AdditionalInfos
                         .Where(i => i.Type == "Language")
                         .Select(i => new { Title = i.Title, Description = i.Info }),
                     Experience = student.CV.Experiences
                         .Where(e => e.Type == "work")
-                        .Select(e => new { e.Title, e.Description, e.InstitutionName, e.StartDate, e.EndDate }),
+                        .Select(e => new { e.Title, e.Description, e.InstitutionName, FromDate = e.StartDate.ToString("yyyy-MM-dd"), ToDate = e.EndDate.ToString("yyyy-MM-dd") }),
                     AdditionalInfo = student.CV.AdditionalInfos
                         .Where(i => i.Type != "Language")
                         .Select(i => new { i.Type, i.Title, Description = i.Info })

@@ -1,6 +1,6 @@
 import { Paper, CssBaseline, Box } from '@mui/material';
 import Container from '@mui/material/Container';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Stepper,
     Step,
@@ -32,7 +32,7 @@ export default function CVCreator(props) {
             case 0:
                 return <PersonalInfoForm />
             case 1:
-                return <ProfessionalSkillsForm />;
+                return <ProfessionalSkillsForm skillData={skillData} />;
             case 2:
                 return <WorkExperienceForm />;
             case 3:
@@ -73,6 +73,44 @@ export default function CVCreator(props) {
         setActiveStep(activeStep - 1);
     }
 
+    const getSkills = async () => {
+        const response = await fetch("http://localhost:7240/CV/GetSkills", {
+            credentials: "include"
+        });
+        const fetchData = await response.json();
+        setSkillData(fetchData.skills);
+    }
+
+    const getCvData = async () => {
+        const response = await fetch("http://localhost:7240/CV/GetCV", {
+            credentials: "include",
+            method: "POST"
+        });
+        const fetchData = await response.json();
+        setCvData(fetchData.cv);
+    }
+
+    const [skillData, setSkillData] = useState([]);
+    const [cvData, setCvData] = useState({
+        phone: "",
+        address: "",
+        city: "",
+        education: [
+            { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
+        ],
+        skills: [],
+        categories: [],
+        languages: [{ title: "", description: "" }],
+        experience: [
+            { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
+        ],
+        additionalInfo: []
+    })
+    useEffect(() => {
+        getSkills();
+        getCvData();
+    }, []);
+
     return (
 
         <Container component="main"  >
@@ -106,23 +144,9 @@ export default function CVCreator(props) {
                     ) : (
                         <Formik
                             initialValues={
-                                {
-                                    phone: "",
-                                    address: "",
-                                    city: "",
-                                    email: "",
-                                    education: [
-                                        { title: "", description: "", fromDate: "", toDate: "" }
-                                    ],
-                                    skills: [],
-                                    categories: [],
-                                    languages: [{ name: "", description: "" }],
-                                    experience: [
-                                        { title: "", description: "", companyName: "", fromDate: "", toDate: "" }
-                                    ],
-                                    additionalInfo: []
-                                }
+                                cvData
                             }
+                            enableReinitialize
                             //validationSchema={currentValidationSchema}
                             onSubmit={_handleSubmit}
                         >

@@ -52,7 +52,7 @@ export default function WorkExperienceForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
-                                            companyName: "",
+                                            institutionName: "",
                                             fromDate: "",
                                             toDate: ""
                                         });

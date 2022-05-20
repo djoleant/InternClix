@@ -40,6 +40,9 @@ export default function SignIn() {
     const loginButtonHandler = async () => {
         const response = await dispatch(authActions.login(email, password));
 
+        if (response.succeeded) {
+            dispatch(authActions.checkIfLogged())
+        }
 
     };
 

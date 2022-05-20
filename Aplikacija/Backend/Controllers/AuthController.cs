@@ -199,7 +199,7 @@ namespace Backend.Controllers
         }
 
         [Route("CheckUser")]
-        [HttpPost]
+        [HttpGet]
         public async Task<JsonResult> CheckUser()
         {
             ApplicationUser applicationUser = await UserManager.GetUserAsync(User);

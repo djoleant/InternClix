@@ -20,7 +20,7 @@ function getCookie(cname) {
 
 export const login = (email, password) => {
     return async (dispatch) => {
-        const response = await fetch("https://localhost:7240/Auth/Login", {
+        const response = await fetch("http://localhost:7240/Auth/Login", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -28,12 +28,13 @@ export const login = (email, password) => {
                 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
                 'Access-Control-Request-Method': 'GET, POST, DELETE, PUT, OPTIONS',
                 "Content-Type": "application/json",
-                "cookie": "UserAuthCookie=" + getCookie("UserAuthCookie")
+                //"cookie": "UserAuthCookie=" + getCookie("UserAuthCookie")
             },
             body: JSON.stringify({
                 Username: email,
                 Password: password,
             }),
+
         });
         const data = await response.json();
 
@@ -61,8 +62,9 @@ export const checkIfLogged = () => {
             return;
         }
 
-        const response = await fetch("/auth/checkUser", {
+        const response = await fetch("http://localhost:7240/Auth/CheckUser", {
             method: "GET",
+            credentials: "include"
         });
 
         const data = await response.json();

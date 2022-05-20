@@ -14,35 +14,35 @@ import TextField from '@mui/material/TextField';
 import ChipTransferList from './ChipTransferList';
 
 
-export default function ProfessionalSkillsForm() {
-    
-    const [skillData/*, setChipData*/] = React.useState([ //ucitavanje iz baze
-        { id: 0, label: 'Angular' },
-        { id: 1, label: 'jQuery' },
-        { id: 2, label: 'Polymer' },
-        { id: 3, label: 'React' },
-        { id: 4, label: 'Vue.js' },
-        { id: 5, label: 'Angular' },
-        { id: 6, label: 'jQuery' },
-        { id: 7, label: 'Polymer' },
-        { id: 8, label: 'React' },
-        { id: 9, label: 'Vue.js' },
-        { id: 10, label: 'Angular' },
-        { id: 11, label: 'jQuery' },
-        { id: 12, label: 'Polymer' },
-        { id: 13, label: 'React' },
-        { id: 14, label: 'Vue.js' },
-        { id: 15, label: 'Angular' },
-        { id: 16, label: 'jQuery' },
-        { id: 17, label: 'Polymer' },
-        { id: 18, label: 'React' },
-        { id: 19, label: 'Vue.js' }
-    ]);
+export default function ProfessionalSkillsForm({ skillData }) {
+
+    // const [skillData/*, setChipData*/] = React.useState([ //ucitavanje iz baze
+    //     { id: 0, label: 'Angular' },
+    //     { id: 1, label: 'jQuery' },
+    //     { id: 2, label: 'Polymer' },
+    //     { id: 3, label: 'React' },
+    //     { id: 4, label: 'Vue.js' },
+    //     { id: 5, label: 'Angular' },
+    //     { id: 6, label: 'jQuery' },
+    //     { id: 7, label: 'Polymer' },
+    //     { id: 8, label: 'React' },
+    //     { id: 9, label: 'Vue.js' },
+    //     { id: 10, label: 'Angular' },
+    //     { id: 11, label: 'jQuery' },
+    //     { id: 12, label: 'Polymer' },
+    //     { id: 13, label: 'React' },
+    //     { id: 14, label: 'Vue.js' },
+    //     { id: 15, label: 'Angular' },
+    //     { id: 16, label: 'jQuery' },
+    //     { id: 17, label: 'Polymer' },
+    //     { id: 18, label: 'React' },
+    //     { id: 19, label: 'Vue.js' }
+    // ]);
 
     const { values } = useFormikContext();
 
     const [categoryData/*, setChipData*/] = React.useState([ //ucitavanje iz baze
-        { id: 0, label: 'Web developmer' },
+        { id: 0, label: 'Web developer' },
         { id: 1, label: 'Artificial Intelligence' },
         { id: 2, label: 'DevOps' },
         { id: 3, label: 'Software Quality Assurance Specialist' },
@@ -81,7 +81,7 @@ export default function ProfessionalSkillsForm() {
                                         values.languages.map((language, index) => (
                                             <Grid container spacing={3} key={index} sx={{ mb: 3 }}>
                                                 <Grid item xs={5} >
-                                                    <TextInputField name={`languages[${index}].name`} label={"Language"} fullWidth />
+                                                    <TextInputField name={`languages[${index}].title`} label={"Language"} fullWidth />
                                                 </Grid>
                                                 <Grid item xs={7}>
                                                     <TextInputField name={`languages[${index}].description`} label={"Level"} fullWidth />
@@ -91,7 +91,7 @@ export default function ProfessionalSkillsForm() {
                                     }
                                     <Button onClick={() => {
                                         arrayHelpers.push({
-                                            name: "",
+                                            title: "",
                                             description: "",
                                         });
                                     }

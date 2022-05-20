@@ -24,13 +24,14 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:5500",
-                                    "http://127.0.0.1:5500",
+                                    "https://localhost:3000",
                                     "https://localhost:5500",
                                     "https://127.0.0.1:5500",
-                                    "http://localhost:3000/")
+                                    "http://localhost:3000")
                                     .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowAnyOrigin();
+                           .AllowCredentials();
+                          //.AllowAnyOrigin();
                           // policy.AllowAnyOrigin();
                           // policy.AllowAnyHeader();
                       });
@@ -98,7 +99,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 //             });
 
 var app = builder.Build();
-
+app.UseCors(CORS);
 // app.Use((context, next) =>
 //             {
 //                 string path = context.Request.Path.Value;
@@ -125,9 +126,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors(CORS);
 
-app.UseHttpsRedirection();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

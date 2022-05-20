@@ -1,7 +1,8 @@
-import { Box, Typography, Grid, Divider } from "@mui/material";
+import { Box, Autocomplete, Grid, Divider } from "@mui/material";
 import TextInputField from "../CVFormFields/TextInputField";
 import TextField from '@mui/material/TextField';
 
+const additionalInfoTypes = ["Projects", "Memberships", "Volunteering", "Courses"];
 
 export default function CVCard(props) {
     const { name, title, type } = props;
@@ -13,18 +14,39 @@ export default function CVCard(props) {
                 {
                     (type == "work") ? (
                         <>
+                            
                             <Grid item xs={12}>
                                 <TextInputField name={name + ".title"} label={"Position*"} fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextInputField name={name + ".companyName"} label={"Company name*"} fullWidth />
+                                <TextInputField name={name + ".institutionName"} label={"Company name*"} fullWidth />
+                            </Grid>
+                        </>
+                    ) : (type == "education") ? (
+                        <>
+                            <Grid item xs={12}>
+                                <TextInputField name={name + ".title"} label={"Level of education*"} fullWidth />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInputField name={name + ".institutionName"} label={"Name of the Institution*"} fullWidth />
                             </Grid>
                         </>
                     ) : (
-                        <Grid item xs={12}>
-                            <TextInputField name={name + ".title"} label={"Title*"} fullWidth />
-                        </Grid>
-
+                        <>
+                            <Grid item xs={12}>
+                                <Autocomplete
+                                    id="free-solo-demo"
+                                    freeSolo
+                                    options={additionalInfoTypes}
+                                    renderInput={(params) =>
+                                        <TextInputField {...params} name={name + ".type"} label="Type" placeholder="Type (Projects,Memberships...)" />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInputField name={name + ".title"} label={"Title*"} fullWidth />
+                            </Grid>
+                        </>
                     )
                 }
                 {

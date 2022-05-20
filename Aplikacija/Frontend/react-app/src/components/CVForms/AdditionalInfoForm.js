@@ -52,6 +52,7 @@ export default function AdditionalInfoForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
+                                            type:""
 
                                         });
                                     }
