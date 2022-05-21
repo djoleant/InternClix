@@ -279,6 +279,7 @@ namespace Backend.Controllers
                 cv =
                 new
                 {
+                    Title = student.CV.Title,
                     Phone = student.CV.PhoneNumber,
                     Address = student.CV.Address,
                     City = student.CV.City,
@@ -334,6 +335,7 @@ namespace Backend.Controllers
             CV cv = student.CV;
             student.CV = new CV
             {
+                Title = "",
                 Experiences = new List<Experience>(),
                 Skills = new List<Skill>(),
                 AdditionalInfos = new List<AdditionalInfo>(),

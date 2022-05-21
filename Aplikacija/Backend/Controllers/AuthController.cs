@@ -63,6 +63,7 @@ namespace Backend.Controllers
                     Picture = "",
                     CV = new CV
                     {
+                        Title = "",
                         Experiences = new List<Experience>(),
                         Skills = new List<Skill>(),
                         AdditionalInfos = new List<AdditionalInfo>(),
