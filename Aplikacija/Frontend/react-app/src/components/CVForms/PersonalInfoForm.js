@@ -50,7 +50,14 @@ export default function PersonalInfoForm() {
                                         values.education.map((edu, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <CVCard name={`education[${index}]`} title="EDUCATION" type="education" />
+                                                    <CVCard
+                                                        name={`education[${index}]`}
+                                                        title="EDUCATION"
+                                                        type="education"
+                                                        onDelete={() => {
+                                                            arrayHelpers.remove(index);
+                                                        }}
+                                                    />
                                                 </React.Fragment>
                                             )
                                         })

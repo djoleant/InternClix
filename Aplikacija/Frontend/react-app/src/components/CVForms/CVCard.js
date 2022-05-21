@@ -1,20 +1,34 @@
 import { Box, Autocomplete, Grid, Divider } from "@mui/material";
 import TextInputField from "../CVFormFields/TextInputField";
 import TextField from '@mui/material/TextField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
+
+
 
 const additionalInfoTypes = ["Projects", "Memberships", "Volunteering", "Courses"];
 
 export default function CVCard(props) {
-    const { name, title, type } = props;
+    const { name, title, type, onDelete } = props;
     return (
         <Box sx={{ mb: 3 }} variant="outlined">
-            <Divider sx={{ mt: 5, mb: 3 }} >{title}</Divider>
+            <Divider sx={{ mt: 5, mb: 3 }} >
+                <Tooltip title="Delete" placement="top" arrow>
+                    <IconButton aria-label="delete" color="error" onClick={onDelete}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                {title}
+
+            </Divider>
 
             <Grid container spacing={3}>
                 {
                     (type == "work") ? (
                         <>
-                            
+
                             <Grid item xs={12}>
                                 <TextInputField name={name + ".title"} label={"Position*"} fullWidth />
                             </Grid>

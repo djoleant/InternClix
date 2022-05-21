@@ -20,7 +20,7 @@ export default function AdditionalInfoForm() {
                 Additional info
             </Typography>
             <Paper
-                sx={{ p: 3, pt: 0, mb:4 }}
+                sx={{ p: 3, pt: 0, mb: 4 }}
                 variant="outlined"
             >
                 <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -38,7 +38,14 @@ export default function AdditionalInfoForm() {
                                         values.additionalInfo.map((inf, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <CVCard name={`additionalInfo[${index}]`} title="ADDITIONAL INFO" type="additional" />
+                                                    <CVCard
+                                                        name={`additionalInfo[${index}]`}
+                                                        title="ADDITIONAL INFO"
+                                                        type="additional"
+                                                        onDelete={() => {
+                                                            arrayHelpers.remove(index);
+                                                        }}
+                                                    />
                                                 </React.Fragment>
                                             )
                                         })
@@ -52,7 +59,7 @@ export default function AdditionalInfoForm() {
                                         arrayHelpers.push({
                                             title: "",
                                             description: "",
-                                            type:""
+                                            type: ""
 
                                         });
                                     }

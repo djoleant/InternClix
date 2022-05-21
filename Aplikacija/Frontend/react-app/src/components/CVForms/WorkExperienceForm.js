@@ -38,7 +38,14 @@ export default function WorkExperienceForm() {
                                         values.experience.map((exp, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <CVCard name={`experience[${index}]`} title="WORK EXPERIENCE" type="work" />
+                                                    <CVCard
+                                                        name={`experience[${index}]`}
+                                                        title="WORK EXPERIENCE"
+                                                        type="work"
+                                                        onDelete={() => {
+                                                            arrayHelpers.remove(index);
+                                                        }}
+                                                    />
                                                 </React.Fragment>
                                             )
                                         })

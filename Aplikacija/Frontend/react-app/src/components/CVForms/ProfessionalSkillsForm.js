@@ -12,6 +12,9 @@ import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousS
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import ChipTransferList from './ChipTransferList';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 
 export default function ProfessionalSkillsForm({ skillData }) {
@@ -80,11 +83,23 @@ export default function ProfessionalSkillsForm({ skillData }) {
                                     {
                                         values.languages.map((language, index) => (
                                             <Grid container spacing={3} key={index} sx={{ mb: 3 }}>
-                                                <Grid item xs={5} >
+
+                                                <Grid item xs={4} >
                                                     <TextInputField name={`languages[${index}].title`} label={"Language"} fullWidth />
                                                 </Grid>
                                                 <Grid item xs={7}>
                                                     <TextInputField name={`languages[${index}].description`} label={"Level"} fullWidth />
+                                                </Grid>
+                                                <Grid item xs={1} >
+                                                    <Tooltip title="Delete" placement="top" arrow>
+                                                        <IconButton aria-label="delete" color="error" onClick={() => { arrayHelpers.remove(index) }}
+                                                            //sx={{ mr: -2 }}
+                                                            edge="start"
+                                                            size="large"
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </Grid>
                                             </Grid>
                                         ))

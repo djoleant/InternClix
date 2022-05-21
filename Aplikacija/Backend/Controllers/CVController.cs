@@ -164,6 +164,8 @@ namespace Backend.Controllers
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> CreateCV(CVModel cv)
         {
+
+            await DeleteCV();
             var logged = await UserManager.GetUserAsync(User);
             var student = await Context.Students
             .Where(u => u.Id == logged.Id)
@@ -295,6 +297,55 @@ namespace Backend.Controllers
                         .Where(i => i.Type != "Language")
                         .Select(i => new { i.Type, i.Title, Description = i.Info })
                 }
+            });
+
+        }
+
+        [HttpDelete]
+        [Route("DeleteCV")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> DeleteCV()
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.CV)
+            .ThenInclude(c => c.AdditionalInfos)
+            .Include(u => u.CV)
+            .ThenInclude(c => c.Experiences)
+            .Include(u => u.CV)
+            .ThenInclude(c => c.Skills)
+            .FirstOrDefaultAsync();
+
+            if (student == null)
+            {
+                return new JsonResult(new { succeeded = false, errors = "Student Not Found" });
+            }
+
+            foreach (Experience exp in student.CV.Experiences)
+            {
+                Context.Experiences.Remove(exp);
+            }
+            foreach (AdditionalInfo inf in student.CV.AdditionalInfos)
+            {
+                Context.AdditionalInfos.Remove(inf);
+            }
+            student.CV.Skills.Clear();
+            CV cv = student.CV;
+            student.CV = new CV
+            {
+                Experiences = new List<Experience>(),
+                Skills = new List<Skill>(),
+                AdditionalInfos = new List<AdditionalInfo>(),
+                PhoneNumber = "",
+                Address = "",
+                City = ""
+            };
+            await Context.SaveChangesAsync();
+
+            return new JsonResult(new
+            {
+                succeeded = true                
             });
 
         }

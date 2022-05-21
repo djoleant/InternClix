@@ -15,6 +15,7 @@ import ProfessionalSkillsForm from './components/CVForms/ProfessionalSkillsForm'
 import WorkExperienceForm from './components/CVForms/WorkExperienceForm';
 import AdditionalInfoForm from './components/CVForms/AdditionalInfoForm';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import * as Yup from 'yup';
 
 
 
@@ -24,7 +25,7 @@ const steps = ['Personal info', 'Professional skills', "Work experience", 'Aditi
 
 
 
-export default function CVCreator(props) {
+export default function CVCreator() {
     //const { children } = props;
     //const classes = useStyle();
     function _renderStepContent(step) {
@@ -42,6 +43,8 @@ export default function CVCreator(props) {
         }
     }
 
+
+
     const [activeStep, setActiveStep] = useState(0);
     //const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
@@ -51,12 +54,27 @@ export default function CVCreator(props) {
     }
 
     async function _submitForm(values, actions) {
-        await _sleep(1000);
-        console.log(JSON.stringify(values, null, 2));
-        actions.setSubmitting(false);
+        // await _sleep(1000);
+        // console.log(JSON.stringify(values, null, 2));
+        // actions.setSubmitting(false);
 
-        setActiveStep(activeStep + 1);
-        alert("Objekat je u console log")
+        // setActiveStep(activeStep + 1);
+        // alert("Objekat je u console log")
+        const response = await fetch("http://localhost:7240/CV/CreateCV", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+        actions.setSubmitting(false);
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            setActiveStep(activeStep + 1);
+        }
     }
 
     function _handleSubmit(values, actions) {
@@ -77,8 +95,11 @@ export default function CVCreator(props) {
         const response = await fetch("http://localhost:7240/CV/GetSkills", {
             credentials: "include"
         });
-        const fetchData = await response.json();
-        setSkillData(fetchData.skills);
+        if (response.ok) {
+            const fetchData = await response.json();
+            setSkillData(fetchData.skills);
+        }
+
     }
 
     const getCvData = async () => {
@@ -86,8 +107,12 @@ export default function CVCreator(props) {
             credentials: "include",
             method: "POST"
         });
-        const fetchData = await response.json();
-        setCvData(fetchData.cv);
+        if (response.ok) {
+            const fetchData = await response.json();
+            if (fetchData.cv.education.length > 0)
+                setCvData(fetchData.cv);
+        }
+
     }
 
     const [skillData, setSkillData] = useState([]);
@@ -105,7 +130,25 @@ export default function CVCreator(props) {
             { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
         ],
         additionalInfo: []
+    });
+
+    const cvValidationSchema = Yup.object().shape({
+        education: Yup.array()
+            .of(
+                Yup.object()
+                    .shape({
+                        title: Yup.string().required("Required"),
+                        institutionName: Yup.string().required("Required")
+                    })),
+        // languages: Yup.array()
+        //     .of(
+        //         Yup.object().shape({
+        //             title: Yup.string().required("Required"),
+        //             description: Yup.string().required("Required")
+        //         })
+        //     )
     })
+
     useEffect(() => {
         getSkills();
         getCvData();
@@ -147,7 +190,7 @@ export default function CVCreator(props) {
                                 cvData
                             }
                             enableReinitialize
-                            //validationSchema={currentValidationSchema}
+                            //validationSchema={cvValidationSchema}
                             onSubmit={_handleSubmit}
                         >
                             {({ isSubmitting }) => (
@@ -175,7 +218,7 @@ export default function CVCreator(props) {
                                                 size="large"
 
                                             >
-                                                {isLastStep ? 'Submit' : 'Next'}
+                                                {isLastStep ? 'Save changes' : 'Next'}
                                             </Button>
                                             {isSubmitting && (
                                                 <CircularProgress
