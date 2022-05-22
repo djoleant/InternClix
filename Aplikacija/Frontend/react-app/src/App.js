@@ -9,6 +9,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import { Component } from "react";
 import CVCreator from "./CVCreator";
+import CVGenerator from "./StudentProfile";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -233,6 +234,15 @@ export default function App() {
             element={
               <Header
                 Component={CVCreator}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/CVGenerator"
+            element={
+              <Header
+                Component={CVGenerator}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
