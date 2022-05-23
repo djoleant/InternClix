@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -19,7 +20,6 @@ namespace Models
 
         public string Description { get; set; } = default!;
 
-        [Required]
         public int Duration { get; set; }
 
         [Required]

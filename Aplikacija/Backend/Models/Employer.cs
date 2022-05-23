@@ -14,6 +14,9 @@ namespace Models
         [Required]
         public string CompanyName { get; set; } = default!;
 
+        public string About {get; set;} =default!;
+        public string Address {get; set;} =default!;
+
         public List<Internship> Internships { get; set; } = default!;
 
         public List<Rating> Ratings { get; set; } = default!;

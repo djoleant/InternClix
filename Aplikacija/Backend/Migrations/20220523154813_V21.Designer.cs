@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Models;
 
@@ -11,9 +12,10 @@ using Models;
 namespace Backend.Migrations
 {
     [DbContext(typeof(InternClixDbContext))]
-    partial class InternClixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220523154813_V21")]
+    partial class V21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -457,27 +459,14 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<float>("BenefitsScore")
-                        .HasColumnType("real");
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("NegativeExperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("OverallScore")
-                        .HasColumnType("real");
-
-                    b.Property<string>("PositiveExperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Recommended")
-                        .HasColumnType("bit");
-
-                    b.Property<float>("SkillImprovementScore")
+                    b.Property<float>("Score")
                         .HasColumnType("real");
 
                     b.HasKey("ID");
