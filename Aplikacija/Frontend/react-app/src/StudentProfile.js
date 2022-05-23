@@ -12,7 +12,8 @@ import {
     FormLabel,
     TextField,
     Select,
-    MenuItem
+    MenuItem,
+    Switch
 } from "@mui/material";
 import CVView from './components/CVForms/CVView';
 import ReactToPrint from "react-to-print";
@@ -43,6 +44,7 @@ export default function CVGenerator() {
     const [displayOrder, setDisplayOrder] = useState("work");
     const [accentColor, setAccentColor] = useState("#ffffff");
     const [cvFont, setCvFont] = useState("Montserrat");
+    const [displayIcons, setDisplayIcons] = useState(true);
 
     return (
         <Grid container spacing={3} sx={{ pl: 10, mt: 3, pr: 10 }}>
@@ -91,10 +93,18 @@ export default function CVGenerator() {
                                 }
                             </Select>
                         </Box>
+                        <FormControlLabel
+                            control={<Switch defaultChecked onChange={(event) => { setDisplayIcons(!displayIcons) }} />}
+                            label="Show icons"
+                            labelPlacement='start'
+                            sx={{ mt: 4, mr: 4 }}
+
+                        />
+
+
                         <ReactToPrint
                             trigger={() => {
-                                // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
-                                // to the root node of the returned component as it will be overwritten.
+
                                 return (
                                     <Button variant="contained" sx={{ m: 2, mt: 5 }} >Export CV</Button>
                                 );
@@ -105,12 +115,13 @@ export default function CVGenerator() {
 
                 </Paper>
             </Grid>
-            <Grid item md={12} lg={9} sx={{ overflowX: "scroll" }}>
+            <Grid item md={12} lg={9} sx={{ overflowX: "scroll", display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <CVView
                     refProp={ref}
                     displayOrder={displayOrder}
                     accentColor={accentColor}
                     cvFont={cvFont}
+                    displayIcons={displayIcons}
                 />
             </Grid>
         </Grid >

@@ -15,6 +15,9 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
+import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
 const studentInfo = {
     name: "Name",
@@ -49,6 +52,12 @@ const info = {
         { title: "Work 3", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", institutionName: "subtitle 3", fromDate: "1.1.2020.", toDate: "1.1.2021." },
         { title: "Work 4", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", institutionName: "subtitle 3", fromDate: "1.1.2020.", toDate: "1.1.2021." }
     ],
+    additionalInfo: [
+        { title: "Project 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Projects" },
+        { title: "Project 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Projects" },
+        { title: "Membership 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Memberships" },
+        { title: "Something 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Something" }
+    ]
 }
 
 const calculateColor = (c) => {
@@ -66,18 +75,21 @@ const calculateColor = (c) => {
     return "black";
 }
 
-export default function CVView({ refProp, displayOrder, accentColor, cvFont }) {
+export default function CVView({ refProp, displayOrder, accentColor, cvFont, displayIcons }) {
     //const ref = createRef();
 
     const theme = createTheme({
         typography: {
             fontFamily: cvFont
-        }
+        },
+        // palette: {
+        //     mode: "dark"
+        // }
     })
 
     return (
         <ThemeProvider theme={theme}>
-            <Paper sx={{ p: 3, width: 950, borderRadius: 0, border: "none" }} variant="outlined" ref={refProp}>
+            <Paper sx={{ p: 3, width: 950, borderRadius: 0 }} variant="outlined" ref={refProp}>
                 <Grid container spacing={3} sx={{ backgroundColor: accentColor, borderRadius: "0px 0px 200px 0px", color: calculateColor(accentColor) }} >
                     <Grid item xs={3} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <Avatar src={studentInfo.picture} sx={{ width: 200, height: 200 }} />
@@ -91,18 +103,18 @@ export default function CVView({ refProp, displayOrder, accentColor, cvFont }) {
                 <Grid container spacing={3} >
                     <Grid item xs={4} sx={{ backgroundColor: accentColor, pr: 3, pb: 5, borderRadius: "0px 0px 200px 0px", color: calculateColor(accentColor) }}>
                         <Box >
-                            <Divider sx={{ mb: 5, mt: 10 }}>
+                            <Divider sx={{ mb: 5, mt: 10 }} >
                                 <Typography variant='h6'>CONTACT INFO</Typography>
                             </Divider>
                             <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", flexWrap: "wrap", gap: "10px" }}>
                                 <Typography sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                    <LocalPhoneRoundedIcon />{info.phone}
+                                    <LocalPhoneRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />{info.phone}
                                 </Typography>
                                 <Typography sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                    <EmailRoundedIcon />user@example.com
+                                    <EmailRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />user@example.com
                                 </Typography>
                                 <Typography sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                    <HomeRoundedIcon />{info.address + ", " + info.city}
+                                    <HomeRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />{info.address + ", " + info.city}
                                 </Typography>
                             </Box>
                             <Divider sx={{ mb: 5, mt: 10 }}>
@@ -132,29 +144,72 @@ export default function CVView({ refProp, displayOrder, accentColor, cvFont }) {
                         </Box>
                     </Grid>
                     <Grid item container xs={8} >
+                        <Box sx={{ width: 20, height: 20, backgroundColor: accentColor, ml: -4 }}></Box>
+                        <Box sx={{ width: 20, height: 20, backgroundColor: "white", ml: -1.5, borderRadius: "16px 0 0 0" }}></Box>
 
                         {
-                            renderWorkExperience(displayOrder)
+                            renderWorkExperience(displayOrder, displayIcons)
                         }
 
                     </Grid>
                     {
-                        renderWorkExperience(displayOrder == "work" ? "education" : "work")
+                        renderWorkExperience(displayOrder == "work" ? "education" : "work", displayIcons)
+                    }
+                    {
+                        info.additionalInfo
+                            .map(el => el.type)
+                            .filter((value, index, self) => self.indexOf(value) === index)
+                            .map((type, index) => (
+                                <Grid item xs={12} key={index}>
+                                    <Divider sx={{ mb: 3, mt: 3 }}>
+                                        <Typography variant='h6' sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+
+                                            {renderIcon(type, displayIcons)}
+                                            {type.toUpperCase()}
+
+                                        </Typography>
+                                    </Divider>
+                                    {
+                                        info.additionalInfo
+                                            .filter(info => info.type == type)
+                                            .map((info, index) => (
+
+                                                <Grid item xs={12} sx={{ mb: 3, pl: 4, pr: 4 }} key={index}>
+                                                    <Typography variant="h5" sx={{ fontWeight: "bold" }} align="left">{info.title}</Typography>
+                                                    <Divider ></Divider>
+                                                    <Typography align="left">{info.description}</Typography>
+                                                </Grid>
+                                            ))
+                                    }
+                                </Grid>
+                            ))
+
                     }
                 </Grid>
 
             </Paper >
-        </ThemeProvider>
+        </ThemeProvider >
     )
 }
 
-function renderWorkExperience(order) {
+function renderIcon(infoType, displayIcons = true) {
+    infoType = infoType.toLowerCase();
+    if (infoType.includes("project")) {
+        return <IntegrationInstructionsRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />
+    } else if (infoType.includes("member")) {
+        return <AssignmentIndRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />
+    } else {
+        return <InfoRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />
+    }
+}
+
+function renderWorkExperience(order, displayIcons = true) {
     return (
         order == "work" ? (
             <Grid item xs={12}>
                 <Divider sx={{ mb: 3, mt: 3 }}>
                     <Typography variant='h6' sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        <WorkRoundedIcon />WORK EXPERIENCE
+                        <WorkRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />WORK EXPERIENCE
                     </Typography>
                 </Divider>
                 {
@@ -181,9 +236,9 @@ function renderWorkExperience(order) {
             </Grid>
         ) : (
             <Grid item xs={12}>
-                <Divider sx={{ mb: 3 }}>
-                    <Typography variant='h6' sx={{ display: "flex", alignItems: "center", gap: 2, mt: 3 }}>
-                        <SchoolRoundedIcon />EDUCATION
+                <Divider sx={{ mb: 3, mt: 3 }}>
+                    <Typography variant='h6' sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <SchoolRoundedIcon sx={{ display: (displayIcons) ? "auto" : "none" }} />EDUCATION
                     </Typography>
                 </Divider>
                 {
