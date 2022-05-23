@@ -1,27 +1,27 @@
-import { CssBaseline, Box } from '@mui/material';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import { Grid, Paper , Divider } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormLabel from '@mui/material/FormLabel';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Radio from '@mui/material/Radio';
+import React, { useState } from 'react';
+import {
+    Button,
+    Typography,
+    TextField,
+    Container,
+    CssBaseline,
+    Box,
+    Select,
+    MenuItem,
+    Radio,
+    Grid,
+    Paper,
+    Divider,
+    FormControl,
+    FormControlLabel
+} from '@mui/material';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import RadioGroup from '@mui/material/RadioGroup';
 import SendIcon from '@mui/icons-material/Send';
 import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import React, { useState } from 'react';
-import {
-    Button,
-    Typography,
-    CircularProgress
-} from '@mui/material';
 import HoverRating from './components/EmployerInfo/HoverRating';
 
 export default function EmployerRatingPage(props) {

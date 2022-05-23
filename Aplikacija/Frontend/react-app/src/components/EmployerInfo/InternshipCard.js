@@ -7,6 +7,7 @@ import {
 import { Paper, CssBaseline, Box, Divider, Grid } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+import PaidIcon from '@mui/icons-material/Paid';
 
 export default function InternshipCard(props) {
 
@@ -20,10 +21,13 @@ export default function InternshipCard(props) {
                     >
                     
                     <Grid container style={{marginTop:3, marginLeft:3, display: "flex", flexDirection: "column" , alignItems: "flex-start" }} spacing={3} sx={{ mb: 4 }}>
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 1, fontWeight:"1000", fontSize:22 }}> Random Internship Title </Typography>
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 }}> <LocationOnIcon style={{color:"red"}}/> Location </Typography>
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 }}> <QueryBuilderIcon style={{color:"red"}}/> Duration </Typography>     
+                            <Typography  component="subtitle1"  align="center" sx={{ m: 1, fontWeight:"1000", fontSize:22}}> {props.title} </Typography>
+                            <Typography  component="subtitle1"  align="center" sx={{ m: 1}}> {props.description} </Typography>
+                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 , display: "flex", flexDirection: "row" , justifyContent:"center" }}> <LocationOnIcon style={{color:"red", marginRight:5}}/> Location </Typography>
+                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 , display: "flex", flexDirection: "row" , justifyContent:"center" }}> <QueryBuilderIcon style={{color:"red", marginRight:5}}/> {props.duration +" "+ (props.duration > 1 ? "weeks":"week")}  </Typography>
+                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 ,  display: "flex", flexDirection: "row" , justifyContent:"center" }}> <PaidIcon style={{color:"red", marginRight:5}}/> {props.compensation +" $"}  </Typography>     
 
+                            {/* //rip skills, mora opravim fetch */}
                             <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
                             <Button style={{marginLeft:7, marginTop:7}} variant="contained" disabled>
                                 .Net

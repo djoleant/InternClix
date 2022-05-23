@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, CssBaseline, Box, Divider, Grid, Container, Button, Typography } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -13,7 +13,37 @@ import TechStack from './components/EmployerInfo/TechStack';
 import InternshipCard from './components/EmployerInfo/InternshipCard';
 import ExperienceCard from './components/EmployerInfo/ExperienceCard';
 
+
 export default function EmployerInfoPage(props) {
+
+    const getEmployerInfo = async () => {
+        const response = await fetch("http://localhost:7240/Employer/GetEmployerInfo/Codemancy%20Studio", {
+            credentials: "include"
+        });
+        if (response.ok) {
+            const fetchData = await response.json();
+            console.log(fetchData);
+            setEmployerData(fetchData.employer);
+        }
+
+    }
+
+    //const [skillData, setSkillData] = useState([]);
+    const [employerData, setEmployerData] = useState({
+        picture: "",
+        companyName: "",
+        about: "",
+        internships: [
+            { id: "", title: "", description: "", compensation: "", duration: "", skills:[] }
+        ],
+        ratings: [{ id: "", overallScore: "", benefitsScore:"", skillImprovementScore:"", positiveExperience:"", negativeExperience:"" }],
+       
+    });
+
+    useEffect(() => {
+        getEmployerInfo();
+    }, []);
+
 
     return (
 
@@ -25,14 +55,13 @@ export default function EmployerInfoPage(props) {
                     variant="outlined"
                 >
                     <Typography component="h1" variant="h4" align="center" sx={{ m: 2 }}>
-                        Codemancy Studio
+                        {employerData.companyName}
                     </Typography>
 
                     <Box sx={{ mb: 3 }} variant="outlined">
                         <Divider sx={{ mt: 5, mb: 3 }} > ABOUT US </Divider>
-                            <Typography component="subtitle1"  align="center" sx={{ m: 2, color:"#bbbbbb" }}>
-                                Codemancy Studio is a global software company. It is very cool. Much wow. It is very cool. Much wow. It is very cool. Much wow. It is very cool. Much wow. It is very cool. Much wow. It is very cool. Much wow. 
-                                It is very cool. Much wow. It is very cool. Very Much wow. It is very cool. 
+                            <Typography component="h1"  align="center" sx={{ m: 2, color:"#bbbbbb" }}>
+                                {employerData.about}
                             </Typography>
                     </Box>
 
@@ -65,10 +94,14 @@ export default function EmployerInfoPage(props) {
                         <Box sx={{ mb: 3 }} variant="outlined">
                             <Divider sx={{ mt: 5, mb: 3 }} > INTERNSHIP OFFERS </Divider>
                             <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                                <InternshipCard/>
-                                <InternshipCard/>
-                                <InternshipCard/>
-                                <InternshipCard/>
+                                {/* Internship Cards */}
+                                {
+                                    employerData.internships.map(el=>
+                                        (<InternshipCard title={el.title} description={el.description} duration={el.duration} compensation={el.compensation}/>)
+                                    )
+                                    
+                                }
+                                
                                 
                             </Grid>
                         </Box>
@@ -76,7 +109,10 @@ export default function EmployerInfoPage(props) {
                         <Box sx={{ mb: 3 }} variant="outlined">
                             <Divider sx={{ mt: 5, mb: 3 }} > SHARED EXPERIENCES </Divider>
                             <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}> 
-                                <ExperienceCard/> 
+                                {employerData.ratings.map(el=>
+                                        (<ExperienceCard id={el.id} overallScore={el.overallScore} benefitsScore={el.benefitsScore} skillImprovementScore={el.skillImprovementScore} positiveExperience={el.positiveExperience} negativeExperience={el.negativeExperience} recommended={el.recommended}/>)
+                                    )
+                                }
                             </Grid>
                         </Box>
 
