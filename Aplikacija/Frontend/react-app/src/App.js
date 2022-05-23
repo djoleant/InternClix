@@ -10,6 +10,8 @@ import Header from "./components/Header";
 import { Component } from "react";
 import CVCreator from "./CVCreator";
 import CVGenerator from "./StudentProfile";
+import EmployerInfoPage from "./EmployerInfoPage";
+import EmployerRatingPage from "./EmployerRatingPage";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -243,6 +245,24 @@ export default function App() {
             element={
               <Header
                 Component={CVGenerator}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/EmployerInfoPage"
+            element={
+              <Header
+                Component={EmployerInfoPage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/EmployerRatingPage"
+            element={
+              <Header
+                Component={EmployerRatingPage}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
