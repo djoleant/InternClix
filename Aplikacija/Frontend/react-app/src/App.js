@@ -9,8 +9,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import { Component } from "react";
 import CVCreator from "./CVCreator";
-import EmployerInfoPage from "./EmployerInfoPage";
-import EmployerRatingPage from "./EmployerRatingPage";
+import CVGenerator from "./StudentProfile";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -240,19 +239,10 @@ export default function App() {
             }
           />
           <Route
-            path="/EmployerInfoPage"
+            path="/CVGenerator"
             element={
               <Header
-                Component={EmployerInfoPage}
-                ThemeHandler={colorMode.toggleColorMode}
-              />
-            }
-          />
-          <Route
-            path="/EmployerRatingPage"
-            element={
-              <Header
-                Component={EmployerRatingPage}
+                Component={CVGenerator}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
