@@ -16,6 +16,7 @@ import WorkExperienceForm from './components/CVForms/WorkExperienceForm';
 import AdditionalInfoForm from './components/CVForms/AdditionalInfoForm';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import * as Yup from 'yup';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
 
@@ -43,7 +44,7 @@ export default function CVCreator() {
         }
     }
 
-
+    const navigate = useNavigate();
 
     const [activeStep, setActiveStep] = useState(0);
     //const currentValidationSchema = validationSchema[activeStep];
@@ -179,11 +180,21 @@ export default function CVCreator() {
                 </Stepper>
                 <React.Fragment>
                     {activeStep === steps.length ? (
-                        <Typography component="h1" variant="h2" align="center">
-                            <CheckCircleOutlineRoundedIcon color="success" sx={{ fontSize: 100, mt: 10 }} />
-                            <br />
-                            CV successfully created
-                        </Typography>
+                        <>
+                            <Typography component="h1" variant="h2" align="center">
+                                <CheckCircleOutlineRoundedIcon color="success" sx={{ fontSize: 100, mt: 10 }} />
+                                <br />
+                                CV successfully created
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                sx={{ mt: 7, fontSize: 20, textDecoration: "none" }}
+                                onClick={() => { navigate("/CVGenerator") }}
+                            >
+                                View CV
+                            </Button>
+                        </>
                     ) : (
                         <Formik
                             initialValues={

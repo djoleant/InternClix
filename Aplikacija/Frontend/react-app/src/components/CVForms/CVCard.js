@@ -48,14 +48,7 @@ export default function CVCard(props) {
                     ) : (
                         <>
                             <Grid item xs={12}>
-                                <Autocomplete
-                                    id="free-solo-demo"
-                                    freeSolo
-                                    options={additionalInfoTypes}
-                                    renderInput={(params) =>
-                                        <TextInputField {...params} name={name + ".type"} label="Type" placeholder="Type (Projects,Memberships...)" />
-                                    }
-                                />
+                                <TextInputField name={name + ".type"} label="Type" placeholder="Type (Projects,Memberships...)" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextInputField name={name + ".title"} label={"Title*"} fullWidth />

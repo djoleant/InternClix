@@ -279,6 +279,10 @@ namespace Backend.Controllers
                 cv =
                 new
                 {
+                    Name = student.FirstName,
+                    LastName = student.LastName,
+                    Picture = student.Picture,
+                    Email = student.Email,
                     Title = student.CV.Title,
                     Phone = student.CV.PhoneNumber,
                     Address = student.CV.Address,
@@ -347,7 +351,7 @@ namespace Backend.Controllers
 
             return new JsonResult(new
             {
-                succeeded = true                
+                succeeded = true
             });
 
         }
