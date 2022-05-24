@@ -13,6 +13,7 @@ import CVGenerator from "./CVGenerator";
 import EmployerInfoPage from "./EmployerInfoPage";
 import EmployerRatingPage from "./EmployerRatingPage";
 import StudentProfilePage from "./StudentProfilePage";
+import Internships from "./Internships";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -246,6 +247,15 @@ export default function App() {
             element={
               <Header
                 Component={CVGenerator}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/Internships"
+            element={
+              <Header
+                Component={Internships}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
