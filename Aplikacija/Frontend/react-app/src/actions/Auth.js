@@ -34,6 +34,7 @@ export const login = (email, password) => {
                 Username: email,
                 Password: password,
             }),
+            credentials: "include"
 
         });
         const data = await response.json();
