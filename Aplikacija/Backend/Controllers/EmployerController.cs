@@ -31,8 +31,9 @@ namespace Backend.Controllers
         {
             var employer = await Context.Employers
                 .Where(i => i.CompanyName == EmployerName)
-                .Include(i=>i.Internships)
-                .Include(i=>i.Ratings)
+                .Include(i => i.Internships)
+                .ThenInclude(i => i.Skills)
+                .Include(i => i.Ratings)
                 .FirstOrDefaultAsync();
             if (employer != null)
             {
@@ -44,11 +45,17 @@ namespace Backend.Controllers
                         employer.Picture,
                         employer.CompanyName,
                         employer.About,
-                         Internships = employer.Internships
-                              .Select(c => new { c.ID, c.Title, c.Description, c.Compensation, c.Duration , 
+                        Internships = employer.Internships
+                              .Select(c => new
+                              {
+                                  c.ID,
+                                  c.Title,
+                                  c.Description,
+                                  c.Compensation,
+                                  c.Duration,
                               Skills = c.Skills
-                                   .Select(s=>new{ s.ID, s.Name})
-                                    }),
+                                   .Select(s => new { s.ID, s.Name })
+                              }),
                         Ratings = employer.Ratings
                             .Select(r => new { r.ID, r.OverallScore, r.BenefitsScore, r.SkillImprovementScore, r.PositiveExperience, r.NegativeExperience, r.Recommended })
                     }
@@ -71,8 +78,7 @@ namespace Backend.Controllers
         {
             var employer = await Context.Employers
                 .Where(i => i.CompanyName == EmployerName)
-                .Include(i=>i.Internships)
-                .ThenInclude(i=>i.Skills)
+                .Include(i => i.Internships)
                 .FirstOrDefaultAsync();
             if (employer != null)
             {
@@ -81,8 +87,8 @@ namespace Backend.Controllers
                     succeeded = true,
                     employer = new
                     {
-                        Categories=employer.Internships
-                        .Select(i => new {i.Categories})
+                        Categories = employer.Internships
+                        .Select(i => new { i.Categories })
                     }
                 });
             }
