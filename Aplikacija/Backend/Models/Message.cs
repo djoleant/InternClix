@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,8 +11,11 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
-        [Required]
         public string Content { get; set; } = default!;
+
+        [BindNever]
+        [DataType(DataType.DateTime)]
+        public DateTime TimeSent { get; set; }
 
         [ForeignKey("Sender")]
         public string? SenderId { get; set; }

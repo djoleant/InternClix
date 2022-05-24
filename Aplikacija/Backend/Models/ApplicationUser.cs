@@ -10,11 +10,13 @@ namespace Models
 
 
     public class ApplicationUser : IdentityUser
-{
+    {
 
-    public List<Message>? SentMessages { get; set; }
+        public List<Message>? SentMessages { get; set; }
 
-    public List<Message>? ReceivedMessages { get; set; }
-}
+        public List<Message>? ReceivedMessages { get; set; }
+
+        public bool HasNewMessages { get; set; }
+    }
 
 }
