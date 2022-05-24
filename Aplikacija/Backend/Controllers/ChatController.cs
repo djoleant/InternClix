@@ -2,24 +2,23 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SWEProjekat.Data;
-using SWEProjekat.Models;
+using Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SWEProjekat.Controllers
+namespace Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class ChatController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly InternClixDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ChatController(
-            ApplicationDbContext dbContext,
+            InternClixDbContext dbContext,
             UserManager<ApplicationUser> userManager
             )
         {
@@ -30,7 +29,7 @@ namespace SWEProjekat.Controllers
         [HttpPost]
         [Authorize]
         [Route("sendMessage/{userToSend}")]
-        public async Task<JsonResult> SendMessage([FromBody] ChatMessage chatMessage, string userToSend)
+        public async Task<JsonResult> SendMessage([FromBody] Message cMessage, string userToSend)
         {
             if (!ModelState.IsValid)
             {
@@ -45,105 +44,109 @@ namespace SWEProjekat.Controllers
                 return new JsonResult(new { succeeded = false, errors = modelErrors });
             }
 
-            ApplicationUser reciever = await _dbContext.Users.FindAsync(userToSend);
+            ApplicationUser? receiver = await _dbContext.Users.FindAsync(userToSend);
 
-            if (reciever == null)
+            if (receiver == null)
             {
                 var modelErrors = new List<string>() { "User to send can't be found!" };
                 return new JsonResult(new { succeeded = false, errors = modelErrors });
             }
 
-            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            ApplicationUser? applicationUser = await _userManager.GetUserAsync(User);
 
-            if (reciever.Id == applicationUser.Id)
+            if (receiver.Id == applicationUser.Id)
             {
                 var modelErrors = new List<string>() { "U can't send message to your self!" };
                 return new JsonResult(new { succeeded = false, errors = modelErrors });
             }
 
-            chatMessage.TimeSent = DateTime.Now;
-            chatMessage.Sender = applicationUser;
-            chatMessage.Reciever = reciever;
+            cMessage.TimeSent = DateTime.Now;
+            cMessage.Sender = applicationUser;
+            cMessage.Receiver = receiver;
 
-            _dbContext.ChatMessages.Add(chatMessage);
+            _dbContext.Messages.Add(cMessage);
             await _dbContext.SaveChangesAsync();
 
-            return new JsonResult(new { success = true, messageId = chatMessage.Id });
+            return new JsonResult(new { success = true, messageId = cMessage.ID });
         }
 
         [Authorize]
+        [HttpGet]
         [Route("preview/user/{user}/{page?}")]
         public async Task<JsonResult> GetMessages(string user, int? page)
         {
-            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            ApplicationUser? applicationUser = await _userManager.GetUserAsync(User);
 
-            var chatMessages = await _dbContext.ChatMessages
+            var cMessages = await _dbContext.Messages
                 .Include(x => x.Sender)
-                .Include(x => x.Reciever)
-                .Where(x => ((x.SenderId == applicationUser.Id && x.RecieverId == user)
-                || (x.RecieverId == applicationUser.Id && x.SenderId == user)) && (page == null ? true : x.Id < page))
-                .OrderByDescending(x => x.Id)
+                .Include(x => x.Receiver)
+                .Where(x => ((x.SenderId == applicationUser.Id && x.ReceiverId == user)
+                || (x.ReceiverId == applicationUser.Id && x.SenderId == user)) && (page == null ? true : x.ID < page))
+                .OrderByDescending(x => x.ID)
                 .Take(30)
-                .Select(x => new { x.Id, x.Text, x.TimeSent, x.SenderId, x.RecieverId, senderUsername = x.Sender.UserName, recieverUsername = x.Reciever.UserName })
+                .Select(x => new { x.ID, x.Content, x.TimeSent, x.SenderId, x.ReceiverId, senderUsername = x.Sender.UserName, receiverUsername = x.Receiver.UserName })
                 .ToListAsync();
 
-            return new JsonResult(new { success = true, messages = chatMessages });
+            return new JsonResult(new { success = true, messages = cMessages });
         }
 
         [Authorize]
+        [HttpGet]
         [Route("hasnewmessages")]
         public async Task<JsonResult> HasNewMessages()
         {
-            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            ApplicationUser? applicationUser = await _userManager.GetUserAsync(User);
 
             return new JsonResult(new { success = true, hasNew = applicationUser.HasNewMessages });
         }
 
         [Authorize]
+        [HttpGet]
         [Route("new/user/{user}/{page}")]
         public async Task<JsonResult> NewMessages(string user, int page)
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
-            var chatMessages = await _dbContext.ChatMessages
-                .Where(x => ((x.SenderId == applicationUser.Id && x.RecieverId == user)
-                || (x.RecieverId == applicationUser.Id && x.SenderId == user)) && x.Id > page)
-                .Select(x => new { x.Id, x.Text, x.TimeSent, x.SenderId, x.RecieverId, senderUsername = x.Sender.UserName, recieverUsername = x.Reciever.UserName })
+            var cMessages = await _dbContext.Messages
+                .Where(x => ((x.SenderId == applicationUser.Id && x.ReceiverId == user)
+                || (x.ReceiverId == applicationUser.Id && x.SenderId == user)) && x.ID > page)
+                .Select(x => new { x.ID, x.Content, x.TimeSent, x.SenderId, x.ReceiverId, senderUsername = x.Sender.UserName, receiverUsername = x.Receiver.UserName })
                 .ToListAsync();
 
-            return new JsonResult(new { success = true, messages = chatMessages });
+            return new JsonResult(new { success = true, messages = cMessages });
         }
 
         [Authorize]
+        [HttpGet]
         [Route("latestChats/{chatsCount?}")]
         public async Task<JsonResult> LatestChats(int chatsCount = 10)
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
-            var sentChatMessages = _dbContext.ChatMessages
+            var sentCMessages = _dbContext.Messages
                 .Include(x => x.Sender)
-                .Include(x => x.Reciever)
+                .Include(x => x.Receiver)
                 .Where(x => x.SenderId == applicationUser.Id)
-                .OrderByDescending(x => x.Id)
+                .OrderByDescending(x => x.ID)
                 .ToList()
-                .GroupBy(x => x.RecieverId)
+                .GroupBy(x => x.ReceiverId)
                 .Take(chatsCount)
-                .ToDictionary(x => x.Key ,x => x.Select(y => new { y.SenderId, y.Id, y.Text, y.TimeSent, y.Reciever.UserName, y.Reciever.FirstName, y.Reciever.LastName }).First() );
+                .ToDictionary(x => x.Key ,x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.TimeSent, y.Receiver.UserName}).First() );
 
-            var recievedChatMessages = _dbContext.ChatMessages
+            var recievedCMessages = _dbContext.Messages
                 .Include(x => x.Sender)
-                .Include(x => x.Reciever)
-                .Where(x => x.RecieverId == applicationUser.Id)
-                .OrderByDescending(x => x.Id)
+                .Include(x => x.Receiver)
+                .Where(x => x.ReceiverId == applicationUser.Id)
+                .OrderByDescending(x => x.ID)
                 .ToList()
                 .GroupBy(x => x.SenderId)
                 .Take(chatsCount)
-                .ToDictionary(x => x.Key, x => x.Select(y => new { y.SenderId, y.Id, y.Text, y.TimeSent, y.Sender.UserName, y.Sender.FirstName, y.Sender.LastName }).First() );
+                .ToDictionary(x => x.Key, x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.TimeSent, y.Sender.UserName }).First() );
 
-            var lastMessages = sentChatMessages.Concat(recievedChatMessages)
+            var lastMessages = sentCMessages.Concat(recievedCMessages)
                 .GroupBy(x => x.Key)
-                .ToDictionary(x => x.Key, x => new { message = x.Select(y => new { y.Value.SenderId, y.Value.Id, y.Value.Text, y.Value.TimeSent, y.Value.UserName, y.Value.FirstName, y.Value.LastName }).OrderBy(y => y.Id).Last() })
-                .OrderByDescending(x => x.Value.message.Id)
+                .ToDictionary(x => x.Key, x => new { message = x.Select(y => new { y.Value.SenderId, y.Value.ID, y.Value.Content, y.Value.TimeSent, y.Value.UserName }).OrderBy(y => y.ID).Last() })
+                .OrderByDescending(x => x.Value.message.ID)
                 .Take(chatsCount);
 
             applicationUser.HasNewMessages = false;
