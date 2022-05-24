@@ -21,7 +21,6 @@ namespace Models
         [MaxLength(100)]
         public string InstitutionName { get; set; } = default!; //company name for work, school name for education
 
-        [Required]
         public string Description { get; set; } = default!;
 
         public DateTime StartDate { get; set; }

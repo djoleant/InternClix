@@ -11,7 +11,6 @@ namespace Models
 
     public class Employer : ApplicationUser
     {
-        [Required]
         public string CompanyName { get; set; } = default!;
 
         public string About {get; set;} =default!;

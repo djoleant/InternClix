@@ -10,10 +10,8 @@ namespace Models
     public class Student : ApplicationUser
     {
 
-        [Required]
         public string FirstName { get; set; } = default!;
 
-        [Required]
         public string LastName { get; set; } = default!;
 
         public string Picture { get; set; } = default!;

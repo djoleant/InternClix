@@ -81,7 +81,8 @@ namespace Backend.Controllers
                 {
                     UserName = info.Username,
                     Email = info.Email,
-                    CompanyName = info.CompanyName
+                    CompanyName = info.CompanyName,
+                    Internships = new List<Internship>()
                 };
                 //await Context.SaveChangesAsync();
                 //await AssignRoleToUser(user, "Employer");

@@ -22,7 +22,6 @@ namespace Models
 
         public int Duration { get; set; }
 
-        [Required]
         public int Compensation { get; set; }
 
         public Employer Employer { get; set; } = default!;
