@@ -1,9 +1,10 @@
-import { Divider, Grid, Typography } from "@mui/material";
+import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -47,14 +48,15 @@ export default function CVInfo() {
             { title: "Membership 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Memberships" },
             { title: "Something 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque volutpat vitae odio ut hendrerit. Nullam auctor non leo vel consectetur. Donec mi dolor, feugiat eu dolor ornare, accumsan luctus dolor.", type: "Something" }
         ]
-    })
+    });
+    const navigate = useNavigate();
 
     return (
         <Grid container spacing={3} sx={{ width: 1 }}>
 
             <Grid item container xs={12}>
 
-                <Accordion variant="outlined" sx={{ width: 1 }} defaultExpanded={true}>
+                <Accordion variant="outlined" sx={{ width: 1 }} >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -79,7 +81,7 @@ export default function CVInfo() {
                         </Typography>
                     </AccordionDetails>
                 </Accordion >
-                <Accordion variant="outlined" sx={{ width: 1 }} defaultExpanded={true}>
+                <Accordion variant="outlined" sx={{ width: 1 }} >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel2a-content"
@@ -108,7 +110,7 @@ export default function CVInfo() {
                         }
                     </AccordionDetails>
                 </Accordion >
-                <Accordion variant="outlined" sx={{ width: 1 }} defaultExpanded={true}>
+                <Accordion variant="outlined" sx={{ width: 1 }} >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -137,7 +139,7 @@ export default function CVInfo() {
                         }
                     </AccordionDetails>
                 </Accordion>
-                <Accordion variant="outlined" sx={{ width: 1 }} defaultExpanded={true}>
+                <Accordion variant="outlined" sx={{ width: 1 }} >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -160,6 +162,20 @@ export default function CVInfo() {
                     </AccordionDetails>
                 </Accordion>
 
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Button
+                    variant="outlined"
+                    size="large"
+                    onClick={() => { navigate("/CVCreator") }}
+                >Modify CV</Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => { navigate("/CVGenerator") }}
+                >Export CV</Button>
             </Grid>
         </Grid>
     )
