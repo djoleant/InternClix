@@ -61,8 +61,8 @@ export default function StudentProfilePage() {
                 </Grid>
             </Grid>
             <Box >
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>
-                    <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example">
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 65, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>
+                    <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example" >
                         <Tab label="CV Overview" />
                         <Tab label="My internships" />
                         <Tab label="Wishlist" />

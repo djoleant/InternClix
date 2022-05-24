@@ -50,7 +50,7 @@ export default function CVGenerator() {
         <Grid container spacing={3} sx={{ pl: 10, mt: 3, pr: 10 }}>
             <CssBaseline />
             <Grid item md={12} lg={3} >
-                <Paper variant="outlined" sx={{ position: "sticky", top: "20px", width: 1, p: 3 }}>
+                <Paper variant="outlined" sx={{ position: "sticky", top: 85, width: 1, p: 3 }}>
                     <FormControl>
                         <FormLabel id="display-order">What to show on front page:</FormLabel>
                         <RadioGroup
