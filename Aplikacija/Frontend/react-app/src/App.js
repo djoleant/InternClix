@@ -15,6 +15,7 @@ import EmployerRatingPage from "./EmployerRatingPage";
 import StudentProfilePage from "./StudentProfilePage";
 import Internships from "./Internships";
 import Chat from "./Chat/Chat";
+import EmployerInternsipPage from "./EmployerInternshipPage";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -294,6 +295,15 @@ export default function App() {
             element={
               <Header
                 Component={Chat}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/EmployerInternshipPage"
+            element={
+              <Header
+                Component={EmployerInternsipPage}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }

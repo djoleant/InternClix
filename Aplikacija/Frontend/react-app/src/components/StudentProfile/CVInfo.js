@@ -52,9 +52,9 @@ export default function CVInfo() {
     const navigate = useNavigate();
 
     return (
-        <Grid container spacing={3} sx={{ width: 1 }}>
+        <Grid container sx={{ width: 1 }}>
 
-            <Grid item container xs={12}>
+            <Grid item container xs={12} sx={{ mb: 3 }}>
 
                 <Accordion variant="outlined" sx={{ width: 1 }} >
                     <AccordionSummary
