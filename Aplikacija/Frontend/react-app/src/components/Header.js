@@ -44,7 +44,7 @@ export const Header = (props) => {
 
     return (
         <React.Fragment>
-            <AppBar position="sticky">
+            <AppBar position="sticky" >
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography

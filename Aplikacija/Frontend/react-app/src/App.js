@@ -14,6 +14,7 @@ import EmployerInfoPage from "./EmployerInfoPage";
 import EmployerRatingPage from "./EmployerRatingPage";
 import StudentProfilePage from "./StudentProfilePage";
 import Internships from "./Internships";
+import Chat from "./Chat/Chat";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -22,7 +23,7 @@ const getDesignTokens = (mode) => ({
       ? {
         // palette values for light mode
         primary: {
-          main: "#228a8a",
+          main: "#618fba",//618fba - lepa je
         },
         secondary: {
           main: "#f50057",
@@ -31,7 +32,7 @@ const getDesignTokens = (mode) => ({
       : {
         // palette values for dark mode
         primary: {
-          main: "#228a8a",
+          main: "#618fba",
         },
         secondary: {
           main: "#f50057",
@@ -283,6 +284,16 @@ export default function App() {
             element={
               <Header
                 Component={StudentProfilePage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+
+          <Route
+            path="/Chat"
+            element={
+              <Header
+                Component={Chat}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
