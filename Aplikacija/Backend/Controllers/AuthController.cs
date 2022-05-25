@@ -70,7 +70,10 @@ namespace Backend.Controllers
                         PhoneNumber = "",
                         Address = "",
                         City = ""
-                    }
+                    },
+                    Wishlist = new List<Internship>(),
+                    PreviousInternships = new List<Internship>()
+
                 };
                 //await Context.SaveChangesAsync();
                 //await AssignRoleToUser(user, "Student");
