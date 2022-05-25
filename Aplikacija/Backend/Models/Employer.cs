@@ -15,6 +15,7 @@ namespace Models
 
         public string About {get; set;} =default!;
         public string Address {get; set;} =default!;
+        public int Likes { get; set; }
 
         public List<Internship> Internships { get; set; } = default!;
 

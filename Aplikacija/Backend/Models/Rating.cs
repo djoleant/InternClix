@@ -22,6 +22,10 @@ namespace Models
         [Range (1,5)]
         public float OverallScore { get; set; }
 
+        public int Likes { get; set; }
+
+        public int Dislikes { get; set; }
+
         public Boolean Recommended {get;set;}
 
         public string PositiveExperience { get; set; } = default!;

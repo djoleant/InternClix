@@ -30,6 +30,12 @@ namespace Models
 
         public List<Category> Categories { get; set; } = default!;
 
+        public List<Student> AppliedStudents { get; set; } = default!;
+
+        public List<Student> PreviousStudents { get; set; } = default!;
+
+        public List<Student> WishlistStudents { get; set; } = default!;
+
     }
 
 }

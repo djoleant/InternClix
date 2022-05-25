@@ -33,6 +33,18 @@ namespace Models
                 .WithOne(x => x.Sender)
                 .HasForeignKey("SenderId");
 
+            
+            modelBuilder.Entity<Internship>()
+                .HasMany(x => x.AppliedStudents)
+                .WithMany(x=>x.AppliedInternships);
+
+            modelBuilder.Entity<Internship>()
+                .HasMany(x => x.PreviousStudents)
+                .WithMany(x=>x.PreviousInternships);
+
+            modelBuilder.Entity<Internship>()
+                .HasMany(x => x.WishlistStudents)
+                .WithMany(x=>x.Wishlist);
 
 
         }
