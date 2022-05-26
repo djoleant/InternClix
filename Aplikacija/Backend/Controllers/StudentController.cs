@@ -75,5 +75,34 @@ namespace Backend.Controllers
                 return new JsonResult(new { succeeded = false, errors = "Student Not Found" });
             }
         }
+
+        [HttpGet]
+        [Route("ApplyToInternship/{internshipId}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> ApplyToInternship(int internshipId)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.AppliedInternships)
+            .FirstOrDefaultAsync();
+
+            var internship = await Context.Internships
+            .Include(i => i.AppliedStudents)
+            .Where(i => i.ID == internshipId)
+            .FirstOrDefaultAsync();
+
+            if (student != null && internship != null)
+            {
+                internship.AppliedStudents.Add(student);
+                student.AppliedInternships.Add(internship);
+                await Context.SaveChangesAsync();
+                return new JsonResult(new { succeeded = true });
+            }
+            else
+            {
+                return new JsonResult(new { succeeded = false, errors = "Student or Inernship Not Found" });
+            }
+        }
     }
 }

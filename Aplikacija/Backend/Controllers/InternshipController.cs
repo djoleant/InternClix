@@ -26,7 +26,7 @@ namespace Backend.Controllers
         [HttpPost]
         [Route("PostInternship")]
         [Authorize(Roles = "Employer, Admin")]
-        public async Task<JsonResult> PostInternship([FromBody]InternshipModel info)
+        public async Task<JsonResult> PostInternship([FromBody] InternshipModel info)
         {
             var logged = await UserManager.GetUserAsync(User);
             var employer = await Context.Employers
@@ -119,14 +119,14 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetInternship/{internshipId}")]
-        [Authorize(Roles="Student, Employer, Admin")]
+        [Authorize(Roles = "Student, Employer, Admin")]
         public async Task<JsonResult> GetInternship(int internshipId)
         {
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
-                .Include(i=>i.Employer)
-                .Include(i=>i.Categories)
-                .Include(i=>i.Skills)
+                .Include(i => i.Employer)
+                .Include(i => i.Categories)
+                .Include(i => i.Skills)
                 .FirstOrDefaultAsync();
             if (internship != null)
             {
@@ -144,6 +144,50 @@ namespace Backend.Controllers
                         internship.Skills,
                         Categories = internship.Categories
                             .Select(c => new { c.ID, c.Name })
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship Not Found"
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAppliedStudents/{internshipId}")]
+        [Authorize(Roles = "Employer, Admin")]
+        public async Task<JsonResult> GetAppliedStudents(int internshipId)
+        {
+            var internship = await Context.Internships
+                .Where(i => i.ID == internshipId)
+                .Include(i => i.AppliedStudents)
+                .ThenInclude(s => s.CV.Skills)
+                .Include(i => i.AppliedStudents)
+                .ThenInclude(s => s.CV.AdditionalInfos)
+                .FirstOrDefaultAsync();
+            if (internship != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internship = new
+                    {
+                        internship.ID,
+                        Applicants = internship.AppliedStudents
+                        .Select(s =>
+                        new
+                        {
+                            Name = s.FirstName,
+                            LastName = s.LastName,
+                            Skills = s.CV.Skills.Select(k => new { k.ID, Label = k.Name }),
+                            Languages = s.CV.AdditionalInfos
+                            .Where(a => a.Type == "Language")
+                            .Select(a => new { Name = a.Title })
+                        })
                     }
                 });
             }
