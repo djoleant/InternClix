@@ -45,6 +45,7 @@ namespace Backend.Controllers
                         employer.Picture,
                         employer.CompanyName,
                         employer.About,
+                        employer.Likes,
                         Internships = employer.Internships
                               .Select(c => new
                               {
@@ -53,11 +54,11 @@ namespace Backend.Controllers
                                   c.Description,
                                   c.Compensation,
                                   c.Duration,
-                              Skills = c.Skills
+                                  Skills = c.Skills
                                    .Select(s => new { s.ID, s.Name })
                               }),
                         Ratings = employer.Ratings
-                            .Select(r => new { r.ID, r.OverallScore, r.BenefitsScore, r.SkillImprovementScore, r.PositiveExperience, r.NegativeExperience, r.Recommended })
+                            .Select(r => new { r.ID, r.OverallScore, r.BenefitsScore, r.SkillImprovementScore, r.PositiveExperience, r.NegativeExperience, r.Recommended, r.Likes, r.Dislikes })
                     }
                 });
             }
@@ -72,23 +73,29 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployerSkills/{EmployerName}")]
+        [Route("GetEmployerCategories/{EmployerName}")]
         [Authorize(Roles = "Employer, Admin, Student")]
-        public async Task<JsonResult> GetEmployerSkills(string EmployerName)
+        public async Task<JsonResult> GetEmployerCategories(string EmployerName)
         {
-            var employer = await Context.Employers
-                .Where(i => i.CompanyName == EmployerName)
-                .Include(i => i.Internships)
+            var internships = await Context.Internships
+                .Where(i => i.Employer.CompanyName == EmployerName)
+                .Include(i => i.Categories)
                 .FirstOrDefaultAsync();
-            if (employer != null)
+            // var employer = await Context.Employers
+            //     .Where(i => i.CompanyName == EmployerName)
+            //     .Include(i => i.Internships)
+            //     .FirstOrDefaultAsync();
+            if (internships != null)
             {
                 return new JsonResult(new
                 {
                     succeeded = true,
-                    employer = new
+                    categories = new
                     {
-                        Categories = employer.Internships
-                        .Select(i => new { i.Categories })
+                        Categories = internships.Categories
+                        .Select(i => new { i.Name })
+                        .Distinct()
+                        .ToList()
                     }
                 });
             }
