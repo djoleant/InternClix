@@ -4,6 +4,8 @@ import SkillBox from "./SkillBox"
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import AcceptApplicationDialog from "../Dialogs/AcceptApplicationDialog";
+import DenyApplicationDialog from "../Dialogs/DenyApplicationDialog";
 
 export default function ApplicantInfo({ applicant, internshipSkills }) {
 
@@ -62,15 +64,9 @@ export default function ApplicantInfo({ applicant, internshipSkills }) {
             </Grid>
             <Grid container item xs={12} spacing={3}>
                 <Grid item xs={12} md={8} sx={{ display: "flex", gap: 3 }}>
-                    <Button
-                        variant="outlined"
-                        color="error"
-                    >Deny Application</Button>
+                    <DenyApplicationDialog name={applicant.name + " " + applicant.lastName} />
 
-                    <Button
-                        variant="outlined"
-                        color="success"
-                    >Accept Application</Button>
+                    <AcceptApplicationDialog name={applicant.name + " " + applicant.lastName} />
                 </Grid>
                 <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "row-reverse" }}>
                     <Button
