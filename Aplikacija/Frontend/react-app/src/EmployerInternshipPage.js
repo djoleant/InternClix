@@ -15,12 +15,14 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import PaidIcon from '@mui/icons-material/Paid';
 import SkillChips from './components/InternshipPage/SkillChips';
+import { useParams } from 'react-router-dom';
 
 
 
 export default function EmployerInternsipPage() {
 
     const theme = useTheme();
+    const { id } = useParams();// id internship-a iz URL
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -48,22 +50,31 @@ export default function EmployerInternsipPage() {
         setValue(newValue);
     };
 
+    const getInternship = async () => {
+        const response = await fetch("http://localhost:7240/Internship/GetInternship/" + id, {
+            credentials: "include"
+        });
+        if (response.ok) {
+            const data = await response.json();
+            if (data.succeeded) {
+                setInternship(data.internship);
+            }
+        }
+    }
+
     const [internship, setInternship] = useState({
-        title: "Internship title",
-        description: "This is where the description of this internship goes",
+        title: "",
+        description: "",
         picture: "",
-        duration: 10,
-        location: "Street Name 99, City",
-        compensation: 250,
-        skills: [
-            { id: 0, label: 'Angular' },
-            { id: 1, label: 'jQuery' },
-            { id: 2, label: 'Polymer' },
-            { id: 3, label: 'React' },
-            { id: 4, label: '.NET' },
-            { id: 5, label: 'Node.js' }
-        ]
+        duration: 0,
+        location: "",
+        compensation: 0,
+        skills: []
     })
+
+    useEffect(() => {
+        getInternship();
+    }, []);
 
     return (
 
@@ -94,7 +105,7 @@ export default function EmployerInternsipPage() {
                     Ovde dodati detalje o internshipu i po mogucstvu mogucnost izmene
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <ApplicantList internshipSkills={internship.skills.map(s => s.label)} />
+                    <ApplicantList internshipSkills={internship.skills.map(s => s.name)} internshipId={id} />
                 </TabPanel>
 
 

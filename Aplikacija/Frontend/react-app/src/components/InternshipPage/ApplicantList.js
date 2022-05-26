@@ -10,19 +10,57 @@ import MatchPercentage from "./MatchPercentage";
 import ApplicantInfo from "./ApplicantInfo";
 
 
-export default function ApplicantList({ internshipId,internshipSkills }) {
+export default function ApplicantList({ internshipId, internshipSkills }) {
 
     const [applicants, setApplicants] = useState([ //dobija se iz fetcha na osnovu internshipId
-        { id: "abcd123", name: "Name1", lastName: "Lastname1", match: 95 },
-        { id: "abcd124", name: "Name2", lastName: "Lastname2", match: 85 },
-        { id: "abcd125", name: "Name3", lastName: "Lastname3", match: 75 },
-        { id: "abcd126", name: "Name4", lastName: "Lastname4", match: 65 },
-        { id: "abcd127", name: "Name5", lastName: "Lastname5", match: 55 },
-        { id: "abcd128", name: "Name6", lastName: "Lastname6", match: 45 },
-        { id: "abcd129", name: "Name7", lastName: "Lastname7", match: 35 },
-        { id: "abcd128", name: "Name6", lastName: "Lastname6", match: 25 },
-        { id: "abcd129", name: "Name7", lastName: "Lastname7", match: 15 }
+        {
+            id: "abcd123", name: "Name1", lastName: "Lastname1", match: 95,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }, { id: 3, label: "Angular" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd124", name: "Name2", lastName: "Lastname2", match: 85,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd125", name: "Name3", lastName: "Lastname3", match: 75,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd126", name: "Name4", lastName: "Lastname4", match: 65,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd127", name: "Name5", lastName: "Lastname5", match: 55,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd128", name: "Name6", lastName: "Lastname6", match: 45,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd129", name: "Name7", lastName: "Lastname7", match: 35,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd128", name: "Name6", lastName: "Lastname6", match: 25,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        },
+        {
+            id: "abcd129", name: "Name7", lastName: "Lastname7", match: 15,
+            skills: [{ id: 1, label: "React" }, { id: 2, label: ".NET" }], languages: [{ name: "English" }, { name: "Spanish" }]
+        }
     ]);
+
+    applicants.map((applicant, index) => {
+        let metRequirements = 0;
+        internshipSkills.forEach(skill => {
+            if (applicant.skills.map(s => s.label).includes(skill)) {
+                metRequirements++;
+            }
+        });
+        applicant.match = (metRequirements / internshipSkills.length) * 100;
+    })
+
     const navigate = useNavigate();
 
     return (
@@ -49,7 +87,7 @@ export default function ApplicantList({ internshipId,internshipSkills }) {
                                 </Box>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <ApplicantInfo internshipSkills={internshipSkills}/>
+                                <ApplicantInfo internshipSkills={internshipSkills} applicant={applicant} />
                             </AccordionDetails>
                         </Accordion >
                     ))

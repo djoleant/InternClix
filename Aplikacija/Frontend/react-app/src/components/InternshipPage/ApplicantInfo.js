@@ -5,25 +5,19 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
-export default function ApplicantInfo({ applicantId, internshipSkills }) {
+export default function ApplicantInfo({ applicant, internshipSkills }) {
 
-    const [applicant, setApplicant] = useState({
-        //neki atributi...dobija se iz fetcha na osnovu applicantId
-        skills: [
-            { id: 0, label: 'Angular' },
-            { id: 1, label: 'jQuery' },
-            { id: 2, label: 'Polymer' },
-            { id: 7, label: "Python" },
-            { id: 8, label: "Java" }
-        ]
-    })
+
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} sx={{ ml: 4 }}>
-                <Typography align="left" sx={{ display: "flex", alignItems: "center", mb: 2 }}><CheckCircleRoundedIcon color="success" />English</Typography>
-                <Typography align="left" sx={{ display: "flex", alignItems: "center", mb: 2 }}><CheckCircleRoundedIcon color="success" />Serbian</Typography>
-                <Typography align="left" sx={{ display: "flex", alignItems: "center" }}><RemoveCircleRoundedIcon color="error" />Spanish</Typography>
+                {
+                    applicant.languages.map((language, index) => (
+                        <Typography align="left" key={index} sx={{ display: "flex", alignItems: "center", mb: 2 }}>{language.name}</Typography>
+
+                    ))
+                }
             </Grid>
             <Grid item md={4} xs={12}>
                 <SkillBox

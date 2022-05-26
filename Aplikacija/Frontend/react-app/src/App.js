@@ -300,7 +300,7 @@ export default function App() {
             }
           />
           <Route
-            path="/EmployerInternshipPage"
+            path="/EmployerInternshipPage/:id"
             element={
               <Header
                 Component={EmployerInternsipPage}

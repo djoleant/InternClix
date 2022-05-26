@@ -6,7 +6,7 @@ export default function SkillChips({ skills }) {
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
             {
                 skills.map((skill, index) => (
-                    <Chip key={index} label={skill.label} />
+                    <Chip key={index} label={skill.name} />
                 ))
             }
         </Box>
