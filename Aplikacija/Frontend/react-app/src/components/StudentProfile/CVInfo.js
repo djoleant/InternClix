@@ -1,5 +1,5 @@
 import { Button, Divider, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export default function CVInfo() {
+export default function CVInfo({ cvInfo }) {
 
-    const [info, setInfo] = useState({
+    const [info, setInfo] = useState(cvInfo ?? {
         name: "Name",
         lastName: "Lastname",
         email: "student@example.com",
@@ -50,6 +50,7 @@ export default function CVInfo() {
         ]
     });
     const navigate = useNavigate();
+
 
     return (
         <Grid container sx={{ width: 1 }}>
@@ -163,19 +164,21 @@ export default function CVInfo() {
                 </Accordion>
 
             </Grid>
-            <Grid item xs={12} md={6}>
-                <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => { navigate("/CVCreator") }}
-                >Modify CV</Button>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => { navigate("/CVGenerator") }}
-                >Export CV</Button>
+            <Grid item container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Button
+                        variant="outlined"
+                        size="large"
+                        onClick={() => { navigate("/CVCreator") }}
+                    >Modify CV</Button>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        onClick={() => { navigate("/CVGenerator") }}
+                    >Export CV</Button>
+                </Grid>
             </Grid>
         </Grid>
     )

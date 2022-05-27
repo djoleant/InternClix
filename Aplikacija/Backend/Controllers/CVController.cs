@@ -279,6 +279,7 @@ namespace Backend.Controllers
                 cv =
                 new
                 {
+                    UserName = student.UserName,
                     Name = student.FirstName,
                     LastName = student.LastName,
                     Picture = student.Picture,

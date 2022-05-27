@@ -45,6 +45,26 @@ export default function StudentProfilePage() {
         setValue(newValue);
     };
 
+    const [info, setInfo] = useState();
+
+    const getInfo = async () => {
+        const response = await fetch("http://localhost:7240/CV/GetCV", {
+            credentials: "include",
+            method: "POST"
+        });
+        if (response.ok) {
+            const fetchData = await response.json();
+            if (fetchData.cv.education.length > 0) {
+                setInfo(fetchData.cv);
+            }
+        }
+
+    }
+
+    useEffect(() => {
+        getInfo();
+    }, []);
+
     return (
 
         <Container component="main" sx={{ pt: 3 }}>
@@ -54,9 +74,9 @@ export default function StudentProfilePage() {
                     <Avatar src="" sx={{ width: 140, height: 140 }} />
                 </Grid>
                 <Grid item xs={12} md={10}>
-                    <Typography variant='h3' align="left">Name Lastname</Typography>
-                    <Typography align="left">username</Typography>
-                    <Typography align="left">user@example.com</Typography>
+                    <Typography variant='h3' align="left">{info != undefined ? info.name + " " + info.lastName : ""}</Typography>
+                    <Typography align="left">{info != undefined ? info.userName : ""}</Typography>
+                    <Typography align="left">{info != undefined ? info.email : ""}</Typography>
 
                 </Grid>
             </Grid>
@@ -69,7 +89,7 @@ export default function StudentProfilePage() {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <CVInfo />
+                    <CVInfo cvInfo={info} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <CardList type="internships" />
