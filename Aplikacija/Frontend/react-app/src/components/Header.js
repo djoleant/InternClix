@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocation } from 'react-router-dom';
 import AppBar from "@mui/material/AppBar";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
@@ -42,9 +43,12 @@ export const Header = (props) => {
 
   const { Component, ThemeHandler } = props;
 
+  const location = useLocation();
+
+
   return (
     <React.Fragment>
-      <AppBar position="sticky">
+      <AppBar sx={{ display:location.pathname=="/Chat"?"none":""}} position="sticky">
         <Container
           style={{
             display: "flex",

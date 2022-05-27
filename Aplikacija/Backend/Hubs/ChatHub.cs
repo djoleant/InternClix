@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWEProjekat.Hubs
+namespace Hubs
 {
     [Authorize]
     public class ChatHub : Hub

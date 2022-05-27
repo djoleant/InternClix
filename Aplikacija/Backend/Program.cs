@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Hubs;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 
@@ -98,7 +99,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 //                 options.SuppressXFrameOptionsHeader = false;
 //             });
 
+builder.Services.AddSignalR();
 var app = builder.Build();
+app.MapHub<ChatHub>("/chathub");
 app.UseCors(CORS);
 // app.Use((context, next) =>
 //             {
@@ -117,7 +120,7 @@ app.UseCors(CORS);
 
 //                 return next(context);
 //             });
-
+ 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
