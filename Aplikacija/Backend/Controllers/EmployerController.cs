@@ -110,5 +110,48 @@ namespace Backend.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetEmployers")]
+        [Authorize(Roles = "Employer, Admin, Student")]
+        public async Task<JsonResult> GetEmployers()
+        {
+            var employers = await Context.Employers
+            .Include(i=>i.Internships)
+            .Include(i=>i.Ratings)
+            .ToListAsync();
+            if (employers != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    employers = new
+                    {
+                        Employers=employers.Select(emp=>new{
+                            emp.Picture,
+                            emp.CompanyName,
+                            emp.About,
+                            emp.Address,
+                            emp.Likes,
+                            emp.Email,
+                            Internships = emp.Internships.Count,
+                            Ratings = emp.Ratings
+                            .Select(r => new { r.OverallScore}),
+                            
+                        })
+                        
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Employer Not Found"
+                });
+            }
+        }
+
+
     }
 }

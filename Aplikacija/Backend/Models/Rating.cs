@@ -13,6 +13,8 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
+        //public String Title {get; set;}=default!;
+
         [Range (1,5)]
         public float SkillImprovementScore { get; set; }
 
