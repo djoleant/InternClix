@@ -22,6 +22,7 @@ import { Button, Fab } from "@mui/material";
 import ChatMessage from "./ChatMessage";
 import SingleChat from "./SingleChat";
 import ChatIcon from "@mui/icons-material/Chat";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 const drawerWidth = 350;
@@ -75,8 +76,11 @@ export default function Chat() {
   const [chats, setChats] = useState([]);
 
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   // const history = useHistory();
   // const user = useSelector((state) => state.auth.userData);
+
+  const { id } = useParams();
 
   useEffect(() => {
     getChats();
@@ -84,9 +88,9 @@ export default function Chat() {
 
   const getChats = async () => {
     const response = await fetch("http://localhost:7240/Chat/latestChats/10",
-    {
-        credentials:"include"
-    });
+      {
+        credentials: "include"
+      });
     const data = await response.json();
     setChats(data.lastMessages);
   };
@@ -96,14 +100,15 @@ export default function Chat() {
   // };
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(id == undefined);
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    if (id != undefined)
+      setOpen(false);
   };
 
   return (
@@ -117,10 +122,10 @@ export default function Chat() {
       </Fab>
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: id != undefined ? drawerWidth : "100%",
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: id != undefined ? drawerWidth : "100%",
             boxSizing: "border-box",
           },
           zIndex: open ? 1 : 0,
@@ -130,7 +135,10 @@ export default function Chat() {
         open={open}
       >
         <DrawerHeader sx={{ mt: 8.5 }}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton
+            onClick={handleDrawerClose}
+            sx={{ display: (id != undefined) ? "" : "none" }}
+          >
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
@@ -141,7 +149,7 @@ export default function Chat() {
         <Divider />
         <Grid item xs={12} style={{ padding: "10px" }}>
           <TextField
-            onChange={(event)=>{setSearch(event.target.value)}}
+            onChange={(event) => { setSearch(event.target.value) }}
             id="outlined-basic-email"
             label="Search"
             variant="outlined"
@@ -151,26 +159,28 @@ export default function Chat() {
         <Divider />
 
         <List>
-          {chats.filter(c=>c.value.message.userName.toLowerCase().includes(search.toLowerCase())).map((chat,index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
-              </ListItemIcon>
-              <Grid>
-              <Typography sx={{fontWeight:"bold"}} align="left" >{chat.value.message.userName}</Typography>
-              <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
-              </Grid>
-              
-            </ListItem>
-          ))}
+          {chats.
+            filter(c => c.value.message.userName.toLowerCase().includes(search.toLowerCase()))
+            .map((chat, index) => (
+              <ListItem button key={index} onClick={() => { navigate("/Chat/" + chat.key) }}>
+                <ListItemIcon>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://material-ui.com/static/images/avatar/1.jpg"
+                  />
+                </ListItemIcon>
+                <Grid>
+                  <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
+                  <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
+                </Grid>
+
+              </ListItem>
+            ))}
         </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-            <SingleChat/>
+        {(id != null && id != undefined) ? <SingleChat id={id} updateChats={getChats} /> : <></>}
       </Main>
     </Box>
   );

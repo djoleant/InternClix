@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from "@mui/material/AppBar";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
@@ -44,11 +44,12 @@ export const Header = (props) => {
   const { Component, ThemeHandler } = props;
 
   const location = useLocation();
+  const navigate = useNavigate();
 
 
   return (
     <React.Fragment>
-      <AppBar sx={{ display:location.pathname=="/Chat"?"none":""}} position="sticky">
+      <AppBar sx={{ display: location.pathname.includes("/Chat") ? "none" : "" }} position="sticky">
         <Container
           style={{
             display: "flex",
@@ -142,6 +143,7 @@ export const Header = (props) => {
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={() => { navigate("/Chat") }}
               >
                 <Badge badgeContent={4} color="error">
                   <MailIcon />

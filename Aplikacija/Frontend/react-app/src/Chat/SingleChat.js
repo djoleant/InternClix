@@ -13,6 +13,8 @@ import {
 import ChatMessage from "./ChatMessage";
 import SendIcon from "@mui/icons-material/Send";
 import * as signalR from "@microsoft/signalr";
+import { useParams } from "react-router-dom";
+import moment from 'moment';
 
 function isScrolledIntoView(el) {
   var rect = el.getBoundingClientRect(),
@@ -33,7 +35,7 @@ function isScrolledIntoView(el) {
   return true;
 }
 
-export default function SingleChat() {
+export default function SingleChat({ id, updateChats }) {
   const [messages, setMessages] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -44,9 +46,10 @@ export default function SingleChat() {
   const [connection, setConnection] = useState(
     new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.None)
-      .withUrl("/chathub")
+      .withUrl("http://localhost:7240/chathub")
       .build()
   );
+
 
   const ref = createRef();
   const ref2 = createRef();
@@ -63,10 +66,11 @@ export default function SingleChat() {
       if (isScrolledIntoView(ref.current)) setScrollDown(true);
     }
     setMessages((posts) => [...posts, message]);
+    updateChats();
   };
 
   useEffect(() => {
-    connection.on("RecieveMessage" + "53b4ae00-fb44-4d1c-9aee-22d8e8d6365f", function (message) {
+    connection.on("RecieveMessage" + id, function (message) {
       receiveMessage(message);
     });
 
@@ -79,7 +83,7 @@ export default function SingleChat() {
         return console.error(err.toString());
       });
     return () => {
-      connection.off("RecieveMessage" + "53b4ae00-fb44-4d1c-9aee-22d8e8d6365f");
+      connection.off("RecieveMessage" + id);
     };
   }, []);
 
@@ -95,8 +99,7 @@ export default function SingleChat() {
     if (lastMessage === 0) setScrollDown(true);
     else setScrollUp(true);
     const response = await fetch(
-      `http://localhost:7240/Chat/preview/user/${"53b4ae00-fb44-4d1c-9aee-22d8e8d6365f"}/${
-        lastMessage === 0 ? "" : lastMessage
+      `http://localhost:7240/Chat/preview/user/${id}/${lastMessage === 0 ? "" : lastMessage
       }`,
       {
         credentials: "include",
@@ -132,10 +135,11 @@ export default function SingleChat() {
     setScrollDown(true);
     if (e.value == "") return;
     connection
-      .invoke("SendChatMessage", "53b4ae00-fb44-4d1c-9aee-22d8e8d6365f", e.value)
+      .invoke("SendMessage", id, e.value)
       .then((msg) => {
         setMessages((posts) => [...posts, msg]);
         setScrollDown(true);
+        updateChats();
       })
       .catch(function (err) {
         return console.error(err.toString());
@@ -159,38 +163,21 @@ export default function SingleChat() {
     <List
       onScroll={loadMessages}
       style={{
-        height: "100%",
+        height: "90%",
         overflowY: "scroll",
       }}
     >
-      <br />
-      <br />
-      <div ref={ref2}></div>
+
+      <div ref={ref2} ></div>
       {messages !== null ? (
         messages.map((message) => (
-          <ListItem key={message.id}>
-            <div>
-              <Chip label={message.senderUsername} color="primary" />
-              <Chip
-                style={{
-                  maxWidth: "40%",
-                  height: "auto",
-                }}
-                label={
-                  <div
-                    style={{
-                      padding: 8,
-                      wordWrap: "break-word",
-                      whiteSpace: "initial",
-                    }}
-                  >
-                    {message.text}
-                  </div>
-                }
-                color="secondary"
-              />
-            </div>
-          </ListItem>
+          <ChatMessage
+            sender={message.senderUsername}
+            content={message.content}
+            key={message.id}
+            time={moment(message.timeSent).format("hh:mm")}
+            align={message.senderId == id ? "left" : "right"}
+          />
         ))
       ) : (
         <div></div>
@@ -200,7 +187,6 @@ export default function SingleChat() {
         style={{
           width: "8px",
           height: "16px",
-          margin: "8px",
         }}
       ></div>
       <br />
@@ -209,72 +195,46 @@ export default function SingleChat() {
   if (loading) return <div></div>;
   else
     return (
-      <div className="chat-preview-container">
-        <Paper className="team-preview-paper">
-          <div className="team-message-container">
-            <div className="team-message-list-container">
-              {scroll}
-              <div className="team-message-input-container">
-                <div className="team-message-input">
-                  <TextField
-                    ref={textref}
-                    key="textfield-new-message"
-                    onKeyDown={(e) => onMessageEnterHandler(e)}
-                    style={{ width: "100%" }}
-                    variant="filled"
-                    // label={`send new message as ${user.username}`}
-                    placeholder="message"
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) =>
-                      sendMessage(textref.current.childNodes[1].firstChild)
-                    }
-                  >
-                    <SendIcon />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Paper>
-      </div>
-    );
 
-  //   return (
-  //     <Grid
-  //       item
-  //       xs={9}
-  //       sx={{
-  //         height: "80.5vh",
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         justifyContent: "flex-end",
-  //       }}
-  //     >
-  //       <List>
-  //         <ChatMessage content="Desi be familijo" time="9.30" align="right" />
-  //         <ChatMessage content="Desi be familijo" time="9.30" align="left" />
-  //         <ChatMessage content="Desi be familijo" time="9.30" align="right" />
-  //       </List>
-  //       <Divider />
-  //       <Grid container sx={{ pt: 3, pr: 5 }}>
-  //         <Grid item xs={11}>
-  //           <TextField
-  //             id="outlined-basic-email"
-  //             label="Type Something"
-  //             multiline
-  //             maxRows={5}
-  //             fullWidth
-  //           />
-  //         </Grid>
-  //         <Grid item xs={1} align="right">
-  //           <Fab color="primary" aria-label="add" sx={{ ml: 2, mr: 1 }}>
-  //             <SendIcon />
-  //           </Fab>
-  //         </Grid>
-  //       </Grid>
-  //     </Grid>
-  //   );
+      <Grid
+        item
+        xs={9}
+        sx={{
+          height: "81vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          mt: "-64px",
+        }}
+      >
+        {scroll}
+        <Divider />
+        <Grid container sx={{ pt: 3, pr: 5 }}>
+          <Grid item xs={11}>
+            <TextField
+              ref={textref}
+              id="outlined-basic-email"
+              label="Type Message"
+              multiline
+              key="textfield-new-message"
+              maxRows={5}
+              fullWidth
+              onKeyDown={(e) => onMessageEnterHandler(e)}
+            />
+          </Grid>
+          <Grid item xs={1} align="right">
+            <Fab
+              color="primary"
+              aria-label="add"
+              sx={{ ml: 2, mr: 1 }}
+              onClick={(e) =>
+                sendMessage(textref.current.childNodes[1].firstChild)
+              }
+            >
+              <SendIcon />
+            </Fab>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
 }

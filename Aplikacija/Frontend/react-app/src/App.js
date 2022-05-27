@@ -301,6 +301,15 @@ export default function App() {
           />
 
           <Route
+            path="/Chat/:id"
+            element={
+              <Header
+                Component={Chat}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
             path="/Chat"
             element={
               <Header
