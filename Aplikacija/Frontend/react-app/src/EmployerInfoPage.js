@@ -28,20 +28,40 @@ export default function EmployerInfoPage(props) {
 
     }
 
+    const getCategoryInfo = async () => {
+        const response2 = await fetch("http://localhost:7240/Employer/GetEmployerCategories/Codemancy%20Studio", {
+            credentials: "include"
+        });
+        if (response2.ok) {
+            const fetchData2 = await response2.json();
+            console.log(fetchData2);
+            setCategoryData(fetchData2.categories);
+        }
+
+    }
+
     //const [skillData, setSkillData] = useState([]);
     const [employerData, setEmployerData] = useState({
         picture: "",
         companyName: "",
         about: "",
+        likes:"",
         internships: [
             { id: "", title: "", description: "", compensation: "", duration: "", skills:[] }
         ],
-        ratings: [{ id: "", overallScore: "", benefitsScore:"", skillImprovementScore:"", positiveExperience:"", negativeExperience:"" }],
+        ratings: [{ id: "", overallScore: "", benefitsScore:"", skillImprovementScore:"", positiveExperience:"", negativeExperience:"", likes:"", dislikes:"" }],
+       
+    });
+
+    const [categoryData, setCategoryData] = useState({
+        
+        categories: [{ name:"" }],
        
     });
 
     useEffect(() => {
         getEmployerInfo();
+        getCategoryInfo();
     }, []);
 
 
@@ -86,7 +106,12 @@ export default function EmployerInfoPage(props) {
                         <Box sx={{ mb: 3 }} variant="outlined">
                             <Divider sx={{ mt: 5, mb: 3 }} > TECH STACK </Divider>
                             <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                                <TechStack/>
+                                {/* {
+                                    categoryData.categories.map(el=>{
+                                        (<TechStack categories={el.ime}/>)
+                                    })
+                                } */}
+                                <TechStack categories={categoryData.categories}/>
                             </Grid>
                             
                         </Box>
@@ -97,7 +122,7 @@ export default function EmployerInfoPage(props) {
                                 {/* Internship Cards */}
                                 {
                                     employerData.internships.map(el=>
-                                        (<InternshipCard title={el.title} description={el.description} duration={el.duration} compensation={el.compensation}/>)
+                                        (<InternshipCard title={el.title} description={el.description} duration={el.duration} compensation={el.compensation} skills={el.skills}/>)
                                     )
                                     
                                 }
@@ -107,10 +132,10 @@ export default function EmployerInfoPage(props) {
                         </Box>
 
                         <Box sx={{ mb: 3 }} variant="outlined">
-                            <Divider sx={{ mt: 5, mb: 3 }} > SHARED EXPERIENCES </Divider>
+                            <Divider sx={{ mt: 5, mb: 3 }} > SHARED RATINGS </Divider>
                             <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}> 
                                 {employerData.ratings.map(el=>
-                                        (<ExperienceCard id={el.id} overallScore={el.overallScore} benefitsScore={el.benefitsScore} skillImprovementScore={el.skillImprovementScore} positiveExperience={el.positiveExperience} negativeExperience={el.negativeExperience} recommended={el.recommended}/>)
+                                        (<ExperienceCard id={el.id} overallScore={el.overallScore} benefitsScore={el.benefitsScore} skillImprovementScore={el.skillImprovementScore} positiveExperience={el.positiveExperience} negativeExperience={el.negativeExperience} recommended={el.recommended} likes={el.likes} dislikes={el.dislikes}/>)
                                     )
                                 }
                             </Grid>

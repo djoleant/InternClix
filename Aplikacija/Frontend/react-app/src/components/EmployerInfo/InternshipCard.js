@@ -26,9 +26,17 @@ export default function InternshipCard(props) {
                             <Typography  component="subtitle1"  align="center" sx={{ m: 1 , display: "flex", flexDirection: "row" , justifyContent:"center" }}> <LocationOnIcon style={{color:"red", marginRight:5}}/> Location </Typography>
                             <Typography  component="subtitle1"  align="center" sx={{ m: 1 , display: "flex", flexDirection: "row" , justifyContent:"center" }}> <QueryBuilderIcon style={{color:"red", marginRight:5}}/> {props.duration +" "+ (props.duration > 1 ? "weeks":"week")}  </Typography>
                             <Typography  component="subtitle1"  align="center" sx={{ m: 1 ,  display: "flex", flexDirection: "row" , justifyContent:"center" }}> <PaidIcon style={{color:"red", marginRight:5}}/> {props.compensation +" $"}  </Typography>     
-
+                            <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3}>
+                            {
+                                props.skills.map((el,index)=>(
+                                    <Button key={index} style={{marginLeft:7, marginTop:7}} variant="contained" disabled>
+                                        {el.name}
+                                    </Button> 
+                                ))
+                            }
+                            </Grid>
                             {/* //rip skills, mora opravim fetch */}
-                            <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
+                            {/* <Grid container style={{marginTop:3, display: "flex", flexDirection: "row" , justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
                             <Button style={{marginLeft:7, marginTop:7}} variant="contained" disabled>
                                 .Net
                             </Button>  
@@ -47,7 +55,7 @@ export default function InternshipCard(props) {
                             <Button style={{marginLeft:7, marginTop:7}} variant="contained" disabled>
                                 JavaScript
                             </Button>    
-                            </Grid>
+                            </Grid> */}
                                 
                     </Grid>
     
