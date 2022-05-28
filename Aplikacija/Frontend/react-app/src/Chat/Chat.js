@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
-import { Avatar, Grid, TextField } from "@mui/material";
+import { Avatar, Grid, TextField, Tooltip } from "@mui/material";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -22,7 +22,8 @@ import { Button, Fab } from "@mui/material";
 import ChatMessage from "./ChatMessage";
 import SingleChat from "./SingleChat";
 import ChatIcon from "@mui/icons-material/Chat";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import NewMessageDialog from "./NewMessageDialog";
 
 
 const drawerWidth = 350;
@@ -72,15 +73,23 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
+
 export default function Chat() {
   const [chats, setChats] = useState([]);
 
+  const forceUpdate = useForceUpdate();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   // const history = useHistory();
   // const user = useSelector((state) => state.auth.userData);
 
   const { id } = useParams();
+
+  const [currentChat, setCurrentChat] = useState(id);
 
   useEffect(() => {
     getChats();
@@ -135,6 +144,7 @@ export default function Chat() {
         open={open}
       >
         <DrawerHeader sx={{ mt: 8.5 }}>
+          <NewMessageDialog loadChats={getChats} />
           <IconButton
             onClick={handleDrawerClose}
             sx={{ display: (id != undefined) ? "" : "none" }}
@@ -162,25 +172,31 @@ export default function Chat() {
           {chats.
             filter(c => c.value.message.userName.toLowerCase().includes(search.toLowerCase()))
             .map((chat, index) => (
-              <ListItem button key={index} onClick={() => { navigate("/Chat/" + chat.key) }}>
-                <ListItemIcon>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://material-ui.com/static/images/avatar/1.jpg"
-                  />
-                </ListItemIcon>
-                <Grid>
-                  <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
-                  <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
-                </Grid>
+              <Link to={"/Chat/" + chat.key} key={index} >
+                <ListItem
+                  button
+                  key={index}
+                //onClick={() => { setCurrentChat(chat.key); navigate("/Chat/" + chat.key); forceUpdate() }}
+                >
+                  <ListItemIcon>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="https://material-ui.com/static/images/avatar/1.jpg"
+                    />
+                  </ListItemIcon>
+                  <Grid>
+                    <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
+                    <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
+                  </Grid>
 
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
         </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {(id != null && id != undefined) ? <SingleChat id={id} updateChats={getChats} /> : <></>}
+        {(id != null && id != undefined) ? <SingleChat id={currentChat} updateChats={getChats} /> : <></>}
       </Main>
     </Box>
   );
