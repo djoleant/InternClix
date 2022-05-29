@@ -172,25 +172,24 @@ export default function Chat() {
           {chats.
             filter(c => c.value.message.userName.toLowerCase().includes(search.toLowerCase()))
             .map((chat, index) => (
-              <Link to={"/Chat/" + chat.key} key={index} >
-                <ListItem
-                  button
-                  key={index}
-                //onClick={() => { setCurrentChat(chat.key); navigate("/Chat/" + chat.key); forceUpdate() }}
-                >
-                  <ListItemIcon>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://material-ui.com/static/images/avatar/1.jpg"
-                    />
-                  </ListItemIcon>
-                  <Grid>
-                    <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
-                    <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
-                  </Grid>
+              <ListItem
+                button
+                key={index}
+                onClick={() => { setCurrentChat(chat.key); navigate("/Chat/" + chat.key); }}
+                selected={chat.key == id}
+              >
+                <ListItemIcon>
+                  <Avatar
+                    alt="Icon"
+                    src=""
+                  />
+                </ListItemIcon>
+                <Grid>
+                  <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
+                  <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
+                </Grid>
 
-                </ListItem>
-              </Link>
+              </ListItem>
             ))}
         </List>
       </Drawer>

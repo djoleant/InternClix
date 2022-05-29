@@ -65,12 +65,13 @@ export default function SingleChat({ id, updateChats }) {
     if (ref.current != null) {
       if (isScrolledIntoView(ref.current)) setScrollDown(true);
     }
-    setMessages((posts) => [...posts, message]);
+    if (message.senderId == id)
+      setMessages((posts) => [...posts, message]);
     updateChats();
   };
 
   useEffect(() => {
-    connection.on("RecieveMessage" + id, function (message) {
+    connection.on("RecieveMessage"/* + id*/, function (message) {
       receiveMessage(message);
     });
 
@@ -83,17 +84,36 @@ export default function SingleChat({ id, updateChats }) {
         return console.error(err.toString());
       });
     return () => {
-      connection.off("RecieveMessage" + id);
+      connection.off("RecieveMessage" /*+ id*/);
     };
   }, []);
 
   useEffect(() => {
-    setLoading(true);
+    if (loading) {
+      setLoading(false);
+      return;
+    }
+    //setLoading(false);
     setPostPage(0);
     setMorePosts(true);
-    setScrollDown(true);
     setScrollUp(false);
-  }, []);
+
+    if (ref.current != null) {
+      if (isScrolledIntoView(ref.current)) setScrollDown(true);
+    }
+
+    (async () => { setMessages([]); await getMessages(0) })()
+
+  }, [id])
+
+  // useEffect(() => {
+  //   setMessages([]);
+  //   setLoading(true);
+  //   setPostPage(0);
+  //   setMorePosts(true);
+  //   setScrollDown(true);
+  //   setScrollUp(false);
+  // }, []);
 
   const getMessages = async (lastMessage) => {
     if (lastMessage === 0) setScrollDown(true);
@@ -110,10 +130,13 @@ export default function SingleChat({ id, updateChats }) {
 
     if (data.messages.length > 0) {
       setPostPage(data.messages[data.messages.length - 1].id);
-      setMessages((posts) =>
-        posts.concat(data.messages).sort((a, b) => a.id - b.id)
-      );
+      if (!messages.map(m => m.id).includes(data.messages[0]))
+        setMessages((posts) =>
+          posts.concat(data.messages).sort((a, b) => a.id - b.id)
+        );
     }
+    console.log(data)
+    console.log(messages)
     if (loading) {
       setLoading(false);
     }
@@ -151,7 +174,7 @@ export default function SingleChat({ id, updateChats }) {
   useLayoutEffect(() => {
     if (ref.current != null && scrollDown) {
       ref.current.scrollIntoView({ behavior: "smooth" });
-      if (!loading) setScrollDown(false);
+      //if (!loading) setScrollDown(false);
     }
     if (ref2.current != null && scrollUp) {
       ref2.current.scrollIntoView({ behavior: "smooth" });
@@ -170,15 +193,17 @@ export default function SingleChat({ id, updateChats }) {
 
       <div ref={ref2} ></div>
       {messages !== null ? (
-        messages.map((message) => (
-          <ChatMessage
-            sender={message.senderUsername}
-            content={message.content}
-            key={message.id}
-            time={moment(message.timeSent).format("hh:mm")}
-            align={message.senderId == id ? "left" : "right"}
-          />
-        ))
+        messages
+          .filter((value, index, self) => self.find(m => m.id === value.id) == value)
+          .map((message, index) => (
+            <ChatMessage
+              sender={message.senderUsername}
+              content={message.content}
+              key={index}
+              time={moment(message.timeSent).format("hh:mm")}
+              align={message.senderId == id ? "left" : "right"}
+            />
+          ))
       ) : (
         <div></div>
       )}
@@ -192,49 +217,49 @@ export default function SingleChat({ id, updateChats }) {
       <br />
     </List>
   );
-  if (loading) return <div></div>;
-  else
-    return (
+  // if (loading) return <div></div>;
+  // else
+  return (
 
-      <Grid
-        item
-        xs={9}
-        sx={{
-          height: "81vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          mt: "-64px",
-        }}
-      >
-        {scroll}
-        <Divider />
-        <Grid container sx={{ pt: 3, pr: 5 }}>
-          <Grid item xs={11}>
-            <TextField
-              ref={textref}
-              id="outlined-basic-email"
-              label="Type Message"
-              multiline
-              key="textfield-new-message"
-              maxRows={5}
-              fullWidth
-              onKeyDown={(e) => onMessageEnterHandler(e)}
-            />
-          </Grid>
-          <Grid item xs={1} align="right">
-            <Fab
-              color="primary"
-              aria-label="add"
-              sx={{ ml: 2, mr: 1 }}
-              onClick={(e) =>
-                sendMessage(textref.current.childNodes[1].firstChild)
-              }
-            >
-              <SendIcon />
-            </Fab>
-          </Grid>
+    <Grid
+      item
+      xs={9}
+      sx={{
+        height: "81vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        mt: "-64px",
+      }}
+    >
+      {scroll}
+      <Divider />
+      <Grid container sx={{ pt: 3, pr: 5 }}>
+        <Grid item xs={11}>
+          <TextField
+            ref={textref}
+            id="outlined-basic-email"
+            label="Type Message"
+            multiline
+            key="textfield-new-message"
+            maxRows={5}
+            fullWidth
+            onKeyDown={(e) => onMessageEnterHandler(e)}
+          />
+        </Grid>
+        <Grid item xs={1} align="right">
+          <Fab
+            color="primary"
+            aria-label="add"
+            sx={{ ml: 2, mr: 1 }}
+            onClick={(e) =>
+              sendMessage(textref.current.childNodes[1].firstChild)
+            }
+          >
+            <SendIcon />
+          </Fab>
         </Grid>
       </Grid>
-    );
+    </Grid>
+  );
 }

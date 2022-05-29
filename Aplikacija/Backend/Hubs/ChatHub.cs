@@ -61,7 +61,7 @@ namespace Hubs
 
             foreach (var connectionId in _connections.GetConnections(reciever.UserName))
             {
-                await Clients.Client(connectionId).SendAsync("RecieveMessage" + applicationUser.Id,
+                await Clients.Client(connectionId).SendAsync("RecieveMessage" /*+ applicationUser.Id*/,
                     new
                     {
                         message.ID,
@@ -76,7 +76,7 @@ namespace Hubs
             foreach (var connectionId in _connections.GetConnections(applicationUser.UserName))
             {
                 if (connectionId != Context.ConnectionId)
-                    await Clients.Client(connectionId).SendAsync("RecieveMessage" + reciever.Id,
+                    await Clients.Client(connectionId).SendAsync("RecieveMessage" /*+ reciever.Id*/,
                         new
                         {
                             message.ID,
