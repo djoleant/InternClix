@@ -53,7 +53,7 @@ export default function UserSearch({ onChange }) {
 
     return (
         <Autocomplete
-            sx={{ width: "70vw", maxWidth: "500px" }}
+            sx={{ width: "70vw", maxWidth: "500px", mt: 1 }}
             open={open}
             onOpen={() => {
                 setOpen(true);
@@ -65,7 +65,7 @@ export default function UserSearch({ onChange }) {
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
 
-                <Box {...props} sx={{ display: "flex", gap: 3 }}>
+                <Box {...props} sx={{ display: "flex", gap: 3 }} key={option.id}>
                     <Avatar></Avatar>
                     <Box>
                         <Typography>{option.name}</Typography>
@@ -73,6 +73,7 @@ export default function UserSearch({ onChange }) {
                     </Box>
                 </Box>
             )}
+            filterOptions={(options, { inputValue }) => options.filter(op => op.userName.toLowerCase().includes(inputValue.toLowerCase()) || op.name.toLowerCase().includes(inputValue.toLowerCase()))}
             onChange={(e, v) => { onChange(v); console.log(v) }}
             options={options}
             loading={loading}
