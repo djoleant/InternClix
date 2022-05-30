@@ -186,7 +186,13 @@ export default function Chat() {
                 </ListItemIcon>
                 <Grid>
                   <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
-                  <Typography align="left" noWrap={true} variant="body2"> {chat.value.message.content} </Typography>
+                  <Typography align="left" noWrap={true} variant="body2">
+                    {
+                      (chat.value.message.type === "INTERNSHIP_SHARE") ?
+                        ("Internship") :
+                        (chat.value.message.content)
+                    }
+                  </Typography>
                 </Grid>
 
               </ListItem>
