@@ -13,6 +13,8 @@ namespace Models
 
         public string Content { get; set; } = default!;
 
+        public string Type { get; set; } = default!;
+
         [BindNever]
         [DataType(DataType.DateTime)]
         public DateTime TimeSent { get; set; }

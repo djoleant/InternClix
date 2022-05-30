@@ -135,8 +135,8 @@ export default function SingleChat({ id, updateChats }) {
           posts.concat(data.messages).sort((a, b) => a.id - b.id)
         );
     }
-    console.log(data)
-    console.log(messages)
+    //console.log(data)
+    //console.log(messages)
     if (loading) {
       setLoading(false);
     }
@@ -158,7 +158,7 @@ export default function SingleChat({ id, updateChats }) {
     setScrollDown(true);
     if (e.value == "") return;
     connection
-      .invoke("SendMessage", id, e.value)
+      .invoke("SendMessage", id, e.value, "")
       .then((msg) => {
         setMessages((posts) => [...posts, msg]);
         setScrollDown(true);
@@ -199,6 +199,7 @@ export default function SingleChat({ id, updateChats }) {
             <ChatMessage
               sender={message.senderUsername}
               content={message.content}
+              type={message.type}
               key={index}
               time={moment(message.timeSent).format("hh:mm")}
               align={message.senderId == id ? "left" : "right"}

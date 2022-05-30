@@ -29,7 +29,7 @@ namespace Hubs
             _userManager = userManager;
         }
 
-        public async Task<object> SendMessage(string userId, string messageText)
+        public async Task<object> SendMessage(string userId, string messageText, string messageType)
         {
             ApplicationUser? reciever = await _dbContext.Users.FindAsync(userId);
 
@@ -52,6 +52,7 @@ namespace Hubs
 
             Message message = new Message();
             message.Content = messageText;
+            message.Type = messageType;
             message.TimeSent = DateTime.Now;
             message.Sender = applicationUser;
             message.Receiver = reciever;
@@ -66,6 +67,7 @@ namespace Hubs
                     {
                         message.ID,
                         message.Content,
+                        message.Type,
                         message.TimeSent,
                         message.SenderId,
                         message.ReceiverId,
@@ -81,6 +83,7 @@ namespace Hubs
                         {
                             message.ID,
                             message.Content,
+                            message.Type,
                             message.TimeSent,
                             message.SenderId,
                             message.ReceiverId,
@@ -97,6 +100,7 @@ namespace Hubs
             {
                 message.ID,
                 message.Content,
+                message.Type,
                 message.TimeSent,
                 message.SenderId,
                 message.ReceiverId,

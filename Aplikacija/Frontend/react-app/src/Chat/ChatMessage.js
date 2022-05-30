@@ -1,8 +1,10 @@
 import { Grid, ListItem, ListItemText, Paper, Box, useTheme } from "@mui/material"
 
-export default function ChatMessage({ content, time, align }) {
+export default function ChatMessage({ content, time, align, type }) {
 
     const theme = useTheme();
+
+    //console.log(type);
 
     return (
         <Box sx={{ width: 1, display: "flex", flexDirection: ((align == "right") ? "row-reverse" : "row") }}>
