@@ -36,6 +36,22 @@ namespace Models
 
         public List<Student> WishlistStudents { get; set; } = default!;
 
+        public List<InternshipApplication> InternshipApplications { get; set; } = default!;
+
+    }
+
+
+    public class InternshipApplication
+    {
+        [Key]
+        public int ID { get; set; }
+        public Student Student { get; set; } = default!;
+        public Internship Internship { get; set; } = default!;
+
+        public string Status { get; set; } = default!; //Accepted, Denied, Applied, Finished
+
+        public DateTime Date { get; set; }
+
     }
 
 }

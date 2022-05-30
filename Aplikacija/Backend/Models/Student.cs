@@ -24,6 +24,8 @@ namespace Models
         public List<Internship> PreviousInternships { get; set; } = default!;
 
         public List<Internship> AppliedInternships { get; set; } = default!;
+
+        public List<InternshipApplication> InternshipApplications { get; set; } = default!;
     }
 
 }
