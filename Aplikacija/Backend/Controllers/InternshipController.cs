@@ -164,10 +164,16 @@ namespace Backend.Controllers
         {
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
-                .Include(i => i.AppliedStudents)
-                .ThenInclude(s => s.CV.Skills)
-                .Include(i => i.AppliedStudents)
-                .ThenInclude(s => s.CV.AdditionalInfos)
+                .Include(i => i.InternshipApplications)
+                .ThenInclude(a => a.Student.CV.Skills)
+                .Include(i => i.InternshipApplications.Where(a => a.Status == "Applied"))
+                .ThenInclude(a => a.Student.CV.AdditionalInfos)
+                // .ThenInclude(s=>s.CV.Skills)
+                // .ThenInclude(s=>s.CV.Skills)
+                // .ThenInclude(s => s.CV.Skills)
+                // .Include(i => i.AppliedStudents)
+                // .ThenInclude(s => s.CV.AdditionalInfos)
+
                 .FirstOrDefaultAsync();
             if (internship != null)
             {
@@ -177,14 +183,14 @@ namespace Backend.Controllers
                     internship = new
                     {
                         internship.ID,
-                        Applicants = internship.AppliedStudents
+                        Applicants = internship.InternshipApplications
                         .Select(s =>
                         new
                         {
-                            Name = s.FirstName,
-                            LastName = s.LastName,
-                            Skills = s.CV.Skills.Select(k => new { k.ID, Label = k.Name }),
-                            Languages = s.CV.AdditionalInfos
+                            Name = s.Student.FirstName,
+                            LastName = s.Student.LastName,
+                            Skills = s.Student.CV.Skills.Select(k => new { k.ID, Label = k.Name }),
+                            Languages = s.Student.CV.AdditionalInfos
                             .Where(a => a.Type == "Language")
                             .Select(a => new { Name = a.Title })
                         })

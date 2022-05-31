@@ -84,18 +84,30 @@ namespace Backend.Controllers
             var logged = await UserManager.GetUserAsync(User);
             var student = await Context.Students
             .Where(u => u.Id == logged.Id)
-            .Include(u => u.AppliedInternships)
+            .Include(u => u.InternshipApplications)
             .FirstOrDefaultAsync();
 
             var internship = await Context.Internships
-            .Include(i => i.AppliedStudents)
+            .Include(i => i.InternshipApplications)
+            .ThenInclude(a => a.Student)
             .Where(i => i.ID == internshipId)
             .FirstOrDefaultAsync();
 
             if (student != null && internship != null)
             {
-                internship.AppliedStudents.Add(student);
-                student.AppliedInternships.Add(internship);
+                if (internship.InternshipApplications.Where(a => a.Student.Id == student.Id).Count() != 0)
+                {
+                    return new JsonResult(new { succeeded = false, error = "Student is already applied to this internship" });
+                }
+                var application = new InternshipApplication
+                {
+                    Student = student,
+                    Internship = internship,
+                    Status = "Applied",
+                    Date = DateTime.Now
+                };
+                internship.InternshipApplications.Add(application);
+                student.InternshipApplications.Add(application);
                 await Context.SaveChangesAsync();
                 return new JsonResult(new { succeeded = true });
             }
