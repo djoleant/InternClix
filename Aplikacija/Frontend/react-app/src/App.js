@@ -18,6 +18,8 @@ import Chat from "./Chat/Chat";
 import EmployerInternsipPage from "./EmployerInternshipPage";
 import Employers from "./Employers";
 import InternshipCreator from "./InternshipCreator";
+import HomePage from "./HomePage";
+import AboutUsPage from "./AboutUsPage";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -333,6 +335,24 @@ export default function App() {
             element={
               <Header
                 Component={EmployerInternsipPage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/Home"
+            element={
+              <Header
+                Component={HomePage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/AboutUs"
+            element={
+              <Header
+                Component={AboutUsPage}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }

@@ -23,6 +23,9 @@ import ComboBox from "./components/ComboBox";
 import StarRateIcon from "@mui/icons-material/StarRate";
 
 export default function Employers(props) {
+
+  const [search, setSearch] = useState("");
+
   const getEmployers = async () => {
     const response = await fetch(
       "http://localhost:7240/Employer/GetEmployers",
@@ -89,9 +92,16 @@ export default function Employers(props) {
             alignItems="center"
             justifyContent="center"
           >
-            <Grid item xs={3}>
-              <ComboBox />
-            </Grid>
+              {/* <ComboBox /> */}
+              <Grid item xs={12} style={{ padding: "10px", maxWidth:500 }}>
+          <TextField
+            onChange={(event) => { setSearch(event.target.value) }}
+            id="outlined-basic-email"
+            label="Enter employer name"
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
           </Grid>
 
           <Box sx={{ mb: 3 }} variant="outlined">
@@ -111,7 +121,9 @@ export default function Employers(props) {
             alignItems="center"
             justifyContent="center"
           >
-            {employerData.employers.map((card, index) => {
+            {employerData.employers
+            .filter(c => c.companyName.toLowerCase().includes(search.toLowerCase()))
+            .map((card, index) => {
               
               return (
                 <Grid item >
@@ -160,7 +172,12 @@ export default function Employers(props) {
                     >
                       <Button variant="contained" disabled> {card.internships} {card.internships=="1"?"internship":"internships"} </Button>
                       {
-                        (<Button variant="contained" disabled style={{marginLeft:5}} >  {card.ratings.length>0?card.ratings.reduce((a,b)=>a.overallRating+b,0)/card.ratings.length:"0"} <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} /> </Button>)
+                        (<Button variant="contained" disabled style={{marginLeft:5}} >  
+                        {
+                        card.ratings.length>0?card.ratings.reduce((acc,current)=>acc+=current.overallScore,0)/card.ratings.length:"NO RATINGS"
+                        } 
+                        <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} /> 
+                        </Button>)
                       }
                     </Grid>
                     <Divider light />
