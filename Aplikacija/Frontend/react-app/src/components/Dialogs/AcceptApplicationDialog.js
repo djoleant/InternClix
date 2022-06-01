@@ -29,7 +29,6 @@ export default function AcceptApplicationDialog({ name, studentId, internshipId,
             credentials: "include"
         });
         handleClose();
-        console.log(remove)
         remove();
     }
 

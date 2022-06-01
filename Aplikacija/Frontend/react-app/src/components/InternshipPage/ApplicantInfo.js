@@ -1,5 +1,5 @@
 import { Grid, Button, Typography } from "@mui/material"
-import { useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import SkillBox from "./SkillBox"
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
@@ -8,12 +8,13 @@ import AcceptApplicationDialog from "../Dialogs/AcceptApplicationDialog";
 import DenyApplicationDialog from "../Dialogs/DenyApplicationDialog";
 import { useParams } from "react-router-dom";
 
-export default function ApplicantInfo({ applicant, internshipSkills,remove }) {
+export default function ApplicantInfo({ applicant, internshipSkills, remove }) {
 
     const { id: internshipId } = useParams();
 
+
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} >
             <Grid item xs={12} sx={{ ml: 4 }}>
                 {
                     applicant.languages.map((language, index) => (

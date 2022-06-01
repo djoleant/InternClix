@@ -92,7 +92,7 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
             {
                 applicants.length == 0 ?
                     <Typography>No applicants</Typography> :
-                    <Grid item container xs={12}>
+                    <Grid item container xs={12} spacing={3}>
                         <Grid item md={3} xs={6}>
                             <Typography>Min. match percentage:</Typography>
                         </Grid>

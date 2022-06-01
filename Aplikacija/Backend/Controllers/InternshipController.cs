@@ -191,6 +191,7 @@ namespace Backend.Controllers
                     {
                         internship.ID,
                         Applicants = internship.InternshipApplications
+                        .OrderBy(s => s.Date)
                         .Select(s =>
                         new
                         {
