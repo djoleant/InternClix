@@ -188,7 +188,7 @@ export default function Chat() {
                   <Typography sx={{ fontWeight: "bold" }} align="left" >{chat.value.message.userName}</Typography>
                   <Typography align="left" noWrap={true} variant="body2">
                     {
-                      (chat.value.message.type === "INTERNSHIP_SHARE") ?
+                      (chat.value.message.type.includes("INTERNSHIP")) ?
                         ("Internship") :
                         (chat.value.message.content)
                     }

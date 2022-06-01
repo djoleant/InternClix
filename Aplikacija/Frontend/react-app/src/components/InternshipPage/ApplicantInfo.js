@@ -6,10 +6,11 @@ import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import AcceptApplicationDialog from "../Dialogs/AcceptApplicationDialog";
 import DenyApplicationDialog from "../Dialogs/DenyApplicationDialog";
+import { useParams } from "react-router-dom";
 
-export default function ApplicantInfo({ applicant, internshipSkills }) {
+export default function ApplicantInfo({ applicant, internshipSkills,remove }) {
 
-
+    const { id: internshipId } = useParams();
 
     return (
         <Grid container spacing={3}>
@@ -64,9 +65,21 @@ export default function ApplicantInfo({ applicant, internshipSkills }) {
             </Grid>
             <Grid container item xs={12} spacing={3}>
                 <Grid item xs={12} md={8} sx={{ display: "flex", gap: 3 }}>
-                    <DenyApplicationDialog name={applicant.name + " " + applicant.lastName} />
+                    <DenyApplicationDialog
+                        name={applicant.name + " " + applicant.lastName}
+                        applicationId={applicant.applicationID}
+                        studentId={applicant.id}
+                        internshipId={internshipId}
+                        remove={remove}
+                    />
 
-                    <AcceptApplicationDialog name={applicant.name + " " + applicant.lastName} />
+                    <AcceptApplicationDialog
+                        name={applicant.name + " " + applicant.lastName}
+                        applicationId={applicant.applicationID}
+                        studentId={applicant.id}
+                        internshipId={internshipId}
+                        remove={remove}
+                    />
                 </Grid>
                 <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "row-reverse" }}>
                     <Button

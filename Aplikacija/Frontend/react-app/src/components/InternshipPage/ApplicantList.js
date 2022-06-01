@@ -89,41 +89,45 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
 
     return (
         <Grid container sx={{ width: 1 }}>
-            <Grid item container xs={12}>
-                <Grid item md={3} xs={6}>
-                    <Typography>Min. match percentage:</Typography>
-                </Grid>
-                <Grid item md={3} xs={6}>
-                    <Slider defaultValue={0} valueLabelDisplay="on" onChange={(e, value) => { setMinMatch(value) }} />
-                </Grid>
-                <Grid item md={4} xs={8}>
-                    <TextField
-                        variant="standard"
-                        label="Search"
-                        sx={{ mt: -3, ml: 4, pr: 4 }}
-                        onChange={(e) => { setSearchVal(e.target.value) }}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item md={2} xs={4}>
-                    <Button
-                        endIcon={
-                            sortDirection == "desc" ?
-                                <ArrowDownwardRoundedIcon /> :
-                                sortDirection == "asc" ?
-                                    <ArrowUpwardRoundedIcon /> : <></>
-                        }
-                        onClick={() => {
-                            if (sortDirection == "asc") setSortDirection("desc");
-                            else if (sortDirection == "desc") setSortDirection("none");
-                            else setSortDirection("asc");
-                        }}
-                    >
-                        Sort
-                    </Button>
-                </Grid>
+            {
+                applicants.length == 0 ?
+                    <Typography>No applicants</Typography> :
+                    <Grid item container xs={12}>
+                        <Grid item md={3} xs={6}>
+                            <Typography>Min. match percentage:</Typography>
+                        </Grid>
+                        <Grid item md={3} xs={6}>
+                            <Slider defaultValue={0} valueLabelDisplay="on" onChange={(e, value) => { setMinMatch(value) }} />
+                        </Grid>
+                        <Grid item md={4} xs={8}>
+                            <TextField
+                                variant="standard"
+                                label="Search"
+                                sx={{ mt: -3, ml: 4, pr: 4 }}
+                                onChange={(e) => { setSearchVal(e.target.value) }}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item md={2} xs={4}>
+                            <Button
+                                endIcon={
+                                    sortDirection == "desc" ?
+                                        <ArrowDownwardRoundedIcon /> :
+                                        sortDirection == "asc" ?
+                                            <ArrowUpwardRoundedIcon /> : <></>
+                                }
+                                onClick={() => {
+                                    if (sortDirection == "asc") setSortDirection("desc");
+                                    else if (sortDirection == "desc") setSortDirection("none");
+                                    else setSortDirection("asc");
+                                }}
+                            >
+                                Sort
+                            </Button>
+                        </Grid>
 
-            </Grid>
+                    </Grid>
+            }
 
             <Grid item container xs={12}>
 
@@ -149,11 +153,17 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <ApplicantInfo internshipSkills={internshipSkills} applicant={applicant} />
+                                    <ApplicantInfo
+                                        internshipSkills={internshipSkills}
+                                        applicant={applicant}
+                                        remove={getApplicants}
+                                    />
                                 </AccordionDetails>
                             </Accordion >
                         ))
+
                 }
+
 
             </Grid>
 
