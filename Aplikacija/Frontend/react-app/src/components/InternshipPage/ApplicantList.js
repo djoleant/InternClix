@@ -1,4 +1,4 @@
-import { MenuItem, Select, FormControl, InputLabel, Button, Grid, Typography, TextField } from "@mui/material";
+import { Checkbox, FormGroup, FormControlLabel, Chip, Button, Grid, Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -11,6 +11,7 @@ import ApplicantInfo from "./ApplicantInfo";
 import Slider from "./Slider";
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import SkillChips from "./SkillChips";
 
 
 export default function ApplicantList({ internshipId, internshipSkills }) {
@@ -57,6 +58,10 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
     const [minMatch, setMinMatch] = useState(0);
     const [sortDirection, setSortDirection] = useState("none");
     const [searchVal, setSearchVal] = useState("");
+    const [accepted, setAccepted] = useState(true);
+    const [applied, setApplied] = useState(true);
+    const [denied, setDenied] = useState(true);
+    const [finished, setFinished] = useState(false);
 
     const getApplicants = async () => {
         const response = await fetch("http://localhost:7240/Internship/GetAppliedStudents/" + internshipId, {
@@ -117,13 +122,21 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
                                             <ArrowUpwardRoundedIcon /> : <></>
                                 }
                                 onClick={() => {
-                                    if (sortDirection == "asc") setSortDirection("desc");
-                                    else if (sortDirection == "desc") setSortDirection("none");
-                                    else setSortDirection("asc");
+                                    if (sortDirection == "desc") setSortDirection("asc");
+                                    else if (sortDirection == "asc") setSortDirection("none");
+                                    else setSortDirection("desc");
                                 }}
                             >
                                 Sort
                             </Button>
+                        </Grid>
+                        <Grid item container xs={12} spacing={3} sx={{ display: "flex", justifyContent: "center" }}>
+                            <FormGroup row sx={{ gap: 3 }}>
+                                <FormControlLabel control={<Checkbox checked={applied} onChange={() => { setApplied(!applied) }} />} label="Applied" />
+                                <FormControlLabel control={<Checkbox checked={accepted} onChange={() => { setAccepted(!accepted) }} />} label="Accepted" />
+                                <FormControlLabel control={<Checkbox checked={denied} onChange={() => { setDenied(!denied) }} />} label="Denied" />
+                                <FormControlLabel control={<Checkbox checked={finished} onChange={() => { setFinished(!finished) }} />} label="Finished" />
+                            </FormGroup>
                         </Grid>
 
                     </Grid>
@@ -133,7 +146,15 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
 
                 {
                     applicants
-                        .filter((a) => a.match >= minMatch && (a.name + " " + a.lastName).toLowerCase().includes(searchVal.toLowerCase()))
+                        .filter((a) =>
+                            a.match >= minMatch &&
+                            (a.name + " " + a.lastName).toLowerCase().includes(searchVal.toLowerCase())
+                        )
+                        .filter((a) => (a.status == "Accepted" && accepted)
+                            || (a.status == "Applied" && applied)
+                            || (a.status == "Denied" && denied)
+                            || (a.status == "Finished" && finished)
+                        )
                         .sort((a1, a2) => (sortDirection == "desc") ? a2.match - a1.match : (sortDirection == "asc") ? a1.match - a2.match : 0)
                         .map((applicant, index) => (
                             <Accordion variant="outlined" sx={{ width: 1 }} key={index}>
@@ -147,9 +168,20 @@ export default function ApplicantList({ internshipId, internshipSkills }) {
                                             {applicant.name + " " + applicant.lastName}
                                         </Typography>
                                         <Box sx={{ width: "25%" }}>
-                                            <MatchPercentage value={applicant.match} />
+                                            {
+                                                applicant.status == "Applied" ?
+                                                    <MatchPercentage value={applicant.match} /> :
+                                                    <Chip
+                                                        label={applicant.status}
+                                                        color={
+                                                            applicant.status == "Accepted" ? "success" :
+                                                                applicant.status == "Denied" ? "error" :
+                                                                    "primary"
+                                                        }
+                                                        variant="outlined"
+                                                    />
+                                            }
                                         </Box>
-
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>

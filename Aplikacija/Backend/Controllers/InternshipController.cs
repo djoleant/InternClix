@@ -167,13 +167,13 @@ namespace Backend.Controllers
         [HttpGet]
         [Route("GetAppliedStudents/{internshipId}")]
         [Authorize(Roles = "Employer, Admin")]
-        public async Task<JsonResult> GetAppliedStudents(int internshipId, [FromQuery] string? applicationStatus = "Applied")
+        public async Task<JsonResult> GetAppliedStudents(int internshipId)
         {
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
                 .Include(i => i.InternshipApplications)
                 .ThenInclude(a => a.Student.CV.Skills)
-                .Include(i => i.InternshipApplications.Where(a => a.Status == applicationStatus))
+                .Include(i => i.InternshipApplications)
                 .ThenInclude(a => a.Student.CV.AdditionalInfos)
                 // .ThenInclude(s=>s.CV.Skills)
                 // .ThenInclude(s=>s.CV.Skills)
@@ -202,7 +202,8 @@ namespace Backend.Controllers
                             Skills = s.Student.CV.Skills.Select(k => new { k.ID, Label = k.Name }),
                             Languages = s.Student.CV.AdditionalInfos
                             .Where(a => a.Type == "Language")
-                            .Select(a => new { Name = a.Title })
+                            .Select(a => new { Name = a.Title }),
+                            s.Status
                         })
                     }
                 });
@@ -320,6 +321,11 @@ namespace Backend.Controllers
                         Sender = internship.Employer
                     }
                     );
+            }
+            else if (action == "Finish")
+            {
+                application.Status = "Finished";
+                application.Date = DateTime.Now;
             }
             await Context.SaveChangesAsync();
             return new JsonResult(new { succeeded = true });
