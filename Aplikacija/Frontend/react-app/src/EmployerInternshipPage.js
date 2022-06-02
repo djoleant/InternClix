@@ -99,6 +99,7 @@ export default function EmployerInternsipPage() {
                     <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example" >
                         <Tab label="Overview" />
                         <Tab label="Applicants" />
+
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
@@ -107,6 +108,7 @@ export default function EmployerInternsipPage() {
                 <TabPanel value={value} index={1}>
                     <ApplicantList internshipSkills={internship.skills.map(s => s.name)} internshipId={id} />
                 </TabPanel>
+
 
 
             </Box>

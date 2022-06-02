@@ -1,18 +1,27 @@
 import { Grid, Button, Typography } from "@mui/material"
-import { useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import SkillBox from "./SkillBox"
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import AcceptApplicationDialog from "../Dialogs/AcceptApplicationDialog";
 import DenyApplicationDialog from "../Dialogs/DenyApplicationDialog";
+import { useParams } from "react-router-dom";
 
-export default function ApplicantInfo({ applicant, internshipSkills }) {
+export default function ApplicantInfo({ applicant, internshipSkills, remove }) {
 
+    const { id: internshipId } = useParams();
 
+    const markFinished = async () => {
+        await fetch(`http://localhost:7240/Internship/InternshipAction?internshipId=${internshipId}&studentId=${applicant.id}&applicationId=${applicant.applicationID}&action=Finish&denyOthers=false&message=`, {
+            method: "POST",
+            credentials: "include"
+        });
+        remove();
+    }
 
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} >
             <Grid item xs={12} sx={{ ml: 4 }}>
                 {
                     applicant.languages.map((language, index) => (
@@ -64,9 +73,35 @@ export default function ApplicantInfo({ applicant, internshipSkills }) {
             </Grid>
             <Grid container item xs={12} spacing={3}>
                 <Grid item xs={12} md={8} sx={{ display: "flex", gap: 3 }}>
-                    <DenyApplicationDialog name={applicant.name + " " + applicant.lastName} />
+                    {
+                        applicant.status === "Applied" ?
+                            <>
+                                <DenyApplicationDialog
+                                    name={applicant.name + " " + applicant.lastName}
+                                    applicationId={applicant.applicationID}
+                                    studentId={applicant.id}
+                                    internshipId={internshipId}
+                                    remove={remove}
+                                />
 
-                    <AcceptApplicationDialog name={applicant.name + " " + applicant.lastName} />
+                                <AcceptApplicationDialog
+                                    name={applicant.name + " " + applicant.lastName}
+                                    applicationId={applicant.applicationID}
+                                    studentId={applicant.id}
+                                    internshipId={internshipId}
+                                    remove={remove}
+                                />
+                            </>
+                            : applicant.status == "Accepted" ?
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={markFinished}
+                                >Mark Finished</Button>
+                                :
+                                <>
+                                </>
+                    }
                 </Grid>
                 <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "row-reverse" }}>
                     <Button

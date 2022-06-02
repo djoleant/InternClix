@@ -9,7 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Typography, TextField } from '@mui/material';
 
-export default function AcceptApplicationDialog({ name }) {
+export default function AcceptApplicationDialog({ name, studentId, internshipId, applicationId, remove }) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -19,6 +19,18 @@ export default function AcceptApplicationDialog({ name }) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [message, setMessage] = React.useState("");
+    const [denyOthers, setDenyOthers] = React.useState(false);
+
+    const acceptApplication = async () => {
+        await fetch(`http://localhost:7240/Internship/InternshipAction?internshipId=${internshipId}&studentId=${studentId}&applicationId=${applicationId}&action=Accept&denyOthers=${denyOthers}&message=${message}`, {
+            method: "POST",
+            credentials: "include"
+        });
+        handleClose();
+        remove();
+    }
 
     return (
         <div>
@@ -51,14 +63,15 @@ export default function AcceptApplicationDialog({ name }) {
                         fullWidth
                         multiline
                         variant="standard"
+                        onChange={(e) => { setMessage(e.target.value) }}
                     />
-                    <FormControlLabel control={<Checkbox />} label="Deny applications for other students" />
+                    <FormControlLabel onChange={(e) => { setDenyOthers(e.target.checked) }} control={<Checkbox />} label="Deny applications for other students" />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} autoFocus>
+                    <Button onClick={acceptApplication} autoFocus>
                         Accpet
                     </Button>
                 </DialogActions>

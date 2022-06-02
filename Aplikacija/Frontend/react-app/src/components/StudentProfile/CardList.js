@@ -1,15 +1,28 @@
 import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 import SmallInternshipCard from "./SmallInternshipCard";
 
-const internships = [
-    { title: "internship1", companyName: "Company", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed tincidunt elit. Nunc diam nulla, auctor ullamcorper vestibulum sed, scelerisque in metus. Morbi eget enim felis. Mauris efficitur metus ut tellus semper viverra. Nam faucibus libero maximus justo malesuada fringilla. Quisque vitae interdum justo, a convallis tellus." },
-    { title: "internship1", companyName: "Company", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed tincidunt elit. Nunc diam nulla, auctor ullamcorper vestibulum sed, scelerisque in metus. Morbi eget enim felis. Mauris efficitur metus ut tellus semper viverra. Nam faucibus libero maximus justo malesuada fringilla. Quisque vitae interdum justo, a convallis tellus." },
-    { title: "internship1", companyName: "Company", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed tincidunt elit. Nunc diam nulla, auctor ullamcorper vestibulum sed, scelerisque in metus. Morbi eget enim felis. Mauris efficitur metus ut tellus semper viverra. Nam faucibus libero maximus justo malesuada fringilla. Quisque vitae interdum justo, a convallis tellus." },
-    { title: "internship1", companyName: "Company", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed tincidunt elit. Nunc diam nulla, auctor ullamcorper vestibulum sed, scelerisque in metus. Morbi eget enim felis. Mauris efficitur metus ut tellus semper viverra. Nam faucibus libero maximus justo malesuada fringilla. Quisque vitae interdum justo, a convallis tellus." },
-    { title: "internship1", companyName: "Company", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed tincidunt elit. Nunc diam nulla, auctor ullamcorper vestibulum sed, scelerisque in metus. Morbi eget enim felis. Mauris efficitur metus ut tellus semper viverra. Nam faucibus libero maximus justo malesuada fringilla. Quisque vitae interdum justo, a convallis tellus." }
-]
 
 export default function CardList({ type }) {
+    const [internships, setInternships] = useState([]);
+
+    const getInternships = async () => {
+        let response;
+        if (type === "internships") {
+            response = await fetch("http://localhost:7240/Internship/GetStudentInternships", {
+                credentials: "include"
+            });
+        }
+        const data = await response.json();
+        console.log(data)
+        if (data.succeeded)
+            setInternships(data.internships);
+    }
+
+    useEffect(() => {
+        getInternships();
+    }, [])
+
     return (
         <Grid container spacing={3}>
             {

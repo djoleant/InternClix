@@ -46,7 +46,7 @@ export default function SmallInternshipCard({
             <Grid container spacing={3}  >
 
                 <Grid item xs={12} md={12}>
-                    {(location != undefined) ? <Typography align="left" variant="body2" sx={{ m: 1, display: "flex", flexDirection: "row" }}>
+                    {(location !== undefined) ? <Typography align="left" variant="body2" sx={{ m: 1, display: "flex", flexDirection: "row" }}>
                         <LocationOnIcon style={{ color: "red", marginRight: 5 }} fontSize="small" />
                         {location}
                     </Typography> : <></>}

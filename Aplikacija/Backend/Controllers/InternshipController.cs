@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Microsoft.AspNetCore.SignalR;
+using Hubs;
 
 namespace Backend.Controllers
 {
@@ -14,13 +16,18 @@ namespace Backend.Controllers
         public InternClixDbContext Context { get; set; }
 
         public UserManager<ApplicationUser> UserManager { get; set; }
+
+        private IHubContext<ChatHub> HubContext { get; set; }
+
         public InternshipController(
             InternClixDbContext dbContext,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            IHubContext<ChatHub> hubContext
             )
         {
             Context = dbContext;
             UserManager = userManager;
+            HubContext = hubContext;
         }
 
         [HttpPost]
@@ -166,7 +173,7 @@ namespace Backend.Controllers
                 .Where(i => i.ID == internshipId)
                 .Include(i => i.InternshipApplications)
                 .ThenInclude(a => a.Student.CV.Skills)
-                .Include(i => i.InternshipApplications.Where(a => a.Status == "Applied"))
+                .Include(i => i.InternshipApplications)
                 .ThenInclude(a => a.Student.CV.AdditionalInfos)
                 // .ThenInclude(s=>s.CV.Skills)
                 // .ThenInclude(s=>s.CV.Skills)
@@ -184,15 +191,19 @@ namespace Backend.Controllers
                     {
                         internship.ID,
                         Applicants = internship.InternshipApplications
+                        .OrderBy(s => s.Date)
                         .Select(s =>
                         new
                         {
+                            s.Student.Id,
+                            ApplicationID = s.ID,
                             Name = s.Student.FirstName,
                             LastName = s.Student.LastName,
                             Skills = s.Student.CV.Skills.Select(k => new { k.ID, Label = k.Name }),
                             Languages = s.Student.CV.AdditionalInfos
                             .Where(a => a.Type == "Language")
-                            .Select(a => new { Name = a.Title })
+                            .Select(a => new { Name = a.Title }),
+                            s.Status
                         })
                     }
                 });
@@ -206,6 +217,188 @@ namespace Backend.Controllers
                 });
             }
         }
+
+
+        [HttpPost]
+        [Route("InternshipAction")]
+        [Authorize(Roles = "Employer, Admin")]
+        public async Task<JsonResult> InternshipAction([FromQuery] int internshipId, string studentId, int applicationId, string action, bool? denyOthers, string? message)
+        {
+            if (denyOthers == null) denyOthers = false;
+            if (message == null) message = "";
+            var internship = await Context.Internships
+                .Where(i => i.ID == internshipId)
+                .Include(i => i.InternshipApplications)
+                .ThenInclude(a => a.Student)
+                .Include(i => i.Skills)
+                .Include(i => i.Employer)
+                .FirstOrDefaultAsync();
+            var student = await Context.Students
+                .Where(s => s.Id == studentId)
+                .Include(s => s.InternshipApplications)
+                .ThenInclude(a => a.Internship)
+                .FirstOrDefaultAsync();
+            if (student == null || internship == null)
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship or Student Not Found"
+                });
+            var application = internship.InternshipApplications
+                .Where(a => a.ID == applicationId)
+                .FirstOrDefault();
+            if (application == null)
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Application Not Found"
+                });
+
+            //[title, companyName, location, compensation, duration, description, link, messageContent, ...skills] = content.split("^");
+            string specialContent = $"{internship.Title}^{internship.Employer.CompanyName}^{internship.Employer.Address}^{internship.Compensation}^"
+                + $"{internship.Duration}^{internship.Description}^{"insertlinkhere"}^{message}";
+            string specialType = "INTERNSHIP_";
+            foreach (var skill in internship.Skills)
+            {
+                specialContent += "^" + skill.Name;
+            }
+            if (action == "Accept")
+            {
+                application.Status = "Accepted";
+                application.Date = DateTime.Now;
+                if ((bool)denyOthers)
+                {
+                    string denyContent = $"{internship.Title}^{internship.Employer.CompanyName}^{internship.Employer.Address}^{internship.Compensation}^"
+                + $"{internship.Duration}^{internship.Description}^{"insertlinkhere"}^Your application has been denied";
+                    foreach (var skill in internship.Skills)
+                    {
+                        denyContent += "^" + skill.Name;
+                    }
+                    foreach (var appl in internship.InternshipApplications)
+                    {
+                        if (appl.ID != applicationId) //dodati eentualno slanje poruke
+                        {
+                            appl.Status = "Denied";
+                            appl.Date = DateTime.Now;
+                            Context.Messages.Add(
+                                new Message
+                                {
+                                    Content = denyContent,
+                                    Receiver = appl.Student,
+                                    Type = "INTERNSHIP_DENY",
+                                    TimeSent = DateTime.Now,
+                                    Sender = internship.Employer
+                                }
+                                );
+                        }
+                    }
+                }
+                specialType += "ACCEPT";
+                Context.Messages.Add(
+                    new Message
+                    {
+                        Content = specialContent,
+                        Receiver = student,
+                        Type = specialType,
+                        TimeSent = DateTime.Now,
+                        Sender = internship.Employer
+                    }
+                    );
+
+            }
+            else if (action == "Deny")
+            {
+                application.Status = "Accepted";
+                application.Date = DateTime.Now;
+                specialType += "DENY";
+                Context.Messages.Add(
+                    new Message
+                    {
+                        Content = specialContent,
+                        Receiver = student,
+                        Type = specialType,
+                        TimeSent = DateTime.Now,
+                        Sender = internship.Employer
+                    }
+                    );
+            }
+            else if (action == "Finish")
+            {
+                application.Status = "Finished";
+                application.Date = DateTime.Now;
+            }
+            await Context.SaveChangesAsync();
+            return new JsonResult(new { succeeded = true });
+
+
+        }
+
+
+        [HttpGet]
+        [Route("GetStudentInternships")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetStudentInternships()
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship)
+            .ThenInclude(i => i.Employer)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship.Skills)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship.Categories)
+            .FirstOrDefaultAsync();
+
+            // var internship = await Context.Internships
+            //     .Where(i => i.ID == internshipId)
+            //     .Include(i => i.InternshipApplications)
+            //     .ThenInclude(a => a.Student.CV.Skills)
+            //     .Include(i => i.InternshipApplications)
+            //     .ThenInclude(a => a.Student.CV.AdditionalInfos)
+            //     // .ThenInclude(s=>s.CV.Skills)
+            //     // .ThenInclude(s=>s.CV.Skills)
+            //     // .ThenInclude(s => s.CV.Skills)
+            //     // .Include(i => i.AppliedStudents)
+            //     // .ThenInclude(s => s.CV.AdditionalInfos)
+
+            // .FirstOrDefaultAsync();
+            if (student != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internships = student.InternshipApplications
+                    .Select(a => new
+                    {
+                        ApplicationID = a.ID,
+                        InternshipID = a.Internship.ID,
+                        a.Internship.Title,
+                        a.Internship.Description,
+                        a.Internship.Duration,
+                        a.Internship.Compensation,
+                        a.Internship.Employer.CompanyName,
+                        a.Internship.Skills,
+                        Categories = a.Internship.Categories
+                            .Select(c => new { c.ID, c.Name }),
+                        Location = a.Internship.Employer.Address
+                    })
+
+
+                }
+                );
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
 
 
     }
