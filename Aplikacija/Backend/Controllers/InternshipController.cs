@@ -334,5 +334,72 @@ namespace Backend.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetStudentInternships")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetStudentInternships()
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship)
+            .ThenInclude(i => i.Employer)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship.Skills)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(a => a.Internship.Categories)
+            .FirstOrDefaultAsync();
+
+            // var internship = await Context.Internships
+            //     .Where(i => i.ID == internshipId)
+            //     .Include(i => i.InternshipApplications)
+            //     .ThenInclude(a => a.Student.CV.Skills)
+            //     .Include(i => i.InternshipApplications)
+            //     .ThenInclude(a => a.Student.CV.AdditionalInfos)
+            //     // .ThenInclude(s=>s.CV.Skills)
+            //     // .ThenInclude(s=>s.CV.Skills)
+            //     // .ThenInclude(s => s.CV.Skills)
+            //     // .Include(i => i.AppliedStudents)
+            //     // .ThenInclude(s => s.CV.AdditionalInfos)
+
+            // .FirstOrDefaultAsync();
+            if (student != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internships = student.InternshipApplications
+                    .Select(a => new
+                    {
+                        ApplicationID = a.ID,
+                        InternshipID = a.Internship.ID,
+                        a.Internship.Title,
+                        a.Internship.Description,
+                        a.Internship.Duration,
+                        a.Internship.Compensation,
+                        a.Internship.Employer.CompanyName,
+                        a.Internship.Skills,
+                        Categories = a.Internship.Categories
+                            .Select(c => new { c.ID, c.Name }),
+                        Location = a.Internship.Employer.Address
+                    })
+
+
+                }
+                );
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
+
+
     }
 }
