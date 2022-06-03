@@ -15,11 +15,13 @@ import {
     Paper,
     Divider,
     FormControl,
-    FormControlLabel
+    FormControlLabel,
+    IconButton
 } from '@mui/material';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import RadioGroup from '@mui/material/RadioGroup';
 import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
 import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import HoverRating from './components/EmployerInfo/HoverRating';
@@ -28,9 +30,52 @@ export default function EmployerRatingPage(props) {
 
     const [textValue, setTextValue] = useState("");
 
+    const [questionList, setquestionList] = useState([{question:""}]);
+
+    const [experience, setExperience] = useState({positiveExperience:""}, {negativeExperience:""});
+
+    const [durationSel, setDurationSel] = useState({durationSel:0});
+
+    console.log(questionList);
+
+    console.log(experience.positiveExperience);
+
+    console.log(durationSel);
+
     const onTextChange = (e) => setTextValue(e.target.value);
     const handleSubmit = () => console.log(textValue);
     const handleReset = () => setTextValue("");
+
+    const handleQuestionAdd=()=>{
+        setquestionList([...questionList, {question:""}])
+    }
+
+    const handleQuestionRemove=(index)=>{
+        const list=[...questionList];
+        list.splice(index, 1);
+        setquestionList(list);
+    }
+
+    const handleQuestionChange=(event, index)=>{
+        const {value, name}=event.target;
+        const list=[...questionList];
+        list[index][name]=value;
+        setquestionList(list);
+    }
+
+    const handleExperienceChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[experience];
+        list[name]=value;
+        setExperience(list);
+    }
+
+    const handleDurationSelChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[durationSel];
+        list[name]=value;
+        setDurationSel(list);
+    }
 
     return (
 
@@ -110,7 +155,7 @@ export default function EmployerRatingPage(props) {
                     <br></br>
                     <Grid container xs={12} style={{top:10, alignItems : "center", justifyContent:"center"}}>
                         <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> How many weeks did the selection process last? </Typography>
-                        <TextField name={""} label={"Duration of selection process"} fullWidth />
+                        <TextField onChange={(event)=>handleDurationSelChange(event)} name={"durationSel"} label={"Duration of selection process"} fullWidth />
 
                     </Grid>
 
@@ -119,9 +164,35 @@ export default function EmployerRatingPage(props) {
                 <Paper sx={{ p: 3, mb: 4, backgroundColor:"#f3f3f3"}} style={{ display:"flex", flexDirection:"column", alignItems:"space-between" }}
                     variant="outlined">
                             <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> <LightbulbCircleIcon style={{color:"red"}}/> Remeber any interview questions? Please do share! </Typography>
-                        <Grid>
-                            <Button variant="contained" sx={{ mt: 2 }} startIcon={<AddBoxIcon/>} > Add Question</Button>
-                        </Grid>
+                        {
+                            questionList.map((singleQuestion,index)=>(
+                                <Grid>
+                                {(questionList.length==1)?
+                                (
+                                    <Grid style={{display:"flex",flexDirection:"row"}}>
+                                    <TextField name={"question"} value={singleQuestion.question} onChange={(event)=>handleQuestionChange(event,index)} style={{marginBottom:10, marginRight:5}} label={"Enter new interview question"} fullWidth />
+                                    </Grid>
+                                ):
+                                (
+                                    <Grid style={{display:"flex",flexDirection:"row"}}>
+                                    <TextField name={"question"} value={singleQuestion.question} onChange={(event)=>handleQuestionChange(event,index)} style={{marginBottom:10, marginRight:5}} label={"Enter new interview question"} fullWidth />
+                                    <IconButton aria-label="delete" onClick={()=>handleQuestionRemove(index)}>
+                                    <DeleteIcon />
+                                    </IconButton>
+                                    </Grid>
+                                    
+                                )}
+                                
+                                {(questionList.length-1===index)?
+                                (
+                                    <Grid>
+                                        <Button onClick={handleQuestionAdd} variant="contained" sx={{ mt: 2 }} startIcon={<AddBoxIcon/>} > Add Question</Button>
+                                    </Grid>
+                                ):""}
+                                </Grid>
+                            ))
+                        }
+                        
                 </Paper>
 
                 <Box sx={{ mb: 3 }} variant="outlined">
@@ -129,11 +200,11 @@ export default function EmployerRatingPage(props) {
                     <Grid container spacing={3} sx={{ mb: 4 }}>
                     
                     <Grid item xs={12}>
-                        <TextField type="name" name={"employername"} label={"Positive experience"} fullWidth multiline rows={4}/>
+                        <TextField type="name" name={"positiveExperience"} label={"Positive experience"} onChange={(event)=>handleExperienceChange(event)} fullWidth multiline rows={4}/>
                     </Grid>
 
                     <Grid item xs={12} >
-                        <TextField type="name" name={"employername"} label={"Negative experience"} fullWidth multiline rows={4}/>
+                        <TextField type="name" name={"negativeExperience"} label={"Negative experience"} onChange={(event)=>handleExperienceChange(event)} fullWidth multiline rows={4}/>
                     </Grid>
                     </Grid>
 
