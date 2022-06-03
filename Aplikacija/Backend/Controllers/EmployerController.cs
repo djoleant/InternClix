@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -133,7 +134,7 @@ namespace Backend.Controllers
                             emp.Address,
                             emp.Likes,
                             emp.Email,
-                            Internships = emp.Internships.Count,
+                            InternshipCount = emp.Internships.Count,
                             Ratings = emp.Ratings
                             .Select(r => new { r.OverallScore}),
                             
@@ -172,6 +173,48 @@ namespace Backend.Controllers
                         RatingCount=Context.Ratings.ToList().Count,
                         InternshipCount=Context.Internships.ToList().Count,
                         StudentCount=Context.Students.ToList().Count,
+                        
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Employer Not Found"
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRankedEmployers")]
+        [Authorize(Roles = "Employer, Admin, Student")]
+        public async Task<JsonResult> GetRankedEmployers()
+        {
+            var employers = await Context.Employers
+            .Include(i=>i.Internships)
+            .Include(i=>i.Ratings)
+            .ToListAsync();
+            if (employers != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    employers = new
+                    {
+                        Employers=employers.Select(emp=>new{
+                            emp.Picture,
+                            emp.CompanyName,
+                            emp.About,
+                            emp.Address,
+                            emp.Likes,
+                            emp.Email,
+                            InternshipCount = emp.Internships.Count,
+                            Ratings = emp.Ratings
+                            .Select(r => new { r.OverallScore}),
+                            
+                        }).OrderByDescending(x=>x.InternshipCount)
                         
                     }
                 });

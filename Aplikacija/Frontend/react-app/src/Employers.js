@@ -21,10 +21,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import TextField from "@mui/material/TextField";
 import ComboBox from "./components/ComboBox";
 import StarRateIcon from "@mui/icons-material/StarRate";
+import background from "./resources/stojny.jpg";
 
 export default function Employers(props) {
 
   const [search, setSearch] = useState("");
+
+  const [color, setColor] = useState("blue");
 
   const getEmployers = async () => {
     const response = await fetch(
@@ -40,6 +43,45 @@ export default function Employers(props) {
     }
   };
 
+  const getStatistics = async () => {
+    const response = await fetch(
+      "http://localhost:7240/Employer/GetStatistics",
+      {
+        credentials: "include",
+      }
+    );
+    if (response.ok) {
+      const fetchData2 = await response.json();
+      console.log(fetchData2);
+      setStatisticsData(fetchData2.statistics);
+    }
+  };
+
+  const getRankedEmployers = async () => {
+    const response = await fetch(
+      "http://localhost:7240/Employer/GetRankedEmployers",
+      {
+        credentials: "include",
+      }
+    );
+    if (response.ok) {
+      const fetchData = await response.json();
+      console.log(fetchData);
+      setEmployerData(fetchData.employers);
+    }
+  };
+
+  const [statisticsData, setStatisticsData] = useState({
+    statistics: [
+      {
+        employerCount: "",
+        ratingCount: "",
+        internshipCount: "",
+        studentCount: ""
+      },
+    ],
+  });
+
   const [employerData, setEmployerData] = useState({
     employers: [
       {
@@ -49,48 +91,29 @@ export default function Employers(props) {
         address:"",
         likes: "",
         email:"",
-        internships:"",
+        internshipCount:"",
         ratings:[{overallScore:""}]
       },
     ],
   });
 
   useEffect(() => {
+    getStatistics();
     getEmployers();
   }, []);
-
-//   const card = {
-//     companyName:"Codemancy Studio",
-//     about:"Cool employer",
-//     likes:"3",
-//     internships:"3"
-//     //skills ?
-//     //categories ?
-//   };
-//   const [cards, setCards] = React.useState([card]);
 
   return (
     <Container component="main">
       <CssBaseline />
       <React.Fragment>
         <Paper sx={{ p: 3, mb: 4 }} variant="outlined">
-          {/* <Box
-                        component="form"
-                        sx={{
-                            '& > :not(style)': { m: 1, width: '25ch' },
-                        }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <TextField id="outlined-basic" label="Search" variant="outlined" />
-
-                    </Box> */}
 
           <Grid
             container
             spacing={0}
             alignItems="center"
             justifyContent="center"
+            style={{display:"flex", flexDirection:"row"}}
           >
               {/* <ComboBox /> */}
               <Grid item xs={12} style={{ padding: "10px", maxWidth:500 }}>
@@ -101,11 +124,21 @@ export default function Employers(props) {
             variant="outlined"
             fullWidth
           />
+          <style>
+            {
+              `
+              .red {color: red}
+              .blue {color: "#618fba"}
+            `
+            }
+          </style>
+          <Button variant="contained" className={color} onClick={()=>{setColor((color)=>color==="blue"?"red":"blue");if(color==="blue"){getRankedEmployers();}else{getEmployers();}}} style={{justifySelf:"flex-start", marginTop:10, marginRight:10, fontWeight:500}}>  SORT BY NUMBER OF INTERNSHIPS </Button>
+          {/* <Button style={{justifySelf:"flex-start", marginTop:10}}>  SORT BY EMPLOYER RATING </Button> */}
         </Grid>
           </Grid>
 
           <Box sx={{ mb: 3 }} variant="outlined">
-            <Divider sx={{ mt: 5, mb: 3 }}> EMPLOYERS </Divider>
+            <Divider sx={{ mt: 2, mb: 3 }}> {statisticsData.employerCount} EMPLOYER{statisticsData.employerCount==1?"":"S"} </Divider>
             <Typography
               component="h1"
               align="center"
@@ -117,7 +150,7 @@ export default function Employers(props) {
 
           <Grid
             container
-            spacing={1}
+            spacing={4}
             alignItems="center"
             justifyContent="center"
           >
@@ -127,63 +160,46 @@ export default function Employers(props) {
               
               return (
                 <Grid item >
-                  <Card key={index} style={{width:350, height:200}}>
+                  <Card key={index} style={{width:380, height:230}}>
                     
                     <CardMedia />
-                    <CardContent>
-                      <Typography
-                        className={"MuiTypography--heading"}
-                        variant={"h6"}
-                        gutterBottom
-                      >
-                        
-                      </Typography>
-                      <Typography
-                        display="block"
-                        className={"MuiTypography--subheading"}
-                        variant={"caption"}
-                      >
-                        
-                      </Typography>
-                      <Typography
-                        display="block"
-                        className={"MuiTypography--subheading"}
-                        variant={"body2"}
-                      >
-                        
-                      </Typography>
-                      <Typography
-                        className={"MuiTypography--subheading"}
-                        variant={"substring2:h6"}
-                      >
-                        
-                      </Typography>
-                    </CardContent>
+                    
                     <Grid
                       container
                       style={{
-                        marginTop: 3,
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent: "center",
+                        justifyContent: "space-around",
+                        alignItems:"flex-end",
+                        height:200,
+                        backgroundImage:`url(${background})`
                       }}
                       spacing={3}
-                      sx={{ mb: 2 }}
+                      
                     >
-                      <Button variant="contained" disabled> {card.internships} {card.internships=="1"?"internship":"internships"} </Button>
+                      <Button  style={{height:32, marginLeft:30, backgroundColor:"white", marginBottom:30, color:"black"}}  disabled> {card.internshipCount} {card.internshipCount=="1"?"internship":"internships"} </Button>
                       {
-                        (<Button variant="contained" disabled style={{marginLeft:5}} >  
+                        (<Button disabled style={{marginLeft:5, height:32, backgroundColor:"white", marginBottom:30, color:"black"}} >  
                         {
-                        card.ratings.length>0?card.ratings.reduce((acc,current)=>acc+=current.overallScore,0)/card.ratings.length:"NO RATINGS"
+                        card.ratings.length>0?card.ratings.reduce((acc,current)=>acc+=current.overallScore,0)/card.ratings.length:"0 RATINGS"
                         } 
-                        <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} /> 
+                        {
+                          card.ratings.length>0?(<StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />):""
+                        }
+                         
                         </Button>)
                       }
+                      <Avatar
+                      variant="rounded"
+                      alt="Remy Sharp"
+                      src="/resources/stojny.jpg"
+                      sx={{ width: 110, height: 110, marginRight:1, marginTop:14, justifySelf:"flex-end"}}
+                      />
                     </Grid>
                     <Divider light />
                     <CardActions style={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"flex-start"}}>
-                      <Typography style={{textAlign:"center", fontWeight:"1000", marginLeft:7}}>{card.companyName}</Typography>
-                      <Typography style={{textAlign:"center"}}>{card.about}</Typography>
+                      <Typography style={{textAlign:"center", fontWeight:"1000", marginLeft:7, fontSize:20}}>{card.companyName}</Typography>
+                      {/* <Typography style={{textAlign:"center"}}>{card.about}</Typography> */}
                     </CardActions>
                   </Card>
                 </Grid>
