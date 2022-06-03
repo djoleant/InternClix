@@ -374,6 +374,7 @@ namespace Backend.Controllers
                     {
                         ApplicationID = a.ID,
                         InternshipID = a.Internship.ID,
+                        a.Status,
                         a.Internship.Title,
                         a.Internship.Description,
                         a.Internship.Duration,
