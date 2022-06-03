@@ -14,6 +14,13 @@ export default function CardList({ type }) {
                 credentials: "include"
             });
         }
+        else if (type === "wishlist") {
+            response = await fetch("http://localhost:7240/Internship/GetWishlistInternships", {
+                credentials: "include"
+            });
+        }
+        else
+            return;
         const data = await response.json();
         console.log(data)
         if (data.succeeded)
@@ -31,7 +38,7 @@ export default function CardList({ type }) {
                     <Grid item xs={12} md={6} lg={4} key={index}>
                         <SmallInternshipCard
                             {...internship}
-                            showBookmark={(type === "internships")}
+                            showBookmark={(type === "wishlist")}
                             banner={
                                 type === "internships" ?
                                     <Typography
@@ -49,6 +56,7 @@ export default function CardList({ type }) {
                                     </Typography>
                                     : undefined
                             }
+                            wishlisted={type === "wishlist"}
                         />
                     </Grid>
                 ))

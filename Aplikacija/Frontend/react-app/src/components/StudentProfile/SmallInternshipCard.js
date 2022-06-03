@@ -6,6 +6,7 @@ import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import PaidIcon from '@mui/icons-material/Paid';
 import SkillChips from "../InternshipPage/SkillChips";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function SmallInternshipCard({
     title = "Title",
@@ -19,10 +20,51 @@ export default function SmallInternshipCard({
     link,
     time,
     banner,
-    maxWidth = "100%"
+    maxWidth = "100%",
+    wishlisted = false,
+    internshipID
 }) {
 
     const navigate = useNavigate();
+
+    const [inWishlist, setInWishlist] = useState(wishlisted);
+
+    const handleWishlist = async () => {
+        if (inWishlist) {
+            removeFromWishList();
+        }
+        else {
+            addToWishList();
+        }
+    }
+
+    const addToWishList = async () => {
+        if (internshipID === undefined) return;
+        const response = await fetch("http://localhost:7240/Internship/AddToWishList/" + internshipID, {
+            credentials: "include"
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if (data.succeeded) {
+            setInWishlist(true);
+        }
+
+    }
+
+    const removeFromWishList = async () => {
+        if (internshipID === undefined) return;
+        const response = await fetch("http://localhost:7240/Internship/RemoveFromWishList/" + internshipID, {
+            credentials: "include"
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if (data.succeeded) {
+            setInWishlist(false);
+        }
+
+    }
 
     return (
         <Card variant="outlined" sx={{ p: 3, maxWidth: maxWidth }}>
@@ -37,6 +79,8 @@ export default function SmallInternshipCard({
                     <Checkbox
                         icon={<BookmarkBorderIcon />}
                         checkedIcon={<BookmarkIcon />}
+                        checked={inWishlist}
+                        onChange={handleWishlist}
                     />
                 </Grid>
             </Grid>

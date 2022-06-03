@@ -351,19 +351,6 @@ namespace Backend.Controllers
             .ThenInclude(a => a.Internship.Categories)
             .FirstOrDefaultAsync();
 
-            // var internship = await Context.Internships
-            //     .Where(i => i.ID == internshipId)
-            //     .Include(i => i.InternshipApplications)
-            //     .ThenInclude(a => a.Student.CV.Skills)
-            //     .Include(i => i.InternshipApplications)
-            //     .ThenInclude(a => a.Student.CV.AdditionalInfos)
-            //     // .ThenInclude(s=>s.CV.Skills)
-            //     // .ThenInclude(s=>s.CV.Skills)
-            //     // .ThenInclude(s => s.CV.Skills)
-            //     // .Include(i => i.AppliedStudents)
-            //     // .ThenInclude(s => s.CV.AdditionalInfos)
-
-            // .FirstOrDefaultAsync();
             if (student != null)
             {
                 return new JsonResult(new
@@ -400,7 +387,135 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetWishlistInternships")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetWishlistInternships()
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(s => s.Wishlist)
+            .ThenInclude(i => i.Employer)
+            .Include(s => s.Wishlist)
+            .ThenInclude(i => i.Skills)
+            .Include(s => s.Wishlist)
+            .ThenInclude(i => i.Categories)
+            .FirstOrDefaultAsync();
 
+            if (student != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internships = student.Wishlist
+                    .Select(a => new
+                    {
+                        InternshipID = a.ID,
+                        a.Title,
+                        a.Description,
+                        a.Duration,
+                        a.Compensation,
+                        a.Employer.CompanyName,
+                        a.Skills,
+                        Categories = a.Categories
+                            .Select(c => new { c.ID, c.Name }),
+                        Location = a.Employer.Address
+                    })
+
+
+                }
+                );
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("AddToWishList/{internshipId}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> AddToWishList(int internshipId)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(s => s.Wishlist)
+            .FirstOrDefaultAsync();
+
+            var internship = await Context.Internships
+            .Where(i => i.ID == internshipId)
+            .Include(i => i.WishlistStudents)
+            .FirstOrDefaultAsync();
+
+            if (student != null && internship != null)
+            {
+                student.Wishlist.Add(internship);
+                internship.WishlistStudents.Add(student);
+                await Context.SaveChangesAsync();
+                return new JsonResult(new
+                {
+                    succeeded = true
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("RemoveFromWishList/{internshipId}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> RemoveFromWishList(int internshipId)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(s => s.Wishlist)
+            .FirstOrDefaultAsync();
+
+            var internship = await Context.Internships
+            .Where(i => i.ID == internshipId)
+            .Include(i => i.WishlistStudents)
+            .FirstOrDefaultAsync();
+
+            if (student != null && internship != null)
+            {
+                if (student.Wishlist.Where(i => i.ID == internshipId).Count() < 1)
+                {
+                    return new JsonResult(new
+                    {
+                        succeeded = false,
+                        error = "Internship Not Found in Wishlist"
+                    });
+                }
+                student.Wishlist.Remove(internship);
+                internship.WishlistStudents.Remove(student);
+                await Context.SaveChangesAsync();
+                return new JsonResult(new
+                {
+                    succeeded = true
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
 
     }
 }
