@@ -118,36 +118,61 @@ export default function CVCreator() {
 
     const [skillData, setSkillData] = useState([]);
     const [cvData, setCvData] = useState({
+        title:"",
         phone: "",
         address: "",
         city: "",
         education: [
-            { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
+            //{ title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
         ],
         skills: [],
         categories: [],
-        languages: [{ title: "", description: "" }],
+        languages: [
+            //{ title: "", description: "" }
+        ],
         experience: [
-            { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
+            // { title: "", description: "", institutionName: "", fromDate: "", toDate: "" }
         ],
         additionalInfo: []
     });
 
     const cvValidationSchema = Yup.object().shape({
+        phone: Yup.string().required("Your phone number is required"),
+        address: Yup.string().required("Your address is required"),
+        city: Yup.string().required("The city is required is required"),
         education: Yup.array()
             .of(
                 Yup.object()
                     .shape({
-                        title: Yup.string().required("Required"),
-                        institutionName: Yup.string().required("Required")
+                        title: Yup.string().required("The title of your education is required"),
+                        institutionName: Yup.string().required("The name of the institution is required"),
+                        fromDate: Yup.string().required("The date is required"),
+                        toDate: Yup.string().required("The date is required")
                     })),
-        // languages: Yup.array()
-        //     .of(
-        //         Yup.object().shape({
-        //             title: Yup.string().required("Required"),
-        //             description: Yup.string().required("Required")
-        //         })
-        //     )
+        languages: Yup.array()
+            .of(
+                Yup.object().shape({
+                    title: Yup.string().required("The name of the language is required"),
+                    description: Yup.string().required("The level is required")
+                })
+            ),
+        experience: Yup.array()
+            .of(
+                Yup.object().shape({
+                    title: Yup.string().required("The position is required"),
+                    institutionName: Yup.string().required("The name of the company is required"),
+                    fromDate: Yup.string().required("The date is required"),
+                    toDate: Yup.string().required("The date is required")
+                })
+            ),
+        additionalInfo: Yup.array()
+            .of(
+                Yup.object().shape({
+                    title: Yup.string().required("The title of the additional information is required"),
+                    description: Yup.string().required("The description is required"),
+                    type: Yup.string().required("The type of the additional information is required")
+                })
+            )
     })
 
     useEffect(() => {
@@ -201,7 +226,7 @@ export default function CVCreator() {
                                 cvData
                             }
                             enableReinitialize
-                            //validationSchema={cvValidationSchema}
+                            validationSchema={cvValidationSchema}
                             onSubmit={_handleSubmit}
                         >
                             {({ isSubmitting }) => (
@@ -227,7 +252,11 @@ export default function CVCreator() {
                                                 variant="contained"
                                                 color="primary"
                                                 size="large"
-
+                                            // onClick={() => {
+                                            //     if (!isLastStep) {
+                                            //         setActiveStep(activeStep + 1)
+                                            //     }
+                                            // }}
                                             >
                                                 {isLastStep ? 'Save changes' : 'Next'}
                                             </Button>

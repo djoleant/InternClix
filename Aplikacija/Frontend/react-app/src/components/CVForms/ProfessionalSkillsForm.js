@@ -73,8 +73,8 @@ export default function ProfessionalSkillsForm({ skillData }) {
                     >
                         <Divider sx={{ mb: 3 }} >SKILLS</Divider>
                         <ChipTransferList chipData={skillData} leftTitle={"Choose skills:"} rightTitle={"My skills:"} fieldName={"skills"} />
-                        <Divider sx={{ mt: 5, mb: 3 }} >CATEGORIES</Divider>
-                        <ChipTransferList chipData={categoryData} leftTitle={"Choose category of work:"} rightTitle={"My categories:"} fieldName={"categories"} />
+                        <Divider sx={{ mt: 5, mb: 3 }} >CV TITLE</Divider>
+                        <TextInputField name={`title`} label={"CV Title"} fullWidth />
                         <Divider sx={{ mt: 5, mb: 3 }} >LANGUAGES</Divider>
                         <FieldArray
                             name="languages"
@@ -84,13 +84,13 @@ export default function ProfessionalSkillsForm({ skillData }) {
                                         values.languages.map((language, index) => (
                                             <Grid container spacing={3} key={index} sx={{ mb: 3 }}>
 
-                                                <Grid item xs={4} >
+                                                <Grid item md={4} xs={12}>
                                                     <TextInputField name={`languages[${index}].title`} label={"Language"} fullWidth />
                                                 </Grid>
-                                                <Grid item xs={7}>
+                                                <Grid item md={7} xs={10}>
                                                     <TextInputField name={`languages[${index}].description`} label={"Level"} fullWidth />
                                                 </Grid>
-                                                <Grid item xs={1} >
+                                                <Grid item md={1} xs={2} sx={{ mb: 5 }}>
                                                     <Tooltip title="Delete" placement="top" arrow>
                                                         <IconButton aria-label="delete" color="error" onClick={() => { arrayHelpers.remove(index) }}
                                                             //sx={{ mr: -2 }}
