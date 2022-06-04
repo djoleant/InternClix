@@ -30,6 +30,12 @@ namespace Models
 
         public Boolean Recommended {get;set;}
 
+        public string InterviewLevel {get; set;} = default!; //VeryEasy, Easy, AboutRight, Difficult, ExtremelyDifficult
+
+        public string GeneralImpression {get; set;} =default!; //Positive, Negative, Neutral
+
+        public int SelectionLength {get; set;}
+
         public string PositiveExperience { get; set; } = default!;
 
         public string NegativeExperience { get; set; } = default!;

@@ -38,6 +38,8 @@ namespace Models
 
         public List<InternshipApplication> InternshipApplications { get; set; } = default!;
 
+        public List<InterviewQuestion> InterviewQuestions {get; set;}
+
     }
 
 
@@ -51,6 +53,15 @@ namespace Models
         public string Status { get; set; } = default!; //Accepted, Denied, Applied, Finished
 
         public DateTime Date { get; set; }
+
+    }
+
+    public class InterviewQuestion
+    {
+        [Key]
+        public int ID { get; set; }
+        
+        public string Content {get; set; }=default!;
 
     }
 

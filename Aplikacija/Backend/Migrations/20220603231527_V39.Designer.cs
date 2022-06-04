@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Models;
 
@@ -11,9 +12,10 @@ using Models;
 namespace Backend.Migrations
 {
     [DbContext(typeof(InternClixDbContext))]
-    partial class InternClixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220603231527_V39")]
+    partial class V39
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -500,28 +502,6 @@ namespace Backend.Migrations
                     b.ToTable("InternshipApplication");
                 });
 
-            modelBuilder.Entity("Models.InterviewQuestion", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("InternshipID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("InternshipID");
-
-                    b.ToTable("InterviewQuestion");
-                });
-
             modelBuilder.Entity("Models.Message", b =>
                 {
                     b.Property<int>("ID")
@@ -875,13 +855,6 @@ namespace Backend.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("Models.InterviewQuestion", b =>
-                {
-                    b.HasOne("Models.Internship", null)
-                        .WithMany("InterviewQuestions")
-                        .HasForeignKey("InternshipID");
-                });
-
             modelBuilder.Entity("Models.Message", b =>
                 {
                     b.HasOne("Models.ApplicationUser", "Receiver")
@@ -934,8 +907,6 @@ namespace Backend.Migrations
             modelBuilder.Entity("Models.Internship", b =>
                 {
                     b.Navigation("InternshipApplications");
-
-                    b.Navigation("InterviewQuestions");
                 });
 
             modelBuilder.Entity("Models.Employer", b =>
