@@ -46,16 +46,16 @@ export const login = (email, password) => {
     };
 };
 
-export const logout = () => {
-    return async (dispatch) => {
-        const response = await fetch("/auth/logout");
-        const data = await response.json();
+// export const logout = () => {
+//     return async (dispatch) => {
+//         const response = await fetch("/auth/logout");
+//         const data = await response.json();
 
-        if (data.success) {
-            dispatch({ type: LOGOUT, user: null, loggedIn: false });
-        }
-    };
-};
+//         if (data.success) {
+//             dispatch({ type: LOGOUT, user: null, loggedIn: false });
+//         }
+//     };
+// };
 
 export const checkIfLogged = () => {
     return async (dispatch, getState) => {
@@ -106,3 +106,38 @@ export const register = (firstName, lastName, email, username, password) => {
         return data;
     };
 };
+
+export const loadUserData = async () => {
+    const response = await fetch("http://localhost:7240/Auth/CheckUser", {
+        method: "GET",
+        credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (data.logged) {
+        localStorage.setItem("id", data.user.id);
+        localStorage.setItem("role", data.user.roles[0])
+        localStorage.setItem("username", data.user.username);
+    } else {
+        localStorage.setItem("role", "Guest");
+        localStorage.setItem("id", "");
+        localStorage.setItem("username", "");
+    }
+}
+
+
+export const logout = async () => {
+    const response = await fetch("http://localhost:7240/Auth/Logout", {
+        method: "POST",
+        credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        localStorage.setItem("role", "Guest");
+        localStorage.setItem("username", "");
+    }
+
+}

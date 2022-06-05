@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -44,6 +44,10 @@ export default function SignUp() {
 
   const [role, setRole] = useState(0);
 
+  const navigate = useNavigate();
+
+  const { role: registerRole } = useParams();
+
   const setEmployerRole = () => {
     if (role != "employer") {
       setRole("employer");
@@ -57,6 +61,15 @@ export default function SignUp() {
     }
 
   }
+
+  React.useEffect(() => {
+    if (registerRole === "employer")
+      setRole("employer");
+    else if (registerRole === "student")
+      setRole("student")
+    else
+      navigate("/Register/student")
+  }, [])
 
   return (
 
@@ -76,7 +89,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <RoleToggle setStudent={setStudentRole} setEmployer={setEmployerRole} />
+        <RoleToggle setStudent={setStudentRole} setEmployer={setEmployerRole} selected={role} />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
 

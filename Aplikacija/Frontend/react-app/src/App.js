@@ -22,6 +22,7 @@ import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
+import { loadUserData } from "./actions/Auth";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -216,6 +217,10 @@ export default function App() {
     []
   );
 
+  React.useEffect(() => {
+    loadUserData();
+  }, [])
+
   // Update the theme only if the mode changes
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
@@ -233,7 +238,7 @@ export default function App() {
             }
           />
           <Route
-            path="/Register"
+            path="/Register/:role"
             element={
               <Header
                 Component={Register}

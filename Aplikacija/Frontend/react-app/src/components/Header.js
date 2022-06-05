@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from "@mui/material/AppBar";
 import Link from "@mui/material/Link";
@@ -18,6 +19,8 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import Switch from "./ThemeSwitch";
 import { changeTheme } from "../App";
+import { Divider } from "@mui/material";
+import { logout } from "../actions/Auth";
 
 const pages = ["Home", "Internships", "Employers", "About"];
 const settings = ["Account", "CV", "Logout"];
@@ -46,6 +49,15 @@ export const Header = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [role, setRole] = useState(localStorage.getItem("role"));
+
+  const handleMenuClick = async (option) => {
+    console.log(option);
+    if (option === "Logout") {
+      await logout();
+      navigate("/SignIn")
+    }
+  }
 
   return (
     <React.Fragment>
@@ -138,52 +150,62 @@ export const Header = (props) => {
               ))}
             </Box>
 
-            <MenuItem>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={() => { navigate("/Chat") }}
-              >
-                <Badge badgeContent={4} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </MenuItem>
 
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+            {
+              (role !== "Guest") ?
+                <>
+                  <MenuItem>
+                    <IconButton
+                      size="large"
+                      aria-label="show 4 new mails"
+                      color="inherit"
+                      onClick={() => { navigate("/Chat") }}
+                    >
+                      <Badge badgeContent={4} color="error">
+                        <MailIcon />
+                      </Badge>
+                    </IconButton>
                   </MenuItem>
-                ))}
 
-                <MenuItem onClick={ThemeHandler}>
-                  <Switch />
-                </MenuItem>
-              </Menu>
-            </Box>
+                  <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      sx={{ mt: "45px" }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                    >
+                      <MenuItem >
+                        <Typography sx={{ fontWeight: "bold" }}>{localStorage.getItem("username")}</Typography>
+                      </MenuItem>
+                      <Divider sx={{ ml: 1, mr: 1 }} />
+                      {settings.map((setting) => (
+                        <MenuItem key={setting} onClick={() => { handleMenuClick(setting) }}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      ))}
+
+                      <MenuItem onClick={ThemeHandler}>
+                        <Switch />
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                </> : <></>
+            }
           </Toolbar>
         </Container>
       </AppBar>
