@@ -180,7 +180,7 @@ export default function Employers(props) {
                     >
                       <Button  style={{backgroundColor:"#618fba", height:32, marginLeft:30, marginBottom:30, color:"white"}}  disabled> {card.internshipCount} {card.internshipCount=="1"?"internship":"internships"} </Button>
                       {
-                        (<Button disabled style={{marginLeft:5, height:32, backgroundColor:"white", marginBottom:30, color:"#618fba"}} >  
+                        (<Button disabled style={{marginLeft:5, height:32, backgroundColor:"white", marginBottom:30, color:"black"}} >  
                         {
                         card.ratings.length>0?card.ratings.reduce((acc,current)=>acc+=current.overallScore,0)/card.ratings.length:"0 RATINGS"
                         } 
@@ -193,13 +193,13 @@ export default function Employers(props) {
                       <Avatar
                       variant="rounded"
                       alt="Remy Sharp"
-                      src={process.env.PUBLIC_URL+"/resources/stojny.jpg"}
+                      src={process.env.PUBLIC_URL+"/resources/realstojny.jpg"}
                       sx={{ width: 110, height: 110, marginRight:1, marginTop:14, justifySelf:"flex-end"}}
                       />
                     </Grid>
                     <Divider light />
                     <CardActions style={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"flex-start"}}>
-                      <Typography style={{color:"#618fba", textAlign:"center", fontWeight:"1000", marginLeft:7, fontSize:20}}><WorkHistoryIcon> </WorkHistoryIcon> {card.companyName}</Typography>
+                      <Typography style={{color:"black", textAlign:"center", fontWeight:"1000", marginLeft:7, fontSize:20}}><WorkHistoryIcon> </WorkHistoryIcon> {card.companyName}</Typography>
                       {/* <Typography style={{textAlign:"center"}}>{card.about}</Typography> */}
                     </CardActions>
                   </Card>
