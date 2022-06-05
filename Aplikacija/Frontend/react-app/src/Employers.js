@@ -193,7 +193,7 @@ export default function Employers(props) {
                       <Avatar
                       variant="rounded"
                       alt="Remy Sharp"
-                      src="/resources/stojny.jpg"
+                      src={process.env.PUBLIC_URL+"/resources/stojny.jpg"}
                       sx={{ width: 110, height: 110, marginRight:1, marginTop:14, justifySelf:"flex-end"}}
                       />
                     </Grid>
