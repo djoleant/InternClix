@@ -21,6 +21,7 @@ import InternshipCreator from "./InternshipCreator";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import Redirect from "./components/Redirect";
+import Profile from "./components/Profile";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -283,6 +284,21 @@ export default function App() {
             }
           />
           <Route
+            path="/MyProfile"
+            element={
+              <Redirect
+                to="/SignIn"
+                roles={["Student", "Employer"]}
+                component={
+                  <Header
+                    Component={Profile}
+                    ThemeHandler={colorMode.toggleColorMode}
+                  />
+                }
+              />
+            }
+          />
+          {/* <Route
             path="/EmployerInfoPage"
             element={
               <Header
@@ -290,7 +306,7 @@ export default function App() {
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
-          />
+          /> */}
           <Route
             path="/Employers"
             element={
@@ -309,7 +325,7 @@ export default function App() {
               />
             }
           />
-          <Route
+          {/* <Route
             path="/StudentProfile"
             element={
               <Header
@@ -317,7 +333,7 @@ export default function App() {
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }
-          />
+          /> */}
 
           <Route
             path="/Chat/:id"
