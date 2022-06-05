@@ -22,12 +22,13 @@ import TextField from "@mui/material/TextField";
 import ComboBox from "./components/ComboBox";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import background from "./resources/stojny.jpg";
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 
 export default function Employers(props) {
 
   const [search, setSearch] = useState("");
 
-  const [color, setColor] = useState("blue");
+  const [backgroundColor, setColor] = useState("blue");
 
   const getEmployers = async () => {
     const response = await fetch(
@@ -120,7 +121,7 @@ export default function Employers(props) {
           <TextField
             onChange={(event) => { setSearch(event.target.value) }}
             id="outlined-basic-email"
-            label="Enter employer name"
+            label="Search by employer name"
             variant="outlined"
             fullWidth
           />
@@ -128,11 +129,11 @@ export default function Employers(props) {
             {
               `
               .red {color: red}
-              .blue {color: "#618fba"}
+              .blue {background-color: "#618fba"}
             `
             }
           </style>
-          <Button variant="contained" className={color} onClick={()=>{setColor((color)=>color==="blue"?"red":"blue");if(color==="blue"){getRankedEmployers();}else{getEmployers();}}} style={{justifySelf:"flex-start", marginTop:10, marginRight:10, fontWeight:500}}>  SORT BY NUMBER OF INTERNSHIPS </Button>
+          <Button variant="outlined" className={backgroundColor} onClick={()=>{setColor((backgroundColor)=>backgroundColor==="blue"?"red":"blue");if(backgroundColor==="blue"){getRankedEmployers();}else{getEmployers();}}} style={{justifySelf:"flex-start", marginTop:10, marginRight:10, fontWeight:500}}>  SORT{(backgroundColor==="blue")?"":"ED"} BY NUMBER OF INTERNSHIPS </Button>
           {/* <Button style={{justifySelf:"flex-start", marginTop:10}}>  SORT BY EMPLOYER RATING </Button> */}
         </Grid>
           </Grid>
@@ -177,9 +178,9 @@ export default function Employers(props) {
                       spacing={3}
                       
                     >
-                      <Button  style={{height:32, marginLeft:30, backgroundColor:"white", marginBottom:30, color:"black"}}  disabled> {card.internshipCount} {card.internshipCount=="1"?"internship":"internships"} </Button>
+                      <Button  style={{backgroundColor:"#618fba", height:32, marginLeft:30, marginBottom:30, color:"white"}}  disabled> {card.internshipCount} {card.internshipCount=="1"?"internship":"internships"} </Button>
                       {
-                        (<Button disabled style={{marginLeft:5, height:32, backgroundColor:"white", marginBottom:30, color:"black"}} >  
+                        (<Button disabled style={{marginLeft:5, height:32, backgroundColor:"white", marginBottom:30, color:"#618fba"}} >  
                         {
                         card.ratings.length>0?card.ratings.reduce((acc,current)=>acc+=current.overallScore,0)/card.ratings.length:"0 RATINGS"
                         } 
@@ -198,7 +199,7 @@ export default function Employers(props) {
                     </Grid>
                     <Divider light />
                     <CardActions style={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"flex-start"}}>
-                      <Typography style={{textAlign:"center", fontWeight:"1000", marginLeft:7, fontSize:20}}>{card.companyName}</Typography>
+                      <Typography style={{color:"#618fba", textAlign:"center", fontWeight:"1000", marginLeft:7, fontSize:20}}><WorkHistoryIcon> </WorkHistoryIcon> {card.companyName}</Typography>
                       {/* <Typography style={{textAlign:"center"}}>{card.about}</Typography> */}
                     </CardActions>
                   </Card>

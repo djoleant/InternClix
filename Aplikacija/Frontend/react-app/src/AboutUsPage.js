@@ -133,7 +133,7 @@ export default function AboutUsPage(props) {
                 </Typography>
                 <Avatar
                   alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
+                  src="/resources/estojny.jpg"
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography
@@ -212,7 +212,7 @@ export default function AboutUsPage(props) {
                 </Typography>
                 <Avatar
                   alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
+                  src="/resources/djstojny.jpg"
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography
