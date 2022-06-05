@@ -20,6 +20,7 @@ import Employers from "./Employers";
 import InternshipCreator from "./InternshipCreator";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
+import Redirect from "./components/Redirect";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -242,9 +243,15 @@ export default function App() {
           <Route
             path="/CVCreator"
             element={
-              <Header
-                Component={CVCreator}
-                ThemeHandler={colorMode.toggleColorMode}
+              <Redirect
+                to="/SignIn"
+                roles={["Student"]}
+                component={
+                  <Header
+                    Component={CVCreator}
+                    ThemeHandler={colorMode.toggleColorMode}
+                  />
+                }
               />
             }
           />
@@ -333,9 +340,16 @@ export default function App() {
           <Route
             path="/EmployerInternshipPage/:id"
             element={
-              <Header
-                Component={EmployerInternsipPage}
-                ThemeHandler={colorMode.toggleColorMode}
+              <Redirect
+                to="/SignIn"
+                roles={["Employer"]}
+                component={
+
+                  <Header
+                    Component={EmployerInternsipPage}
+                    ThemeHandler={colorMode.toggleColorMode}
+                  />
+                }
               />
             }
           />

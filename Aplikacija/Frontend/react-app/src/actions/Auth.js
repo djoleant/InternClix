@@ -76,6 +76,7 @@ export const checkIfLogged = () => {
                 user: data.user,
                 loggedIn: true,
             });
+            localStorage.setItem("role", data.user.roles[0])
         }
     };
 };
