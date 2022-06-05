@@ -7,18 +7,20 @@ export default function TextInputField(props) {
     const { errorText, ...rest } = props;
     const [field, meta] = useField(props);
 
-    // function _renderHelperText() {
-    //   const [touched, error] = at(meta, 'touched', 'error');
-    //   if (touched && error) {
-    //     return error;
-    //   }
-    // }
+    function _renderHelperText() {
+        //const [touched, error] = at(meta, 'touched', 'error');
+        const touched = meta['touched'];
+        const error = meta['error'];
+        if (touched && error) {
+            return error;
+        }
+    }
 
     return (
         <TextField
             type="text"
             error={meta.touched && meta.error && true}
-            //helperText={"Proba"}//_renderHelperText()}
+            helperText={_renderHelperText()}
             {...field}
             {...rest}
         />

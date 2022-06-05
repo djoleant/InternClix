@@ -185,6 +185,7 @@ namespace Backend.Controllers
             student.CV.Address = cv.Address;
             student.CV.City = cv.City;
             student.CV.PhoneNumber = cv.Phone;
+            student.CV.Title = cv.Title;
 
             foreach (var education in cv.Education)
             {
