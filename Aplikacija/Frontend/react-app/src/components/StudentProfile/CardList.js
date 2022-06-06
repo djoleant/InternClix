@@ -57,6 +57,7 @@ export default function CardList({ type }) {
                                     : undefined
                             }
                             wishlisted={type === "wishlist"}
+                            link={"/Internship/" + internship.internshipID}
                         />
                     </Grid>
                 ))

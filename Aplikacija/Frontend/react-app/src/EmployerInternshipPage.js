@@ -1,4 +1,4 @@
-import { Paper, CssBaseline, Box } from '@mui/material';
+import { Paper, CssBaseline, Box, Button } from '@mui/material';
 import Container from '@mui/material/Container';
 import React, { useEffect, useState } from 'react';
 import {
@@ -69,7 +69,8 @@ export default function EmployerInternsipPage() {
         duration: 0,
         location: "",
         compensation: 0,
-        skills: []
+        skills: [],
+        internshipOwner: false
     })
 
     useEffect(() => {
@@ -98,12 +99,13 @@ export default function EmployerInternsipPage() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 65, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>
                     <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example" >
                         <Tab label="Overview" />
-                        <Tab label="Applicants" />
+                        <Tab label="Applicants" sx={{ display: internship.internshipOwner ? "" : "none" }} />
 
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    Ovde dodati detalje o internshipu i po mogucstvu mogucnost izmene
+                    <Typography>Ovde dodati detalje o internshipu i po mogucstvu mogucnost izmene</Typography>
+                    <Button variant="contained" sx={{ display: localStorage.getItem("role") === "Student" ? "" : "none" }}>Apply to internship</Button>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <ApplicantList internshipSkills={internship.skills.map(s => s.name)} internshipId={id} />

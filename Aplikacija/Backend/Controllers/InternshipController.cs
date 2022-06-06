@@ -126,22 +126,39 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetInternship/{internshipId}")]
-        [Authorize(Roles = "Student, Employer, Admin")]
+
         public async Task<JsonResult> GetInternship(int internshipId)
         {
+            var logged = await UserManager.GetUserAsync(User);
+            var employer = logged != null ? await Context.Employers
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.Internships)
+            .FirstOrDefaultAsync() : null;
+
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
                 .Include(i => i.Employer)
                 .Include(i => i.Categories)
                 .Include(i => i.Skills)
                 .FirstOrDefaultAsync();
+
             if (internship != null)
             {
+                bool internshipOwner = false;
+                if (employer != null)
+                {
+                    internshipOwner = employer.Internships.Contains(internship);
+                }
+                if (logged is Admin)
+                {
+                    internshipOwner = true;
+                }
                 return new JsonResult(new
                 {
                     succeeded = true,
                     internship = new
                     {
+                        internshipOwner,
                         internship.ID,
                         internship.Title,
                         internship.Description,
@@ -256,7 +273,7 @@ namespace Backend.Controllers
 
             //[title, companyName, location, compensation, duration, description, link, messageContent, ...skills] = content.split("^");
             string specialContent = $"{internship.Title}^{internship.Employer.CompanyName}^{internship.Employer.Address}^{internship.Compensation}^"
-                + $"{internship.Duration}^{internship.Description}^{"insertlinkhere"}^{message}";
+                + $"{internship.Duration}^{internship.Description}^{"/Internship/" + internship.ID}^{message}";
             string specialType = "INTERNSHIP_";
             foreach (var skill in internship.Skills)
             {
@@ -269,7 +286,7 @@ namespace Backend.Controllers
                 if ((bool)denyOthers)
                 {
                     string denyContent = $"{internship.Title}^{internship.Employer.CompanyName}^{internship.Employer.Address}^{internship.Compensation}^"
-                + $"{internship.Duration}^{internship.Description}^{"insertlinkhere"}^Your application has been denied";
+                + $"{internship.Duration}^{internship.Description}^{"/Internship/" + internship.ID}^Your application has been denied";
                     foreach (var skill in internship.Skills)
                     {
                         denyContent += "^" + skill.Name;

@@ -51,12 +51,13 @@ export default function StudentProfilePage({ type }) {
     const { id } = useParams();
 
     const getInfo = async () => {
-        const response = await fetch("http://localhost:7240/CV/GetCV?studentId=" + id, {
+        const response = await fetch("http://localhost:7240/CV/GetCV?studentId=" + (id != undefined ? id : ""), {
             credentials: "include",
             method: "POST"
         });
         if (response.ok) {
             const fetchData = await response.json();
+            console.log(fetchData)
             if (fetchData.cv.education.length > 0) {
                 setInfo(fetchData.cv);
             }

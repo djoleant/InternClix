@@ -353,35 +353,44 @@ export default function App() {
           <Route
             path="/Chat/:id"
             element={
-              <Header
-                Component={Chat}
-                ThemeHandler={colorMode.toggleColorMode}
+              <Redirect
+                to="/SignIn"
+                roles={["Student", "Employer"]}
+                component={
+                  <Header
+                    Component={Chat}
+                    ThemeHandler={colorMode.toggleColorMode}
+                  />
+                }
               />
+
             }
           />
           <Route
             path="/Chat"
             element={
-              <Header
-                Component={Chat}
-                ThemeHandler={colorMode.toggleColorMode}
-              />
-            }
-          />
-          <Route
-            path="/EmployerInternshipPage/:id"
-            element={
               <Redirect
                 to="/SignIn"
-                roles={["Employer"]}
+                roles={["Student", "Employer"]}
                 component={
-
                   <Header
-                    Component={EmployerInternsipPage}
+                    Component={Chat}
                     ThemeHandler={colorMode.toggleColorMode}
                   />
                 }
               />
+            }
+          />
+          <Route
+            path="/Internship/:id"
+            element={
+
+
+              <Header
+                Component={EmployerInternsipPage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+
             }
           />
           <Route
