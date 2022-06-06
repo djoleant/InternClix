@@ -12,10 +12,11 @@ import {
 } from '@mui/material';
 import CVInfo from './components/StudentProfile/CVInfo';
 import CardList from './components/StudentProfile/CardList';
+import { useParams } from 'react-router-dom';
 
 
 
-export default function StudentProfilePage() {
+export default function StudentProfilePage({ type }) {
 
     const theme = useTheme();
 
@@ -47,8 +48,10 @@ export default function StudentProfilePage() {
 
     const [info, setInfo] = useState();
 
+    const { id } = useParams();
+
     const getInfo = async () => {
-        const response = await fetch("http://localhost:7240/CV/GetCV", {
+        const response = await fetch("http://localhost:7240/CV/GetCV?studentId=" + id, {
             credentials: "include",
             method: "POST"
         });
@@ -84,12 +87,12 @@ export default function StudentProfilePage() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 65, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>
                     <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example" >
                         <Tab label="CV Overview" />
-                        <Tab label="My internships" />
-                        <Tab label="Wishlist" />
+                        <Tab label="My internships" sx={{ display: type === "public" ? "none" : "" }} />
+                        <Tab label="Wishlist" sx={{ display: type === "public" ? "none" : "" }} />
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <CVInfo cvInfo={info} />
+                    <CVInfo cvInfo={info} type={type} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <CardList type="internships" />

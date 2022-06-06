@@ -289,7 +289,7 @@ export default function App() {
             }
           />
           <Route
-            path="/MyProfile"
+            path="/MyAccount"
             element={
               <Redirect
                 to="/SignIn"
@@ -300,6 +300,16 @@ export default function App() {
                     ThemeHandler={colorMode.toggleColorMode}
                   />
                 }
+              />
+            }
+          />
+          <Route
+            path="/Student/:id"
+            element={
+              <Header
+                Component={StudentProfilePage}
+                ThemeHandler={colorMode.toggleColorMode}
+                componentType="public"
               />
             }
           />

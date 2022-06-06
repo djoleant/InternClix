@@ -44,7 +44,7 @@ export const Header = (props) => {
     setAnchorElUser(null);
   };
 
-  const { Component, ThemeHandler } = props;
+  const { Component, ThemeHandler, componentType } = props;
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -225,7 +225,7 @@ export const Header = (props) => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Component reloadHeader={reloadHeader} />
+      <Component reloadHeader={reloadHeader} type={componentType} />
     </React.Fragment>
   );
 };

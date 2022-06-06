@@ -254,12 +254,14 @@ namespace Backend.Controllers
 
         [HttpPost]
         [Route("GetCV")]
-        [Authorize(Roles = "Student, Admin, Employer")]
-        public async Task<JsonResult> GetCV()
+
+        public async Task<JsonResult> GetCV(string? studentId = "")
         {
             var logged = await UserManager.GetUserAsync(User);
+            if (studentId != null && studentId != "")
+                logged = null;
             var student = await Context.Students
-            .Where(u => u.Id == logged.Id)
+            .Where(u => u.Id == (logged != null ? logged.Id : studentId))
             .Include(u => u.CV)
             .ThenInclude(c => c.AdditionalInfos)
             .Include(u => u.CV)
@@ -286,9 +288,9 @@ namespace Backend.Controllers
                     Picture = student.Picture,
                     Email = student.Email,
                     Title = student.CV.Title,
-                    Phone = student.CV.PhoneNumber,
-                    Address = student.CV.Address,
-                    City = student.CV.City,
+                    Phone = logged!=null?student.CV.PhoneNumber:"",
+                    Address = logged!=null?student.CV.Address:"",
+                    City = logged!=null?student.CV.City:"",
                     Education = student.CV.Experiences
                         .Where(e => e.Type == "education")
                         .Select(e => new { e.Title, e.Description, e.InstitutionName, FromDate = e.StartDate.ToString("yyyy-MM-dd"), ToDate = e.EndDate.ToString("yyyy-MM-dd") }),

@@ -13,7 +13,7 @@ import SkillIcon from '@mui/icons-material/MiscellaneousServicesRounded';
 import TitleIcon from '@mui/icons-material/TitleRounded';
 
 
-export default function CVInfo({ cvInfo }) {
+export default function CVInfo({ cvInfo, type }) {
 
     const [info, setInfo] = useState(cvInfo ?? {
         name: "Name",
@@ -71,16 +71,21 @@ export default function CVInfo({ cvInfo }) {
                         <Typography>Basic info</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography align="left" ml={4} sx={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: 1 }}>
-                            <AddressIcon />
-                            {"Address:"}
-                        </Typography>
-                        <Typography align="left" ml={7} >{info.address + ", " + info.city}</Typography>
-                        <Typography align="left" ml={4} mt={2} sx={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: 1 }}>
-                            <PhoneIcon />
-                            {"Phone:"}
-                        </Typography>
-                        <Typography align="left" ml={7} >{info.phone}</Typography>
+                        {
+                            type === "public" ? <></> :
+                                <>
+                                    <Typography align="left" ml={4} sx={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: 1 }}>
+                                        <AddressIcon />
+                                        {"Address:"}
+                                    </Typography>
+                                    <Typography align="left" ml={7} >{info.address + ", " + info.city}</Typography>
+                                    <Typography align="left" ml={4} mt={2} sx={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: 1 }}>
+                                        <PhoneIcon />
+                                        {"Phone:"}
+                                    </Typography>
+                                    <Typography align="left" ml={7} >{info.phone}</Typography>
+                                </>
+                        }
                         <Typography align="left" ml={4} mt={2} sx={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: 1 }}>
                             <TitleIcon />
                             {"CV Title:"}
@@ -189,22 +194,25 @@ export default function CVInfo({ cvInfo }) {
                 </Accordion>
 
             </Grid>
-            <Grid item container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <Button
-                        variant="outlined"
-                        size="large"
-                        onClick={() => { navigate("/CVCreator") }}
-                    >Modify CV</Button>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        onClick={() => { navigate("/CVGenerator") }}
-                    >Export CV</Button>
-                </Grid>
-            </Grid>
+            {
+                type === "public" ? <></> :
+                    <Grid item container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <Button
+                                variant="outlined"
+                                size="large"
+                                onClick={() => { navigate("/CVCreator") }}
+                            >Modify CV</Button>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={() => { navigate("/CVGenerator") }}
+                            >Export CV</Button>
+                        </Grid>
+                    </Grid>
+            }
         </Grid>
     )
 }
