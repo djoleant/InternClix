@@ -102,6 +102,7 @@ export default function Chat() {
       });
     const data = await response.json();
     setChats(data.lastMessages);
+    console.log(data.lastMessages)
   };
 
   // const onPaperClickHandler = (id) => {
@@ -181,7 +182,7 @@ export default function Chat() {
                 <ListItemIcon>
                   <Avatar
                     alt="Icon"
-                    src=""
+                    src={process.env.PUBLIC_URL + "/resources/" + chat.value.message.picture}
                   />
                 </ListItemIcon>
                 <Grid>

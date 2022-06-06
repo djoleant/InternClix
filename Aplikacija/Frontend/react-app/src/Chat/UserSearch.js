@@ -23,22 +23,7 @@ export default function UserSearch({ onChange }) {
             return undefined;
         }
 
-        (async () => {
-            const response = await fetch("http://localhost:7240/Account/GetUsers", {
-                credentials: "include",
-            });
-            if (response.ok) {
-                const fetchData = await response.json();
-                if (fetchData.users.length > 0) {
-                    setOptions(fetchData.users);
-                }
-            }
-            // await sleep(1e3); // For demo purposes.
 
-            // if (active) {
-            //     setOptions([...users]);
-            // }
-        })();
 
         return () => {
             active = false;
@@ -66,17 +51,35 @@ export default function UserSearch({ onChange }) {
             renderOption={(props, option) => (
 
                 <Box {...props} sx={{ display: "flex", gap: 3 }} key={option.id}>
-                    <Avatar></Avatar>
+                    <Avatar src={process.env.PUBLIC_URL + "/resources/" + option.picture}></Avatar>
                     <Box>
                         <Typography>{option.name}</Typography>
                         <Typography variant="caption">{option.userName}</Typography>
                     </Box>
                 </Box>
             )}
-            filterOptions={(options, { inputValue }) => options.filter(op => op.userName.toLowerCase().includes(inputValue.toLowerCase()) || op.name.toLowerCase().includes(inputValue.toLowerCase()))}
-            onChange={(e, v) => { onChange(v); console.log(v) }}
+            filterOptions={(options, { inputValue }) => (
+                options//.filter(op => op.userName.toLowerCase().includes(inputValue.toLowerCase()) || op.name.toLowerCase().includes(inputValue.toLowerCase()))
+            )}
+            onChange={(e, v) => { onChange(v); }}
             options={options}
             loading={loading}
+            onInputChange={(event, newInputValue) => {
+                //console.log(newInputValue)
+                if (newInputValue.length >= 3)
+                    (async () => {
+                        const response = await fetch("http://localhost:7240/Account/GetUsers?searchParam=" + newInputValue, {
+                            credentials: "include",
+                        });
+                        if (response.ok) {
+                            const fetchData = await response.json();
+                            if (fetchData.users.length > 0) {
+                                setOptions(fetchData.users);
+                            }
+                        }
+
+                    })();
+            }}
             renderInput={(params) => (
                 <TextField
                     {...params}

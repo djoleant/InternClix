@@ -84,7 +84,7 @@ namespace Controllers
                 || (x.ReceiverId == applicationUser.Id && x.SenderId == user)) && (page == null ? true : x.ID < page))
                 .OrderByDescending(x => x.ID)
                 .Take(30)
-                .Select(x => new { x.ID, x.Content, x.Type, x.TimeSent, x.SenderId, x.ReceiverId, senderUsername =x.Sender!=null? x.Sender.UserName:"", receiverUsername = x.Receiver!=null?x.Receiver.UserName:"" })
+                .Select(x => new { x.ID, x.Content, x.Type, x.TimeSent, x.SenderId, x.ReceiverId, senderUsername = x.Sender != null ? x.Sender.UserName : "", receiverUsername = x.Receiver != null ? x.Receiver.UserName : "" })
                 .ToListAsync();
 
             return new JsonResult(new { success = true, messages = cMessages });
@@ -131,7 +131,7 @@ namespace Controllers
                 .ToList()
                 .GroupBy(x => x.ReceiverId)
                 .Take(chatsCount)
-                .ToDictionary(x => x.Key != null ? x.Key : "", x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.Type, y.TimeSent, UserName = y.Receiver != null ? y.Receiver.UserName : "" })
+                .ToDictionary(x => x.Key != null ? x.Key : "", x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.Type, y.TimeSent, UserName = y.Receiver != null ? y.Receiver.UserName : "", Picture = (y.Receiver != null && y.Receiver is Student) ? ((Student)y.Receiver).Picture : (y.Receiver != null && y.Receiver is Employer) ? ((Employer)y.Receiver).Picture : "" })
                 .First());
 
             var recievedCMessages = _dbContext.Messages
@@ -142,12 +142,12 @@ namespace Controllers
                 .ToList()
                 .GroupBy(x => x.SenderId)
                 .Take(chatsCount)
-                .ToDictionary(x => x.Key != null ? x.Key : "", x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.Type, y.TimeSent, UserName = y.Sender != null ? y.Sender.UserName : "" })
+                .ToDictionary(x => x.Key != null ? x.Key : "", x => x.Select(y => new { y.SenderId, y.ID, y.Content, y.Type, y.TimeSent, UserName = y.Sender != null ? y.Sender.UserName : "", Picture = (y.Sender != null && y.Sender is Student) ? ((Student)y.Sender).Picture : (y.Sender != null && y.Sender is Employer) ? ((Employer)y.Sender).Picture : "" })
                 .First());
 
             var lastMessages = sentCMessages.Concat(recievedCMessages)
                 .GroupBy(x => x.Key)
-                .ToDictionary(x => x.Key, x => new { message = x.Select(y => new { y.Value.SenderId, y.Value.ID, y.Value.Content, y.Value.Type, y.Value.TimeSent, y.Value.UserName }).OrderBy(y => y.ID).Last() })
+                .ToDictionary(x => x.Key, x => new { message = x.Select(y => new { y.Value.SenderId, y.Value.ID, y.Value.Content, y.Value.Type, y.Value.TimeSent, y.Value.UserName, Picture = y.Value.Picture }).OrderBy(y => y.ID).Last() })
                 .OrderByDescending(x => x.Value.message.ID)
                 .Take(chatsCount);
 
