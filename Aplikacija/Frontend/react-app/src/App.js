@@ -23,6 +23,7 @@ import AboutUsPage from "./AboutUsPage";
 import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
 import { loadUserData } from "./actions/Auth";
+import NotFoundPage from "./components/NotFoundPage";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -413,10 +414,28 @@ export default function App() {
             }
           />
           <Route
-            path="/AboutUs"
+            path="/"
+            element={
+              <Header
+                Component={HomePage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="/About"
             element={
               <Header
                 Component={AboutUsPage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Header
+                Component={NotFoundPage}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }

@@ -150,7 +150,7 @@ export const Header = (props) => {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={() => { navigate("/" + page) }}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page}
@@ -214,11 +214,14 @@ export const Header = (props) => {
                   </Box>
                 </> :
                 <>
-                  <MenuItem >
+                  <MenuItem onClick={() => { navigate("/SignIn") }}>
                     <Typography textAlign="center">Sign In</Typography>
                   </MenuItem>
-                  <MenuItem >
+                  <MenuItem onClick={() => { navigate("/Register/student") }}>
                     <Typography textAlign="center">Register</Typography>
+                  </MenuItem >
+                  <MenuItem onClick={ThemeHandler}>
+                    <Switch />
                   </MenuItem>
                 </>
             }
