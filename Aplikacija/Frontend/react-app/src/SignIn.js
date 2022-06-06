@@ -29,20 +29,22 @@ function Copyright(props) {
 }
 
 
-export default function SignIn() {
+export default function SignIn({ reloadHeader }) {
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
     const history = useNavigate();
     const dispatch = useDispatch();
-    
+
     const loginButtonHandler = async () => {
         const response = await dispatch(authActions.login(email, password));
 
         if (response.succeeded) {
-            dispatch(authActions.checkIfLogged())
+            dispatch(authActions.checkIfLogged(reloadHeader))
+            reloadHeader();
         }
+
 
     };
 
@@ -108,7 +110,7 @@ export default function SignIn() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                        onClick = {loginButtonHandler}
+                        onClick={loginButtonHandler}
                     >
                         Sign In
                     </Button>

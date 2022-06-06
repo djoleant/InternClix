@@ -50,11 +50,19 @@ export const Header = (props) => {
   const navigate = useNavigate();
 
   const [role, setRole] = useState(localStorage.getItem("role"));
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+
+  const reloadHeader = () => {
+    setRole(localStorage.getItem("role"));
+    setUsername(localStorage.getItem("username"));
+    handleCloseUserMenu();
+  }
 
   const handleMenuClick = async (option) => {
     console.log(option);
     if (option === "Logout") {
       await logout();
+      reloadHeader();
       navigate("/SignIn")
     }
   }
@@ -190,7 +198,7 @@ export const Header = (props) => {
                       onClose={handleCloseUserMenu}
                     >
                       <MenuItem >
-                        <Typography sx={{ fontWeight: "bold" }}>{localStorage.getItem("username")}</Typography>
+                        <Typography sx={{ fontWeight: "bold" }}>{username}</Typography>
                       </MenuItem>
                       <Divider sx={{ ml: 1, mr: 1 }} />
                       {settings.map((setting) => (
@@ -204,12 +212,20 @@ export const Header = (props) => {
                       </MenuItem>
                     </Menu>
                   </Box>
-                </> : <></>
+                </> :
+                <>
+                  <MenuItem >
+                    <Typography textAlign="center">Sign In</Typography>
+                  </MenuItem>
+                  <MenuItem >
+                    <Typography textAlign="center">Register</Typography>
+                  </MenuItem>
+                </>
             }
           </Toolbar>
         </Container>
       </AppBar>
-      <Component />
+      <Component reloadHeader={reloadHeader} />
     </React.Fragment>
   );
 };

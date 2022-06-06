@@ -57,7 +57,7 @@ export const login = (email, password) => {
 //     };
 // };
 
-export const checkIfLogged = () => {
+export const checkIfLogged = (reloadHeader) => {
     return async (dispatch, getState) => {
         if (getState().auth.isLogged) {
             return;
@@ -77,6 +77,8 @@ export const checkIfLogged = () => {
                 loggedIn: true,
             });
             localStorage.setItem("role", data.user.roles[0])
+            if (reloadHeader !== undefined)
+                reloadHeader();
         }
     };
 };
