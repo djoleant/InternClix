@@ -313,6 +313,16 @@ export default function App() {
               />
             }
           />
+          <Route
+            path="/Employer/:id"
+            element={
+              <Header
+                Component={EmployerInfoPage}
+                ThemeHandler={colorMode.toggleColorMode}
+                componentType="public"
+              />
+            }
+          />
           {/* <Route
             path="/EmployerInfoPage"
             element={

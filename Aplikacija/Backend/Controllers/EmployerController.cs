@@ -26,12 +26,12 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployerInfo/{EmployerName}")]
-        [Authorize(Roles = "Employer, Admin, Student")]
-        public async Task<JsonResult> GetEmployerInfo(string EmployerName)
+        [Route("GetEmployerInfo/{employerId}")]
+        //[Authorize(Roles = "Employer, Admin, Student")]
+        public async Task<JsonResult> GetEmployerInfo(string employerId)
         {
             var employer = await Context.Employers
-                .Where(i => i.CompanyName == EmployerName)
+                .Where(i => i.Id == employerId)
                 .Include(i => i.Internships)
                 .ThenInclude(i => i.Skills)
                 .Include(i => i.Ratings)
@@ -74,12 +74,12 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployerCategories/{EmployerName}")]
-        [Authorize(Roles = "Employer, Admin, Student")]
-        public async Task<JsonResult> GetEmployerCategories(string EmployerName)
+        [Route("GetEmployerCategories/{employerId}")]
+        //[Authorize(Roles = "Employer, Admin, Student")]
+        public async Task<JsonResult> GetEmployerCategories(string employerId)
         {
             var internships = await Context.Internships
-                .Where(i => i.Employer.CompanyName == EmployerName)
+                .Where(i => i.Employer.Id == employerId)
                 .Include(i => i.Categories)
                 .FirstOrDefaultAsync();
             // var employer = await Context.Employers
@@ -113,12 +113,11 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetEmployers")]
-        [Authorize(Roles = "Employer, Admin, Student")]
         public async Task<JsonResult> GetEmployers()
         {
             var employers = await Context.Employers
-            .Include(i=>i.Internships)
-            .Include(i=>i.Ratings)
+            .Include(i => i.Internships)
+            .Include(i => i.Ratings)
             .ToListAsync();
             if (employers != null)
             {
@@ -127,7 +126,9 @@ namespace Backend.Controllers
                     succeeded = true,
                     employers = new
                     {
-                        Employers=employers.Select(emp=>new{
+                        Employers = employers.Select(emp => new
+                        {
+                            id = emp.Id,
                             emp.Picture,
                             emp.CompanyName,
                             emp.About,
@@ -136,10 +137,10 @@ namespace Backend.Controllers
                             emp.Email,
                             InternshipCount = emp.Internships.Count,
                             Ratings = emp.Ratings
-                            .Select(r => new { r.OverallScore}),
-                            
+                            .Select(r => new { r.OverallScore }),
+
                         })
-                        
+
                     }
                 });
             }
@@ -155,12 +156,11 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetStatistics")]
-        [Authorize(Roles = "Employer, Admin, Student")]
         public async Task<JsonResult> GetStatistics()
         {
             var employers = await Context.Employers
-            .Include(i=>i.Internships)
-            .Include(i=>i.Ratings)
+            .Include(i => i.Internships)
+            .Include(i => i.Ratings)
             .ToListAsync();
             if (employers != null)
             {
@@ -169,11 +169,11 @@ namespace Backend.Controllers
                     succeeded = true,
                     statistics = new
                     {
-                        EmployerCount=Context.Employers.ToList().Count,
-                        RatingCount=Context.Ratings.ToList().Count,
-                        InternshipCount=Context.Internships.ToList().Count,
-                        StudentCount=Context.Students.ToList().Count,
-                        
+                        EmployerCount = Context.Employers.ToList().Count,
+                        RatingCount = Context.Ratings.ToList().Count,
+                        InternshipCount = Context.Internships.ToList().Count,
+                        StudentCount = Context.Students.ToList().Count,
+
                     }
                 });
             }
@@ -189,12 +189,11 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetRankedEmployers")]
-        [Authorize(Roles = "Employer, Admin, Student")]
         public async Task<JsonResult> GetRankedEmployers()
         {
             var employers = await Context.Employers
-            .Include(i=>i.Internships)
-            .Include(i=>i.Ratings)
+            .Include(i => i.Internships)
+            .Include(i => i.Ratings)
             .ToListAsync();
             if (employers != null)
             {
@@ -203,7 +202,9 @@ namespace Backend.Controllers
                     succeeded = true,
                     employers = new
                     {
-                        Employers=employers.Select(emp=>new{
+                        Employers = employers.Select(emp => new
+                        {
+                            id = emp.Id,
                             emp.Picture,
                             emp.CompanyName,
                             emp.About,
@@ -212,10 +213,10 @@ namespace Backend.Controllers
                             emp.Email,
                             InternshipCount = emp.Internships.Count,
                             Ratings = emp.Ratings
-                            .Select(r => new { r.OverallScore}),
-                            
-                        }).OrderByDescending(x=>x.InternshipCount)
-                        
+                            .Select(r => new { r.OverallScore }),
+
+                        }).OrderByDescending(x => x.InternshipCount)
+
                     }
                 });
             }
@@ -231,12 +232,11 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("GetMostRankedEmployers")]
-        [Authorize(Roles = "Employer, Admin, Student")]
         public async Task<JsonResult> GetMostRankedEmployers()
         {
             var employers = await Context.Employers
-            .Include(i=>i.Internships)
-            .Include(i=>i.Ratings)
+            .Include(i => i.Internships)
+            .Include(i => i.Ratings)
             .ToListAsync();
             if (employers != null)
             {
@@ -245,7 +245,8 @@ namespace Backend.Controllers
                     succeeded = true,
                     employers = new
                     {
-                        Employers=employers.Select(emp=>new{
+                        Employers = employers.Select(emp => new
+                        {
                             emp.Picture,
                             emp.CompanyName,
                             emp.About,
@@ -253,12 +254,12 @@ namespace Backend.Controllers
                             emp.Likes,
                             emp.Email,
                             InternshipCount = emp.Internships.Count,
-                            Ratings = emp.Ratings.Count!=0?emp.Ratings
-                             .Sum(i=>i.OverallScore)/(emp.Ratings.Count):-1
-                            
-                        }).OrderByDescending(x=>x.Ratings)
+                            Ratings = emp.Ratings.Count != 0 ? emp.Ratings
+                             .Sum(i => i.OverallScore) / (emp.Ratings.Count) : -1
+
+                        }).OrderByDescending(x => x.Ratings)
                         .Take(6)
-                        
+
                     }
                 });
             }

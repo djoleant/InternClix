@@ -34,9 +34,9 @@ export default function ExperienceCard(props) {
             spacing={3}
             sx={{ mb: 4 }}
           >
-            {/* <Typography  component="subtitle1"  align="center" sx={{ m: 1, fontWeight:"1000" }}> Random Internship Title </Typography>
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 }}>  Location </Typography>
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 1 }}>  Duration </Typography>      */}
+            {/* <Typography     align="center" sx={{ m: 1, fontWeight:"1000" }}> Random Internship Title </Typography>
+                            <Typography     align="center" sx={{ m: 1 }}>  Location </Typography>
+                            <Typography     align="center" sx={{ m: 1 }}>  Duration </Typography>      */}
             <Grid
               container
               style={{
@@ -44,7 +44,7 @@ export default function ExperienceCard(props) {
                 marginLeft: 3,
                 display: "flex",
                 flexDirection: "row",
-                justifyContent:"space-around",
+                justifyContent: "space-around",
                 //backgroundColor:"red"
               }}
               spacing={3}
@@ -61,16 +61,16 @@ export default function ExperienceCard(props) {
                   display: "flex",
                   flexDirection: "row",
                   alignSelf: "flex-end",
-                  justifySelf:"flex-end",
-                  borderRadius:10,
-                  marginLeft:50
+                  justifySelf: "flex-end",
+                  borderRadius: 10,
+                  marginLeft: 50
                 }}
               >
-                  <Grid>
-                  <Typography style={{marginRight:10, marginTop:6}}>
-                  Was this rating helpful? {"  "}
-                </Typography>
-                  </Grid>
+                <Grid>
+                  <Typography style={{ marginRight: 10, marginTop: 6 }}>
+                    Was this rating helpful? {"  "}
+                  </Typography>
+                </Grid>
                 <Typography>
                   {props.likes}{" "}
                   <IconButton color="primary" aria-label="add an alarm">
@@ -227,27 +227,27 @@ export default function ExperienceCard(props) {
             >
               <Divider style={{ width: "90%" }}></Divider>
               <Typography
-                component="subtitle1"
+
                 align="center"
                 sx={{ m: 1, color: "black", fontWeight: "1000" }}
               >
                 {" "}
                 POSITIVE EXPERIENCE{" "}
               </Typography>
-              <Typography component="subtitle1" align="center" sx={{ m: 1 }}>
+              <Typography align="center" sx={{ m: 1 }}>
                 {" "}
                 {props.positiveExperience}{" "}
               </Typography>
 
               <Typography
-                component="subtitle1"
+
                 align="center"
                 sx={{ m: 1, color: "black", fontWeight: "1000" }}
               >
                 {" "}
                 NEGATIVE EXPERIENCE{" "}
               </Typography>
-              <Typography component="subtitle1" align="center" sx={{ m: 1 }}>
+              <Typography align="center" sx={{ m: 1 }}>
                 {" "}
                 {props.negativeExperience}{" "}
               </Typography>
