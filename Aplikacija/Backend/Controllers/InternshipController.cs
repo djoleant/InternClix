@@ -325,7 +325,7 @@ namespace Backend.Controllers
             }
             else if (action == "Deny")
             {
-                application.Status = "Accepted";
+                application.Status = "Denied";
                 application.Date = DateTime.Now;
                 specialType += "DENY";
                 Context.Messages.Add(

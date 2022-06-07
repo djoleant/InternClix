@@ -59,9 +59,6 @@ export const login = (email, password) => {
 
 export const checkIfLogged = (reloadHeader) => {
     return async (dispatch, getState) => {
-        if (getState().auth.isLogged) {
-            return;
-        }
 
         const response = await fetch("http://localhost:7240/Auth/CheckUser", {
             method: "GET",
@@ -77,8 +74,12 @@ export const checkIfLogged = (reloadHeader) => {
                 loggedIn: true,
             });
             localStorage.setItem("role", data.user.roles[0])
-            if (reloadHeader !== undefined)
-                reloadHeader();
+            if (reloadHeader !== undefined) {
+                loadUserData().then(r => {
+
+                    reloadHeader();
+                })
+            }
         }
     };
 };
