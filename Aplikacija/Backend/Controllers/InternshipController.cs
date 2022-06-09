@@ -236,6 +236,49 @@ namespace Backend.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetInternships")]
+        public async Task<JsonResult> GetInternships()
+        {
+            var internships = await Context.Internships
+            .Include(i => i.Skills)
+            .Include(i => i.Categories)
+            .ToListAsync();
+            if (internships != null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internships = new
+                    {
+                        Internships = internships.Select(internship => new
+                        {
+                            id = internship.ID,
+                            internship.Title,
+                            internship.Description,
+                            internship.Duration,
+                            internship.Compensation,
+                            internship.Skills,
+                            Categories = internship.Categories
+                            .Select(c => new {c.ID, c.Name})
+
+
+                        })
+
+                    }
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship Not Found"
+                });
+            }
+        }
+
+
         [HttpPost]
         [Route("InternshipAction")]
         [Authorize(Roles = "Employer, Admin")]
