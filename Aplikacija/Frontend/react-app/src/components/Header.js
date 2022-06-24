@@ -132,7 +132,7 @@ export const Header = (props) => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page} onClick={() => { navigate("/" + page) }}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
