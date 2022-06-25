@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, CssBaseline, Box, Divider, Grid, Container, Button, Typography } from '@mui/material';
+import { Paper, CssBaseline, Box, Divider, Grid, Container, Button, Typography, useTheme, Avatar, Tab, Tabs, Input, TextField, IconButton } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -13,11 +13,40 @@ import TechStack from './components/EmployerInfo/TechStack';
 import InternshipCard from './components/EmployerInfo/InternshipCard';
 import ExperienceCard from './components/EmployerInfo/ExperienceCard';
 import { useParams } from 'react-router-dom';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded'; import SmallInternshipCard from "./components/StudentProfile/SmallInternshipCard";
+
 
 
 export default function EmployerInfoPage(props) {
 
     const { id } = useParams();
+    const theme = useTheme();
+
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <Box
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+                sx={{ width: 1 }}
+            >
+                {value === index && (
+                    <Box sx={{ p: 3, width: 1 }}>
+                        {children}
+                    </Box>
+                )}
+            </Box>
+        );
+    }
+
+    const [value, setValue] = React.useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const getEmployerInfo = async () => {
         const response = await fetch("http://localhost:7240/Employer/GetEmployerInfo/" + id, {
@@ -27,6 +56,7 @@ export default function EmployerInfoPage(props) {
             const fetchData = await response.json();
             console.log(fetchData);
             setEmployerData(fetchData.employer);
+
         }
 
     }
@@ -68,11 +98,119 @@ export default function EmployerInfoPage(props) {
     }, []);
 
 
+
     return (
 
-        <Container component="main"  >
+        <Container component="main" sx={{ pt: 3 }}>
             <CssBaseline />
-            <React.Fragment>
+            <Grid container spacing={3}  >
+                <Grid item xs={12} md={2} sx={{ display: "flex", justifyContent: "center" }}>
+                    <Avatar src={process.env.PUBLIC_URL + "/resources/" + employerData.picture} sx={{ width: 140, height: 140 }} />
+                </Grid>
+                <Grid item xs={12} md={10}>
+                    <Typography variant='h3' align="left">{employerData != undefined ? employerData.companyName : ""}</Typography>
+
+
+                </Grid>
+            </Grid>
+            <Box >
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 65, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>
+                    <Tabs value={value} variant="scrollable" scrollButtons onChange={handleChange} aria-label="basic tabs example" >
+                        <Tab label="Overview" />
+                        <Tab label="Internships" />
+                        <Tab label="Ratings" />
+                        {/* <Tab label="My internships" sx={{ display: type === "public" ? "none" : "" }} />
+                        <Tab label="Wishlist" sx={{ display: type === "public" ? "none" : "" }} /> */}
+                    </Tabs>
+                </Box>
+                <TabPanel value={value} index={0}>
+                    <Box sx={{ mb: 3 }} variant="outlined">
+                        <Divider sx={{ mt: 5, mb: 3 }} > ABOUT US </Divider>
+                        <Typography component="h1" align="center" sx={{ m: 2, color: "#bbbbbb" }}>
+                            {employerData.about}
+                        </Typography>
+                    </Box>
+                    <Divider sx={{ mt: 5, mb: 3 }} > CONTACT INFO </Divider>
+                    <Grid container style={{ marginTop: 2, display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 100 }} spacing={3} sx={{ mb: 4 }}>
+                        <Typography align="center" sx={{ m: 1 }}> <ApartmentIcon style={{ color: "red" }} /> Bore Stankovic 10, Nis, Srbija </Typography>
+                        <Typography align="center" sx={{ m: 1 }}> <DraftsIcon style={{ color: "red" }} /> randommail@gmail.com </Typography>
+                        <Typography align="center" sx={{ m: 1 }}> <PhoneIphoneIcon style={{ color: "red" }} /> +3816638172 </Typography>
+                        <Typography align="center" sx={{ m: 1 }}> <PublicIcon style={{ color: "red" }} /> http://codemancy.com/ </Typography>
+
+                    </Grid>
+                    <Divider sx={{ mt: 5, mb: 3 }} > SOCIAL MEDIA LINKS </Divider>
+                    <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
+                        <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <FacebookIcon /> </Button>
+                        <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <InstagramIcon /> </Button>
+                        <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <TwitterIcon /> </Button>
+                        <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <LinkedInIcon /> </Button>
+                        <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <YouTubeIcon /> </Button>
+
+                    </Grid>
+                    <Box sx={{ mb: 3 }} variant="outlined">
+                        <Divider sx={{ mt: 5, mb: 3 }} > TECH STACK </Divider>
+                        <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
+                            {/* {
+                                    categoryData.categories.map(el=>{
+                                        (<TechStack categories={el.ime}/>)
+                                    })
+                                } */}
+                            <TechStack categories={categoryData.categories} />
+                        </Grid>
+                    </Box>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Box sx={{ mb: 3 }} variant="outlined">
+
+                        <Grid container spacing={3} sx={{ mb: 4, mt: 1 }}>
+                            <Grid container spacing={3} sx={{ pb: 2 }}>
+                                <Grid item xs={12} md={6} lg={6} >
+                                    <Button variant="contained" startIcon={<AddCircleRoundedIcon />} sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "" }}>Post Internship</Button>
+                                </Grid>
+                                <Grid item xs={12} md={6} lg={6} >
+                                    <TextField variant="standard" label="Search(not implemented)"></TextField>
+                                </Grid>
+                            </Grid>
+                            {/* Internship Cards */}
+                            {
+                                <Grid container spacing={3}>
+                                    {
+
+                                        employerData.internships.map((el, index) =>
+                                        (
+                                            <Grid item xs={12} md={6} lg={6} key={index}>
+                                                <SmallInternshipCard
+                                                    title={el.title}
+                                                    description={el.description}
+                                                    duration={el.duration}
+                                                    compensation={el.compensation}
+                                                    skills={el.skills}
+                                                    link={"/Internship/" + el.id}
+                                                />
+                                            </Grid>
+                                        )
+                                        )
+                                    }
+                                </Grid>
+
+
+                            }
+
+
+                        </Grid>
+                    </Box>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
+                        {employerData.ratings.map((el, index) =>
+                            (<ExperienceCard id={el.id} overallScore={el.overallScore} benefitsScore={el.benefitsScore} skillImprovementScore={el.skillImprovementScore} positiveExperience={el.positiveExperience} negativeExperience={el.negativeExperience} recommended={el.recommended} likes={el.likes} dislikes={el.dislikes} key={index} />)
+                        )
+                        }
+                    </Grid>
+                </TabPanel>
+
+            </Box>
+            {/* <React.Fragment>
                 <Paper
                     sx={{ p: 3, mb: 4, mt: 4 }}
                     variant="outlined"
@@ -81,73 +219,23 @@ export default function EmployerInfoPage(props) {
                         {employerData.companyName}
                     </Typography>
 
-                    <Box sx={{ mb: 3 }} variant="outlined">
-                        <Divider sx={{ mt: 5, mb: 3 }} > ABOUT US </Divider>
-                        <Typography component="h1" align="center" sx={{ m: 2, color: "#bbbbbb" }}>
-                            {employerData.about}
-                        </Typography>
-                    </Box>
+
 
                     <Box sx={{ mb: 3 }} variant="outlined">
-                        <Divider sx={{ mt: 5, mb: 3 }} > CONTACT INFO </Divider>
-                        <Grid container style={{ marginTop: 2, display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 100 }} spacing={3} sx={{ mb: 4 }}>
-                            <Typography align="center" sx={{ m: 1 }}> <ApartmentIcon style={{ color: "red" }} /> Bore Stankovic 10, Nis, Srbija </Typography>
-                            <Typography align="center" sx={{ m: 1 }}> <DraftsIcon style={{ color: "red" }} /> randommail@gmail.com </Typography>
-                            <Typography align="center" sx={{ m: 1 }}> <PhoneIphoneIcon style={{ color: "red" }} /> +3816638172 </Typography>
-                            <Typography align="center" sx={{ m: 1 }}> <PublicIcon style={{ color: "red" }} /> http://codemancy.com/ </Typography>
-
-                        </Grid>
-                        <Divider sx={{ mt: 5, mb: 3 }} > SOCIAL MEDIA LINKS </Divider>
-                        <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                            <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <FacebookIcon /> </Button>
-                            <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <InstagramIcon /> </Button>
-                            <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <TwitterIcon /> </Button>
-                            <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <LinkedInIcon /> </Button>
-                            <Button sx={{ m: 1, borderRadius: 50 }} variant="contained" href="https://yahoo.com"> <YouTubeIcon /> </Button>
-
-                        </Grid>
-                        <Box sx={{ mb: 3 }} variant="outlined">
-                            <Divider sx={{ mt: 5, mb: 3 }} > TECH STACK </Divider>
-                            <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                                {/* {
-                                    categoryData.categories.map(el=>{
-                                        (<TechStack categories={el.ime}/>)
-                                    })
-                                } */}
-                                <TechStack categories={categoryData.categories} />
-                            </Grid>
-                        </Box>
-
-                        <Box sx={{ mb: 3 }} variant="outlined">
-                            <Divider sx={{ mt: 5, mb: 3 }} > INTERNSHIP OFFERS </Divider>
-                            <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                                {/* Internship Cards */}
-                                {
-                                    employerData.internships.map((el, index) =>
-                                        (<InternshipCard title={el.title} description={el.description} duration={el.duration} compensation={el.compensation} skills={el.skills} key={index} />)
-                                    )
-
-                                }
 
 
-                            </Grid>
-                        </Box>
+
 
                         <Box sx={{ mb: 3 }} variant="outlined">
                             <Divider sx={{ mt: 5, mb: 3 }} > SHARED RATINGS </Divider>
-                            <Grid container style={{ marginTop: 3, display: "flex", flexDirection: "row", justifyContent: "center" }} spacing={3} sx={{ mb: 4 }}>
-                                {employerData.ratings.map((el, index) =>
-                                    (<ExperienceCard id={el.id} overallScore={el.overallScore} benefitsScore={el.benefitsScore} skillImprovementScore={el.skillImprovementScore} positiveExperience={el.positiveExperience} negativeExperience={el.negativeExperience} recommended={el.recommended} likes={el.likes} dislikes={el.dislikes} key={index} />)
-                                )
-                                }
-                            </Grid>
+
                         </Box>
 
                     </Box>
 
                 </Paper>
 
-            </React.Fragment>
+            </React.Fragment> */}
 
         </Container >
     );

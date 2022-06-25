@@ -43,6 +43,7 @@ namespace Backend.Controllers
                     succeeded = true,
                     employer = new
                     {
+                        employer.Id,
                         employer.Picture,
                         employer.CompanyName,
                         employer.About,
