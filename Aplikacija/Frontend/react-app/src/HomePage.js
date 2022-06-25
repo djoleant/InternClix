@@ -1,5 +1,5 @@
 //to be implemented
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTheme} from "react";
 import {
   Paper,
   CssBaseline,
@@ -30,6 +30,9 @@ import Search from "@mui/icons-material/Search";
 import InfoIcon from '@mui/icons-material/Info';
 
 export default function HomePage(props) {
+
+  // const theme = useTheme();
+  // console.log(theme);
 
   const getEmployers = async () => {
     const response = await fetch(
@@ -91,7 +94,7 @@ export default function HomePage(props) {
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Chat with employers </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Rate employers </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • See internship compatibility </Typography>
-                  <Button size="large" variant="contained" style={{ marginTop: 40 }}>Register as student</Button>
+                  <Button size="large"  href="http://localhost:3000/Register/student" variant="contained" style={{ marginTop: 40 }}>Register as student</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -104,7 +107,7 @@ export default function HomePage(props) {
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Hire prospective students </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • See company ratings </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Something 4 </Typography>
-                  <Button size="large" variant="contained" style={{ backgroundColor: "#f50057", marginTop: 40 }}>Register as employer</Button>
+                  <Button size="large"  href="http://localhost:3000/Register/employer"  variant="contained" style={{ backgroundColor: "#f50057", marginTop: 40 }}>Register as employer</Button>
                 </Grid>
                 <Avatar
                   variant="rounded"
@@ -118,7 +121,7 @@ export default function HomePage(props) {
           </Grid>
           <Grid fullwidth style={{ marginTop:20, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: "10%"}}>
             <Typography style={{ color: "#618fba",  fontSize: 20, fontWeight: 800, marginLeft: 20,}}> <InfoIcon></InfoIcon> Already have an account?</Typography>
-            <Button size="large" variant="outlined" style={{  marginLeft:20}}>Sign in</Button>
+            <Button size="large"  href="http://localhost:3000/SignIn" variant="outlined" style={{  marginLeft:20}}>Sign in</Button>
           </Grid>
           <Divider style={{marginTop:10, marginBottom:20}}></Divider>
             <Typography style={{fontSize:26, fontWeight:1000, marginBottom:20, backgroundColor:"#f50057", color:"white"}}>Our Best-Rated Employers</Typography>
@@ -180,7 +183,7 @@ export default function HomePage(props) {
           })}
           </Grid>
           <Grid>
-              <Button variant="contained" style={{marginTop:20}}>See All Employers</Button>
+              <Button variant="contained"  href="http://localhost:3000/Employers" style={{marginTop:20}}>See All Employers</Button>
           </Grid>
         </Paper>
       </React.Fragment>

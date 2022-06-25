@@ -32,7 +32,7 @@ export default function ExperienceCard(props) {
               alignItems: "flex-start",
             }}
             spacing={3}
-            sx={{ mb: 4 }}
+            
           >
             {/* <Typography     align="center" sx={{ m: 1, fontWeight:"1000" }}> Random Internship Title </Typography>
                             <Typography     align="center" sx={{ m: 1 }}>  Location </Typography>
@@ -42,19 +42,47 @@ export default function ExperienceCard(props) {
               style={{
                 marginTop: 1,
                 marginLeft: 3,
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
+                
                 //backgroundColor:"red"
               }}
               spacing={3}
               sx={{ mb: 4 }}
             >
               <Typography
-                style={{ fontSize: 22, fontWeight: 1000, marginLeft: 15, justifySelf: "flex-start" }}
+                variant="h5" align="left" style={{marginBottom:4}}
               >
-                Company Rating #{props.id}{" "}
+                Rating #{props.id}{" "}
               </Typography>
+              {props.recommended == true ? (
+                <Button align="right" variant="outlined" disabled style={{ display: "flex", flexDirection: "row", marginLeft:30, marginBottom:3 }}>
+                  <ThumbUpIcon
+                    style={{ marginLeft: 3, color: "green", fontWeight: 400  }}
+                  ></ThumbUpIcon>
+                  <Typography
+                    style={{
+                      marginLeft: 5,
+                      color: "green",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    Recommends{" "}
+                  </Typography>
+                </Button>
+              ) : (
+                <Button variant="outlined" align="right" disabled style={{ display: "flex", flexDirection: "row", justifySelf:"flex-end", marginLeft:30, marginBottom:3 }}>
+                  <ThumbDownIcon
+                    style={{ color: "red" }}
+                  ></ThumbDownIcon>
+                  <Typography
+                    style={{ marginLeft: 5, color: "red", fontWeight: 400 }}
+                  >
+                    {" "}
+                    Doesn't Recommend{" "}
+                  </Typography>
+                </Button>
+              )}
+              <Divider style={{width:'88%', marginBottom:7}} />
               <Grid
                 style={{
                   backgroundColor: "whitesmoke",
@@ -67,7 +95,7 @@ export default function ExperienceCard(props) {
                 }}
               >
                 <Grid>
-                  <Typography style={{ marginRight: 10, marginTop: 6 }}>
+                  {/* <Typography style={{ marginRight: 10, marginTop: 6 }}>
                     Was this rating helpful? {"  "}
                   </Typography>
                 </Grid>
@@ -82,10 +110,10 @@ export default function ExperienceCard(props) {
                   <IconButton color="primary" aria-label="add an alarm">
                     <ThumbDownIcon />
                   </IconButton>
-                </Typography>
+                </Typography> */}
               </Grid>
             </Grid>
-
+            
             <Grid
               container
               style={{
@@ -110,7 +138,7 @@ export default function ExperienceCard(props) {
                   justofyContent: "flex-start",
                 }}
                 spacing={3}
-                sx={{ mb: 4 }}
+                sx={{ mb: 3.5 }}
               >
                 <Button
                   style={{
@@ -138,7 +166,7 @@ export default function ExperienceCard(props) {
                   justofyContent: "flex-start",
                 }}
                 spacing={3}
-                sx={{ mb: 4 }}
+                sx={{ mb: 3.5 }}
               >
                 <Button
                   style={{
@@ -184,35 +212,6 @@ export default function ExperienceCard(props) {
                 </Button>
                 <Typography>Overall Company Score</Typography>
               </Grid>
-              {props.recommended == true ? (
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <ThumbUpIcon
-                    style={{ marginLeft: 15, color: "green" }}
-                  ></ThumbUpIcon>
-                  <Typography
-                    style={{
-                      marginLeft: 7,
-                      color: "green",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    Recommends{" "}
-                  </Typography>
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <ThumbDownIcon
-                    style={{ marginLeft: 15, color: "red" }}
-                  ></ThumbDownIcon>
-                  <Typography
-                    style={{ marginLeft: 7, color: "red", fontWeight: "bold" }}
-                  >
-                    {" "}
-                    Doesn't Recommend{" "}
-                  </Typography>
-                </div>
-              )}
             </Grid>
             <Grid
               container
@@ -222,8 +221,8 @@ export default function ExperienceCard(props) {
                 flexDirection: "column",
                 alignItems: "flex-start",
               }}
-              spacing={3}
-              sx={{ mb: 4 }}
+              spacing={5}
+              sx={{ mb: 1 }}
             >
               <Divider style={{ width: "90%" }}></Divider>
               <Typography
@@ -252,6 +251,7 @@ export default function ExperienceCard(props) {
                 {props.negativeExperience}{" "}
               </Typography>
             </Grid>
+          </Grid>
           </Grid>
         </Paper>
       </React.Fragment>
