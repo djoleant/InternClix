@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,6 +49,9 @@ namespace Backend.Controllers
                         employer.CompanyName,
                         employer.About,
                         employer.Likes,
+                        employer.Address,
+                        employer.PhoneNumber,
+                        employer.Email,
                         Internships = employer.Internships
                               .Select(c => new
                               {
@@ -273,6 +277,48 @@ namespace Backend.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        [Route("AddRating/{skillImprovementScore}/{benefitsScore}/{overallScore}/{positiveExp}/{negativeExp}/{recommended}/{interviewLevel}/{generalImpression}/{selectionLength}/{employerid}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> AddRating(float skillImprovementScore, float benefitsScore, float overallScore, string positiveExp, string negativeExp, Boolean recommended, string interviewLevel, string generalImpression, int selectionLength, string employerid)
+        {
+            var employer=Context.Employers
+            .Where(i=> i.Id==employerid)
+            .Include(i=>i.Ratings)
+            .FirstOrDefaultAsync();
+            if(employer!=null)
+            {
+                var rating = new Rating
+            {
+                SkillImprovementScore=skillImprovementScore,
+                BenefitsScore=benefitsScore,
+                OverallScore=overallScore,
+                PositiveExperience=positiveExp,
+                NegativeExperience=negativeExp,
+                Recommended=recommended,
+                InterviewLevel=interviewLevel,
+                GeneralImpression=generalImpression,
+                SelectionLength=selectionLength,
+                Likes=0,
+                Dislikes=0,
+                //Employer=employer
+            };
+            await Context.Ratings.AddAsync(rating);
+            await Context.SaveChangesAsync();
+            return new JsonResult(new { succeeded = true });
+            }
+            else{
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Employer Not Found"
+                });
+            }
+            
+
+        }
+
 
 
     }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Microsoft.AspNetCore.SignalR;
 using Hubs;
+using Microsoft.Extensions.Localization;
 
 namespace Backend.Controllers
 {
@@ -575,6 +576,40 @@ namespace Backend.Controllers
                     error = "Student Not Found"
                 });
             }
+        }
+
+        [HttpPost]
+        [Route("AddQuestions")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> AddQuestions(List<String> questions, int internshipId)
+        {
+            var internship=Context.Internships
+            .Where(i=> i.ID==internshipId)
+            .Include(s => s.InterviewQuestions)
+            .FirstOrDefaultAsync();
+            if(internship!=null)
+            {
+                foreach(String s in questions)
+                {
+                    var question = new InterviewQuestion
+                    {
+                        Content=s
+                    };
+                    //internship.InterviewQuestions.Add(question);
+                    await Context.SaveChangesAsync();
+                }
+                
+            return new JsonResult(new { succeeded = true });
+            }
+            else{
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship Not Found"
+                });
+            }
+            
+
         }
 
     }

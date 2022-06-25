@@ -38,7 +38,7 @@ namespace Models
 
         public List<InternshipApplication> InternshipApplications { get; set; } = default!;
 
-        public List<InterviewQuestion> InterviewQuestions {get; set;}
+        public List<InterviewQuestion> InterviewQuestions {get; set;} =default!;
 
     }
 
