@@ -36,11 +36,19 @@ export default function EmployerRatingPage(props) {
 
     const [durationSel, setDurationSel] = useState({durationSel:0});
 
-    console.log(questionList);
+    const [genImpression, setGenImpression] = useState({genImpression:""});
 
-    console.log(experience.positiveExperience);
+    const [jobInt, setJobInt] = useState({jobInt:""});
 
-    console.log(durationSel);
+    const [recommend, setRecommend] = useState({recommend:""});
+
+    const [rating, setRating] = useState({skillImprovement:0}, {benefits:0}, {overall:0});
+
+     console.log(jobInt);
+
+    // console.log(experience.negativeExperience);
+
+    // console.log(durationSel);
 
     const onTextChange = (e) => setTextValue(e.target.value);
     const handleSubmit = () => console.log(textValue);
@@ -75,6 +83,34 @@ export default function EmployerRatingPage(props) {
         const list=[durationSel];
         list[name]=value;
         setDurationSel(list);
+    }
+
+    const handleGenImpressionChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[genImpression];
+        list[name]=value;
+        setGenImpression(list);
+    }
+
+    const handleJobIntChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[jobInt];
+        list[name]=value;
+        setJobInt(list);
+    }
+
+    const handleRecommendChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[recommend];
+        list[name]=value;
+        setRecommend(list);
+    }
+
+    const handleRatingChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[rating];
+        list[name]=value;
+        setRating(list);
     }
 
     return (
@@ -122,7 +158,7 @@ export default function EmployerRatingPage(props) {
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
                                 //value={value}
-                                //onChange={handleChange}
+                                onChange={handleGenImpressionChange}
                             >
                                 <Grid  style={{display : "inline-block"}}>
                                     <FormControlLabel value="Positive" control={<Radio />} label="Positive" />
@@ -141,20 +177,20 @@ export default function EmployerRatingPage(props) {
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
                             //value={age}
-                            //onChange={handleChange}
+                            onChange={handleJobIntChange}
                             >
-                            <MenuItem value={10}>Very Easy</MenuItem>
-                            <MenuItem value={20}>Easy</MenuItem>
-                            <MenuItem value={30}>About right</MenuItem>
-                            <MenuItem value={40}>Difficult</MenuItem>
-                            <MenuItem value={50}>Extremely difficult</MenuItem>
+                            <MenuItem value={"Very Easy"}>Very Easy</MenuItem>
+                            <MenuItem value={"Easy"}>Easy</MenuItem>
+                            <MenuItem value={"About Right"}>About right</MenuItem>
+                            <MenuItem value={"Difficult"}>Difficult</MenuItem>
+                            <MenuItem value={"Extremely difficult"}>Extremely difficult</MenuItem>
                             </Select>
                         </FormControl>
 
                     </Grid>
                     <br></br>
                     <Grid container xs={12} style={{top:10, alignItems : "center", justifyContent:"center"}}>
-                        <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> How many weeks did the selection process last? </Typography>
+                        <Typography   align="center" sx={{ m: 2 }}> How many weeks did the selection process last? </Typography>
                         <TextField onChange={(event)=>handleDurationSelChange(event)} name={"durationSel"} label={"Duration of selection process"} fullWidth />
 
                     </Grid>
@@ -163,7 +199,7 @@ export default function EmployerRatingPage(props) {
 
                 <Paper sx={{ p: 3, mb: 4, backgroundColor:"#f3f3f3"}} style={{ display:"flex", flexDirection:"column", alignItems:"space-between" }}
                     variant="outlined">
-                            <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> <LightbulbCircleIcon style={{color:"red"}}/> Remeber any interview questions? Please do share! </Typography>
+                            <Typography  align="center" sx={{ m: 2 }}> <LightbulbCircleIcon style={{color:"red"}}/> Remeber any interview questions? Please do share! </Typography>
                         {
                             questionList.map((singleQuestion,index)=>(
                                 <Grid>
@@ -232,11 +268,11 @@ export default function EmployerRatingPage(props) {
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
                                 //value={value}
-                                //onChange={handleChange}
+                                onChange={handleRecommendChange}
                             >
                                 <Grid container style={{alignItems : "center", justifyContent:"center"}}>
-                                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                                    <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                    <FormControlLabel value="false" control={<Radio />} label="No" />
                                 </Grid>
                                 
                             </RadioGroup>
