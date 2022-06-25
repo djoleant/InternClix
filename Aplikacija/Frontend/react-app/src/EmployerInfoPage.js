@@ -19,6 +19,8 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded'; import 
 
 export default function EmployerInfoPage(props) {
 
+    const [search, setSearch] = useState("");
+
     const { id } = useParams();
     const theme = useTheme();
 
@@ -168,7 +170,14 @@ export default function EmployerInfoPage(props) {
                                     <Button variant="contained" startIcon={<AddCircleRoundedIcon />} sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "" }}>Post Internship</Button>
                                 </Grid>
                                 <Grid item xs={12} md={6} lg={6} >
-                                    <TextField variant="standard" label="Search(not implemented)"></TextField>
+                                    <TextField
+                                        autoFocus
+                                        key="searchkey"
+                                        onChange={(event) => { setSearch(event.target.value) }}
+                                        variant="standard"
+                                        label="Search"
+                                        value={search}
+                                    ></TextField>
                                 </Grid>
                             </Grid>
                             {/* Internship Cards */}
@@ -176,20 +185,22 @@ export default function EmployerInfoPage(props) {
                                 <Grid container spacing={3}>
                                     {
 
-                                        employerData.internships.map((el, index) =>
-                                        (
-                                            <Grid item xs={12} md={6} lg={6} key={index}>
-                                                <SmallInternshipCard
-                                                    title={el.title}
-                                                    description={el.description}
-                                                    duration={el.duration}
-                                                    compensation={el.compensation}
-                                                    skills={el.skills}
-                                                    link={"/Internship/" + el.id}
-                                                />
-                                            </Grid>
-                                        )
-                                        )
+                                        employerData.internships
+                                            .filter(c => c.title.toLowerCase().includes(search.toLowerCase()))
+                                            .map((el, index) =>
+                                            (
+                                                <Grid item xs={12} md={6} lg={6} key={index}>
+                                                    <SmallInternshipCard
+                                                        title={el.title}
+                                                        description={el.description}
+                                                        duration={el.duration}
+                                                        compensation={el.compensation}
+                                                        skills={el.skills}
+                                                        link={"/Internship/" + el.id}
+                                                    />
+                                                </Grid>
+                                            )
+                                            )
                                     }
                                 </Grid>
 
