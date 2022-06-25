@@ -40,6 +40,44 @@ namespace Backend.Controllers
             });
         }
 
+        [Route("EditStudent")]
+        [HttpPut]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> EditStudent(string firstName, string lastName, string picture)
+        {
+            try
+            {
+                var logged = await UserManager.GetUserAsync(User);
+                var student = await Context.Students
+                .Where(u => u.Id == logged.Id)
+                .FirstOrDefaultAsync();
+
+                if (student != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(firstName))
+                        student.FirstName = firstName;
+                    if (!string.IsNullOrWhiteSpace(lastName))
+                        student.LastName = lastName;
+                    if (!string.IsNullOrWhiteSpace(picture))
+                        student.Picture = picture;
+                    Context.Students.Update(student);
+                    await Context.SaveChangesAsync();
+                }
+                else
+                {
+                    return new JsonResult(new { succeeded = false, errors = "Student Not Found" });
+                }
+
+
+                return new JsonResult(new { succeeded = true, data = new { name = firstName, lastName, picture } });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { succeeded = false, errors = e.Message });
+            }
+        }
+
+
 
     }
 }

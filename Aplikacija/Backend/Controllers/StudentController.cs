@@ -117,39 +117,5 @@ namespace Backend.Controllers
             }
         }
 
-        [Route("EditStudent/{studentId}")]
-        [HttpPut]
-        public async Task<ActionResult> EditStudent(string email, string firstName, string lastName, string picture)
-        {
-            try
-            {
-                var logged = await UserManager.GetUserAsync(User);
-                var student = await Context.Students
-                .Where(u => u.Id == logged.Id)
-                .Include(u => u.UserName)
-                .Include(u => u.Email)
-                .Include(u => u.FirstName)
-                .Include(u => u.LastName)
-                .Include(u => u.Picture)
-                .FirstOrDefaultAsync();
-
-                if (student != null)
-                {
-                    student.Email = email;
-                    student.FirstName = firstName;
-                    student.LastName = lastName;
-                    student.Picture = picture;
-                }
-
-                Context.Students.Update(student);
-
-                await Context.SaveChangesAsync();
-                return Ok("Student changed!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
     }
 }

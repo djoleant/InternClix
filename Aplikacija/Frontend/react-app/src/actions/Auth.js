@@ -122,10 +122,12 @@ export const loadUserData = async () => {
         localStorage.setItem("id", data.user.id);
         localStorage.setItem("role", data.user.roles[0])
         localStorage.setItem("username", data.user.username);
+        localStorage.setItem("picture", data.user.picture);
     } else {
         localStorage.setItem("role", "Guest");
         localStorage.setItem("id", "");
         localStorage.setItem("username", "");
+        localStorage.setItem("picture", "");
     }
 }
 
@@ -140,7 +142,9 @@ export const logout = async () => {
 
     if (data.success) {
         localStorage.setItem("role", "Guest");
+        localStorage.setItem("id", "");
         localStorage.setItem("username", "");
+        localStorage.setItem("picture", "");
     }
 
 }

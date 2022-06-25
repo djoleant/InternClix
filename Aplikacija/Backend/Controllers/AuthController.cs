@@ -226,6 +226,7 @@ namespace Backend.Controllers
                         id = applicationUser.Id,
                         username = applicationUser.UserName,
                         email = applicationUser.Email,
+                        ((Student)applicationUser).Picture,
                         firstname = ((Student)applicationUser).FirstName,
                         lastname = ((Student)applicationUser).LastName,
                         roles = userRoles
@@ -243,6 +244,7 @@ namespace Backend.Controllers
                         id = applicationUser.Id,
                         username = applicationUser.UserName,
                         email = applicationUser.Email,
+                        ((Employer)applicationUser).Picture,
                         companyName = ((Employer)applicationUser).CompanyName,
                         roles = userRoles
                     }

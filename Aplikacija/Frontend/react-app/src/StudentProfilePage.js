@@ -1,4 +1,4 @@
-import { Paper, CssBaseline, Box } from '@mui/material';
+import { Paper, CssBaseline, Box, Button } from '@mui/material';
 import Container from '@mui/material/Container';
 import React, { useEffect, useState } from 'react';
 import {
@@ -12,11 +12,12 @@ import {
 } from '@mui/material';
 import CVInfo from './components/StudentProfile/CVInfo';
 import CardList from './components/StudentProfile/CardList';
+import EditStudentProfileDialog from './components/StudentProfile/EditStudent';
 import { useParams } from 'react-router-dom';
 
 
 
-export default function StudentProfilePage({ type }) {
+export default function StudentProfilePage({ type, reloadHeader }) {
 
     const theme = useTheme();
 
@@ -46,7 +47,20 @@ export default function StudentProfilePage({ type }) {
         setValue(newValue);
     };
 
-    const [info, setInfo] = useState();
+    const [info, setInfo] = useState({
+        name: "",
+        lastName: "",
+        email: "",
+        city: "",
+        address: "",
+        phone: "",
+        picture: "",
+        skills: [],
+        languages: [],
+        education: [],
+        experience: [],
+        additionalInfo: []
+    });
 
     const { id } = useParams();
 
@@ -65,6 +79,11 @@ export default function StudentProfilePage({ type }) {
 
     }
 
+    const update = () => {
+        getInfo();
+        reloadHeader();
+    }
+
     useEffect(() => {
         getInfo();
     }, []);
@@ -75,14 +94,22 @@ export default function StudentProfilePage({ type }) {
             <CssBaseline />
             <Grid container spacing={3}  >
                 <Grid item xs={12} md={2} sx={{ display: "flex", justifyContent: "center" }}>
-                    <Avatar src="" sx={{ width: 140, height: 140 }} />
+                    <Avatar src={process.env.PUBLIC_URL + "/resources/" + info.picture} sx={{ width: 140, height: 140 }} />
                 </Grid>
                 <Grid item xs={12} md={10}>
                     <Typography variant='h3' align="left">{info != undefined ? info.name + " " + info.lastName : ""}</Typography>
                     <Typography align="left">{info != undefined ? info.userName : ""}</Typography>
                     <Typography align="left">{info != undefined ? info.email : ""}</Typography>
-
+                    <Box sx={{ display: type === "public" ? "none" : "flex", mt: 1 }}>
+                        <EditStudentProfileDialog
+                            currentPicture={info.picture}
+                            currentLastName={info.lastName}
+                            currentName={info.name}
+                            update={update}
+                        />
+                    </Box>
                 </Grid>
+
             </Grid>
             <Box >
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 65, mt: 4, zIndex: 20, backgroundColor: theme.palette.background.default }}>

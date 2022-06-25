@@ -51,10 +51,12 @@ export const Header = (props) => {
 
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [username, setUsername] = useState(localStorage.getItem("username"));
+  const [picture, setPicture] = useState(localStorage.getItem("picture"));
 
   const reloadHeader = () => {
     setRole(localStorage.getItem("role"));
     setUsername(localStorage.getItem("username"));
+    setPicture(localStorage.getItem("picture"));
     handleCloseUserMenu();
   }
 
@@ -169,16 +171,14 @@ export const Header = (props) => {
                       color="inherit"
                       onClick={() => { navigate("/Chat") }}
                     >
-                      <Badge badgeContent={4} color="error">
-                        <MailIcon />
-                      </Badge>
+                      <MailIcon />
                     </IconButton>
                   </MenuItem>
 
                   <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        <Avatar alt="Remy Sharp" src={process.env.PUBLIC_URL + "/resources/" + picture} />
                       </IconButton>
                     </Tooltip>
                     <Menu

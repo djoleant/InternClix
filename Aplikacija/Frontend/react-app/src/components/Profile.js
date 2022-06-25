@@ -1,11 +1,11 @@
 import EmployerInfoPage from "../EmployerInfoPage";
 import StudentProfilePage from "../StudentProfilePage";
 
-export default function Profile() {
+export default function Profile(props) {
     const role = localStorage.getItem("role");
     if (role === "Student") {
-        return <StudentProfilePage />;
+        return <StudentProfilePage {...props} />;
     }
     else
-        return <EmployerInfoPage />;
+        return <EmployerInfoPage {...props} />;
 }
