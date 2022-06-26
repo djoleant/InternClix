@@ -138,9 +138,13 @@ export default function EmployerInternsipPage() {
                             <Typography> {internship.extremelyDifficult} {internship.extremelyDifficult==1?"person":"people"} rated the interview as <Button disabled style={{color:"black", backgroundColor:"#800020", marginBottom:3}}> Extremely Difficult</Button> </Typography>
                         </Grid>
                         <Grid style={{display:"flex",flexDirection:"column", alignSelf:"center"}}>
-                        <Typography style={{marginBottom:5}}>Usually rated as:</Typography>
                         {
-                            
+                            (internship.veryEasy==0 && internship.easy==0 && internship.difficult==0 && internship.extremelyDifficult==0 && internship.aboutRight==0)?"":<Typography style={{marginBottom:5}}>Usually rated as:</Typography>
+                        }
+                        
+                        {
+                            (internship.veryEasy==0 && internship.easy==0 && internship.difficult==0 && internship.extremelyDifficult==0 && internship.aboutRight==0)?(<Button disabled variant="outlined" style={{width: '10em',
+                            height: '2em', fontSize:26,color:"black", marginBottom:3}}> No ratings</Button>):
                             (internship.veryEasy>internship.easy && internship.veryEasy>internship.difficult && internship.veryEasy>internship.extremelyDifficult&& internship.veryEasy>internship.aboutRight)?
                             <Button disabled style={{width: '10em',
                             height: '2em', fontSize:26,color:"black", backgroundColor:"#00a572", marginBottom:3}}>Very Easy</Button>
@@ -153,7 +157,7 @@ export default function EmployerInternsipPage() {
                             :(internship.difficult>internship.extremelyDifficult)?
                             <Button disabled style={{width: '10em',
                             height: '2em', fontSize:26,color:"black",backgroundColor:"#f94449", marginBottom:3}}> Difficult</Button>:<Button disabled style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black", backgroundColor:"#800020", marginBottom:3}}> Extremely Difficult</Button> 
+                            height: "60%", fontSize:26,color:"black", backgroundColor:"#800020", marginBottom:3}}> Extremely Difficult</Button> 
                             
                         }
                         </Grid>

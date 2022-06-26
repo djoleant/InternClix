@@ -16,6 +16,7 @@ import {
     TextField,
     IconButton,
 } from "@mui/material";
+import { NavLink, useNavigate } from 'react-router-dom';
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -37,7 +38,11 @@ export default function EmployerInfoPage(props) {
     const { id } = useParams();
     const theme = useTheme();
 
+    const role = localStorage.getItem("role");
+
     const [search, setSearch] = useState("");
+
+    const navigate = useNavigate();
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -156,6 +161,7 @@ export default function EmployerInfoPage(props) {
                 <Grid item xs={12} md={10}>
                     <Typography variant="h3" align="left">
                         {employerData != undefined ? employerData.companyName : ""}
+                        {role != "Student"?"":(<Button variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
                     </Typography>
                     <Typography align="left">{employerData.about}</Typography>
                     <Box sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "flex", mt: 1 }}>

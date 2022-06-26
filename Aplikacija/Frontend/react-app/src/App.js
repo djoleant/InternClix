@@ -344,7 +344,7 @@ export default function App() {
             }
           />
           <Route
-            path="/EmployerRatingPage"
+            path="/EmployerRatingPage/:id"
             element={
               <Header
                 Component={EmployerRatingPage}

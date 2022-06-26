@@ -37,6 +37,7 @@ export default function InternshipCard(props) {
                         alignItems: "flex-start"
                     }} spacing={3} sx={{ mb: 4 }}>
                         <Typography align="center" sx={{ m: 1, fontWeight: "1000", fontSize: 22 }}> {props.title} </Typography>
+                        <Divider style={{width:"90%"}}/>
                         <Typography align="center" sx={{ m: 1 }}> {props.description} </Typography>
                         <Typography align="center" sx={{ m: 1, display: "flex", flexDirection: "row", justifyContent: "center" }}> <QueryBuilderIcon style={{ color: "red", marginRight: 5 }} /> {props.duration + " " + (props.duration > 1 ? "weeks" : "week")}  </Typography>
                         <Typography align="center" sx={{ m: 1, display: "flex", flexDirection: "row", justifyContent: "center" }}> <PaidIcon style={{ color: "red", marginRight: 5 }} /> {props.compensation + " $"}  </Typography>
@@ -57,7 +58,7 @@ export default function InternshipCard(props) {
                                 ))
                             }
                         </Grid>
-                        <Button sx={{ mb: -2 }} onClick={() => { if (props.link != undefined) navigate(props.link) }}>View internship</Button>
+                        <Button variant="outlined" sx={{ mt:2 }} onClick={() => { if (props.link != undefined) navigate(props.link) }}>View internship</Button>
                     </Grid>
 
 

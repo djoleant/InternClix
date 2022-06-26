@@ -1,6 +1,7 @@
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import React, { useState, useParams } from 'react';
+import React, { useState} from 'react';
+import { useParams } from "react-router-dom";
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import {
     Button,
@@ -152,7 +153,7 @@ export default function EmployerRatingPage(props) {
                
                     <Typography variant="h5" justifyContent="center" sx={{ mt: 2, mb: 2 }}>
                         <StarHalfIcon sx={{ mr: 2 }} />
-                        Internship experience @ Codemancy Studio
+                        Internship experience @ 
                     </Typography>
                 
 
@@ -294,7 +295,7 @@ export default function EmployerRatingPage(props) {
                     </FormControl>
                         
                     </Grid>
-                    <Button onClick={() => { /*getEmployerRating*/ }}
+                    <Button /*onClick={() => { /*getEmployerRating}}*/
                     variant="contained" endIcon={<SendIcon/>}> Submit rating </Button>
                 </Box>
             </Paper>
