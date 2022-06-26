@@ -60,9 +60,13 @@ export default function Internships(props) {
                 <Paper
                     sx={{ p: 3, mb: 4 }}
                     variant="outlined"
+                    justifyContent="center"
+
                 >
-                    <Grid>
-                        <Grid item xs={12} style={{ padding: "10px", maxWidth: 500 }}>
+                    <Grid
+                        alignItems="center"
+                        justifyContent="center">
+                        <Grid item xs={12} md={6} lg={6} style={{ padding: "10px", maxWidth: 500 }}>
                             <TextField
                                 onChange={(event) => { setSearch(event.target.value) }}
                                 id="outlined-basic-email"
@@ -70,12 +74,9 @@ export default function Internships(props) {
                                 variant="outlined"
                                 fullWidth
                             />
-                        </Grid>
 
-                    </Grid>
-
-
-                    {/* <Grid
+                            
+                    <Grid
                         container
                         spacing={0}
                         alignItems="center"
@@ -83,10 +84,17 @@ export default function Internships(props) {
                     >
 
                         <Grid item xs={3}>
-                            <ComboBox />
+                            {/* <ComboBox 
+                                onChange={(event) => { setSearch(event.target.value) }}
+                            /> */}
                         </Grid>
 
-                    </Grid> */}
+                    </Grid>
+                        </Grid>
+
+                    </Grid>
+
+
 
 
                     {internshipData != null && (
@@ -97,11 +105,20 @@ export default function Internships(props) {
                             {internshipData.internships
                                 .filter(c => c.title.toLowerCase().includes(search.toLowerCase()))
                                 .map((cards, index) => {
-                                    const { title, description, duration, compensation, skills, categories } = cards;
+                                    const { title, description, duration, compensation, skills, categories, id } = cards;
                                     console.log(cards);
                                     return (<>
                                         <div> </div>
-                                        <InternshipCard index={index} title={title} description={description} duration={duration} compensation={compensation} skills={skills} categories={categories} />
+                                        <InternshipCard
+                                        index={index}
+                                        title={title}
+                                        description={description}
+                                        duration={duration}
+                                        compensation={compensation}
+                                        skills={skills}
+                                        categories={categories}
+                                        link = {"/Internship/" + id  }
+                                         />
                                     </>
 
                                     );
