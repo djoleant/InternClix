@@ -23,7 +23,7 @@ import { Divider } from "@mui/material";
 import { logout } from "../actions/Auth";
 
 const pages = ["Home", "Internships", "Employers", "About"];
-const settings = ["Account", "CV", "Logout"];
+const settings = ["Account", "CV Creator", "CV Export", "Logout"];
 
 export const Header = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -66,6 +66,14 @@ export const Header = (props) => {
       await logout();
       reloadHeader();
       navigate("/SignIn")
+    } else if (option === "Account") {
+      navigate("/MyAccount");
+    }
+    else if (option === "CV Creator") {
+      navigate("/CVCreator")
+    }
+    else if (option === "CV Export") {
+      navigate("/CVGenerator")
     }
   }
 
@@ -201,11 +209,18 @@ export const Header = (props) => {
                         <Typography sx={{ fontWeight: "bold" }}>{username}</Typography>
                       </MenuItem>
                       <Divider sx={{ ml: 1, mr: 1 }} />
-                      {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={() => { handleMenuClick(setting) }}>
-                          <Typography textAlign="center">{setting}</Typography>
-                        </MenuItem>
-                      ))}
+                      {settings
+                        .filter((setting) => {
+                          if (role === "Employer") {
+                            return setting !== "CV Creator" && setting != "CV Export";
+                          }
+                          return true;
+                        })
+                        .map((setting) => (
+                          <MenuItem key={setting} onClick={() => { handleMenuClick(setting) }}>
+                            <Typography textAlign="center">{setting}</Typography>
+                          </MenuItem>
+                        ))}
 
                       <MenuItem onClick={ThemeHandler}>
                         <Switch />

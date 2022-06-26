@@ -77,6 +77,45 @@ namespace Backend.Controllers
             }
         }
 
+        [Route("EditEmployer")]
+        [HttpPut]
+        [Authorize(Roles = "Employer, Admin")]
+        public async Task<JsonResult> EditEmployer(string companyName, string address, string about, string picture)
+        {
+            try
+            {
+                var logged = await UserManager.GetUserAsync(User);
+                var employer = await Context.Employers
+                .Where(u => u.Id == logged.Id)
+                .FirstOrDefaultAsync();
+
+                if (employer != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(companyName))
+                        employer.CompanyName = companyName;
+                    if (!string.IsNullOrWhiteSpace(address))
+                        employer.Address = address;
+                    if (!string.IsNullOrWhiteSpace(picture))
+                        employer.Picture = picture;
+                    if (!string.IsNullOrWhiteSpace(about))
+                        employer.About = about;
+                    Context.Employers.Update(employer);
+                    await Context.SaveChangesAsync();
+                }
+                else
+                {
+                    return new JsonResult(new { succeeded = false, errors = "Employer Not Found" });
+                }
+
+
+                return new JsonResult(new { succeeded = true, data = new { name = companyName, address, about, picture } });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { succeeded = false, errors = e.Message });
+            }
+        }
+
 
 
     }
