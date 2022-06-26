@@ -1,48 +1,60 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Typography, TextField, Box,Avatar } from '@mui/material';
-import EditIcon from '@mui/icons-material/EditRounded';
-import { useState } from 'react';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Typography, TextField, Box, Avatar } from "@mui/material";
+import EditIcon from "@mui/icons-material/EditRounded";
+import { useState } from "react";
 
-export default function EditStudentProfileDialog({  currentName,currentLastName,currentPicture, update }) {
+export default function EditStudentProfileDialog({
+    currentName,
+    currentLastName,
+    currentPicture,
+    update,
+}) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleSelectImage = () => {
-        setFilename(fileInput.current.files[0].name)
-    }
+        setFilename(fileInput.current.files[0].name);
+    };
 
     const handleClose = () => {
         setOpen(false);
     };
 
     const handleSubmit = () => {
-        fetch("http://localhost:7240/Account/EditStudent?firstName="+name+"&lastName="+lastName+"&picture="+filename, {
-            method: "PUT",
-            credentials:"include"
-        }).then(response => {
-            response.json().then(data => {
+        fetch(
+            "http://localhost:7240/Account/EditStudent?firstName=" +
+            name +
+            "&lastName=" +
+            lastName +
+            "&picture=" +
+            filename,
+            {
+                method: "PUT",
+                credentials: "include",
+            }
+        ).then((response) => {
+            response.json().then((data) => {
                 if (data.succeeded) {
-                    localStorage.setItem("picture",filename)
+                    localStorage.setItem("picture", filename);
                     update();
-                }
-                else {
+                } else {
                     alert("Changes were not successful");
                 }
                 handleClose();
-            })
-        })
+            });
+        });
         //alert(fileInput.current.files[0].name)
-    }
+    };
 
     const [name, setName] = useState(currentName);
     const [lastName, setLastName] = useState(currentLastName);
@@ -54,14 +66,13 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
         setName(currentName);
         setLastName(currentLastName);
         setFilename(currentPicture);
-    },[currentLastName,currentName,currentPicture])
+    }, [currentLastName, currentName, currentPicture]);
 
     return (
         <div>
-
             <Button
                 variant="outlined"
-                startIcon={<EditIcon/>}
+                startIcon={<EditIcon />}
                 onClick={handleClickOpen}
             >
                 Edit profile
@@ -72,9 +83,7 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {"Edit profile info"}
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Edit profile info"}</DialogTitle>
 
                 <DialogContent>
                     <TextField
@@ -83,8 +92,12 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
                         label="Name"
                         fullWidth
                         variant="standard"
-                        onChange={(e) => { setName(e.target.value) }}
+                        onChange={(e) => {
+                            setName(e.target.value);
+                        }}
                         value={name}
+                        required
+                        error={name === undefined || name === ""}
                     />
                     <TextField
                         autoFocus
@@ -92,14 +105,15 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
                         label="Last Name"
                         fullWidth
                         variant="standard"
-                        onChange={(e) => { setLastName(e.target.value) }}
+                        onChange={(e) => {
+                            setLastName(e.target.value);
+                        }}
                         value={lastName}
+                        required
+                        error={lastName === undefined || lastName === ""}
                     />
-                    <Box sx={{display:"flex",gap:2,alignItems:"center",mt:2}}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
+                    <Box sx={{ display: "flex", gap: 2, alignItems: "center", mt: 2 }}>
+                        <Button variant="contained" component="label">
                             Choose Picture
                             <input
                                 type="file"
@@ -108,15 +122,19 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
                                 onChange={handleSelectImage}
                             />
                         </Button>
-                        <Avatar src={process.env.PUBLIC_URL + "/resources/" + filename}></Avatar>
-                        <Typography>{ filename}</Typography>
+                        <Avatar
+                            src={process.env.PUBLIC_URL + "/resources/" + filename}
+                        ></Avatar>
+                        <Typography>{filename}</Typography>
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit} autoFocus>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button
+                        onClick={handleSubmit}
+                        autoFocus
+                        disabled={!(name !== "" && filename !== "" && lastName !== "")}
+                    >
                         Submit
                     </Button>
                 </DialogActions>
@@ -124,7 +142,6 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
         </div>
     );
 }
-
 
 // import React, { useState } from 'react';
 // import {
@@ -141,7 +158,6 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
 //     FormControlLabel
 // } from '@mui/material';
 // import SendIcon from '@mui/icons-material/Send';
-
 
 // export default function EditStudent(props) {
 
@@ -183,7 +199,7 @@ export default function EditStudentProfileDialog({  currentName,currentLastName,
 //                 </Grid>
 
 //                 <Box sx={{ mb: 3, position: "relative" }} variant="outlined">
-                    
+
 //                     <Button variant="contained" endIcon={<SendIcon />}> Submit changes </Button>
 //                 </Box>
 //             </Paper>

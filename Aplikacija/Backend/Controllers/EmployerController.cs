@@ -27,12 +27,15 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployerInfo/{employerId}")]
+        [Route("GetEmployerInfo")]
         //[Authorize(Roles = "Employer, Admin, Student")]
-        public async Task<JsonResult> GetEmployerInfo(string employerId)
+        public async Task<JsonResult> GetEmployerInfo(string? employerId = "")
         {
+            var logged = await UserManager.GetUserAsync(User);
+            if (employerId != null && employerId != "")
+                logged = null;
             var employer = await Context.Employers
-                .Where(i => i.Id == employerId)
+                .Where(i => i.Id == (logged != null ? logged.Id : employerId))
                 .Include(i => i.Internships)
                 .ThenInclude(i => i.Skills)
                 .Include(i => i.Ratings)
@@ -79,12 +82,15 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployerCategories/{employerId}")]
+        [Route("GetEmployerCategories")]
         //[Authorize(Roles = "Employer, Admin, Student")]
-        public async Task<JsonResult> GetEmployerCategories(string employerId)
+        public async Task<JsonResult> GetEmployerCategories(string? employerId)
         {
+            var logged = await UserManager.GetUserAsync(User);
+            if (employerId != null && employerId != "")
+                logged = null;
             var internships = await Context.Internships
-                .Where(i => i.Employer.Id == employerId)
+                .Where(i => i.Employer.Id == (logged != null ? logged.Id : employerId))
                 .Include(i => i.Categories)
                 .FirstOrDefaultAsync();
             // var employer = await Context.Employers
@@ -283,39 +289,40 @@ namespace Backend.Controllers
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> AddRating(float skillImprovementScore, float benefitsScore, float overallScore, string positiveExp, string negativeExp, Boolean recommended, string interviewLevel, string generalImpression, int selectionLength, string employerid)
         {
-            var employer=Context.Employers
-            .Where(i=> i.Id==employerid)
-            .Include(i=>i.Ratings)
+            var employer = Context.Employers
+            .Where(i => i.Id == employerid)
+            .Include(i => i.Ratings)
             .FirstOrDefaultAsync();
-            if(employer!=null)
+            if (employer != null)
             {
                 var rating = new Rating
-            {
-                SkillImprovementScore=skillImprovementScore,
-                BenefitsScore=benefitsScore,
-                OverallScore=overallScore,
-                PositiveExperience=positiveExp,
-                NegativeExperience=negativeExp,
-                Recommended=recommended,
-                InterviewLevel=interviewLevel,
-                GeneralImpression=generalImpression,
-                SelectionLength=selectionLength,
-                Likes=0,
-                Dislikes=0,
-                //Employer=employer
-            };
-            await Context.Ratings.AddAsync(rating);
-            await Context.SaveChangesAsync();
-            return new JsonResult(new { succeeded = true });
+                {
+                    SkillImprovementScore = skillImprovementScore,
+                    BenefitsScore = benefitsScore,
+                    OverallScore = overallScore,
+                    PositiveExperience = positiveExp,
+                    NegativeExperience = negativeExp,
+                    Recommended = recommended,
+                    InterviewLevel = interviewLevel,
+                    GeneralImpression = generalImpression,
+                    SelectionLength = selectionLength,
+                    Likes = 0,
+                    Dislikes = 0,
+                    //Employer=employer
+                };
+                await Context.Ratings.AddAsync(rating);
+                await Context.SaveChangesAsync();
+                return new JsonResult(new { succeeded = true });
             }
-            else{
+            else
+            {
                 return new JsonResult(new
                 {
                     succeeded = false,
                     error = "Employer Not Found"
                 });
             }
-            
+
 
         }
 

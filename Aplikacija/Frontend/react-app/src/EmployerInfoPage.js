@@ -62,8 +62,9 @@ export default function EmployerInfoPage(props) {
     };
 
     const getEmployerInfo = async () => {
+        console.log(id)
         const response = await fetch(
-            "http://localhost:7240/Employer/GetEmployerInfo/" + id,
+            "http://localhost:7240/Employer/GetEmployerInfo" + (id != undefined ? "?employerId=" + id : ""),
             {
                 credentials: "include",
             }
@@ -76,8 +77,9 @@ export default function EmployerInfoPage(props) {
     };
 
     const getCategoryInfo = async () => {
+        //console.log(id)
         const response2 = await fetch(
-            "http://localhost:7240/Employer/GetEmployerCategories/" + id,
+            "http://localhost:7240/Employer/GetEmployerCategories?employerId=" + (id != undefined ? id : ""),
             {
                 credentials: "include",
             }

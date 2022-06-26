@@ -22,7 +22,7 @@ import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
-import { loadUserData } from "./actions/Auth";
+import { loadUserData, clearData } from "./actions/Auth";
 import NotFoundPage from "./components/NotFoundPage";
 
 const getDesignTokens = (mode) => ({
@@ -219,6 +219,7 @@ export default function App() {
   );
 
   React.useEffect(() => {
+    clearData();
     loadUserData();
   }, [])
 

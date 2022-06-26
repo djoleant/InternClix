@@ -110,6 +110,13 @@ export const register = (firstName, lastName, email, username, password) => {
     };
 };
 
+export const clearData = () => {
+    localStorage.setItem("role", "Guest");
+    localStorage.setItem("id", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("picture", "");
+}
+
 export const loadUserData = async () => {
     const response = await fetch("http://localhost:7240/Auth/CheckUser", {
         method: "GET",
@@ -123,11 +130,6 @@ export const loadUserData = async () => {
         localStorage.setItem("role", data.user.roles[0])
         localStorage.setItem("username", data.user.username);
         localStorage.setItem("picture", data.user.picture);
-    } else {
-        localStorage.setItem("role", "Guest");
-        localStorage.setItem("id", "");
-        localStorage.setItem("username", "");
-        localStorage.setItem("picture", "");
     }
 }
 
