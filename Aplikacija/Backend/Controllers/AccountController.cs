@@ -116,6 +116,80 @@ namespace Backend.Controllers
             }
         }
 
+        [Route("GetApplications/{username}")]
+        [HttpGet]
+        [Authorize(Roles = " Admin")]
+        public async Task<JsonResult> GetApplications(string username)
+        {
+            try
+            {
+                var applications = await Context.Students
+                .Where(s => s.UserName == username)
+                .Include(s => s.InternshipApplications)
+                .ThenInclude(a => a.Internship)
+                .ThenInclude(i => i.Employer)
+                .Select(a => new
+                {
+                    Name = a.FirstName + " " + a.LastName,
+                    a.Id,
+                    Applications = a.InternshipApplications.Select(x => new
+                    {
+                        x.ID,
+                        x.Internship.Title,
+                        x.Internship.Employer.CompanyName,
+                        x.Status
+                    })
+                })
+                .FirstOrDefaultAsync();
+
+
+
+
+                return new JsonResult(new { succeeded = true, applications });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { succeeded = false, errors = e.Message });
+            }
+        }
+
+        [Route("GetApplications/{studentId}/{applicationId}/{newStatus}")]
+        [HttpPut]
+        [Authorize(Roles = " Admin")]
+        public async Task<JsonResult> ChangeStatus(string studentId, int applicationId, string newStatus)
+        {
+            try
+            {
+                if (newStatus != "Applied" && newStatus != "Finished" && newStatus != "Denied" && newStatus != "Accepted")
+                {
+                    return new JsonResult(new { succeeded = false, errors = "Invalid status" });
+                }
+
+                var student = await Context.Students
+                .Where(s => s.Id == studentId)
+                .Include(s => s.InternshipApplications)
+                .FirstOrDefaultAsync();
+
+                if (student != null)
+                {
+                    var application = student.InternshipApplications.Where(a => a.ID == applicationId).FirstOrDefault();
+                    if (application != null)
+                    {
+                        application.Status = newStatus;
+                        await Context.SaveChangesAsync();
+                        return new JsonResult(new { succeeded = true });
+                    }
+                }
+                return new JsonResult(new { succeeded = false, errors = "Status not changed" });
+
+
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { succeeded = false, errors = e.Message });
+            }
+        }
+
 
 
     }

@@ -24,6 +24,7 @@ import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
 import { loadUserData, clearData } from "./actions/Auth";
 import NotFoundPage from "./components/NotFoundPage";
+import AdminPage from "./AdminPage";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -257,6 +258,21 @@ export default function App() {
                 component={
                   <Header
                     Component={CVCreator}
+                    ThemeHandler={colorMode.toggleColorMode}
+                  />
+                }
+              />
+            }
+          />
+          <Route
+            path="/AdminDashboard"
+            element={
+              <Redirect
+                to="/"
+                roles={["Admin"]}
+                component={
+                  <Header
+                    Component={AdminPage}
                     ThemeHandler={colorMode.toggleColorMode}
                   />
                 }

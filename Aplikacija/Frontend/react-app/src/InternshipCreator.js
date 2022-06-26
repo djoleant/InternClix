@@ -31,7 +31,8 @@ export default function InternshipCreator() {
             case 0:
                 return <AboutForm />
             case 1:
-                return <Requirements skillData={skillData} />;
+                // return <Requirements skillData={skillData} />;
+                return <Requirements/>;
             default:
                 return <React.Fragment>Not Found</React.Fragment>;
         }
@@ -46,6 +47,9 @@ export default function InternshipCreator() {
     function _sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+    
+    
+
 
     async function _submitForm(values, actions) {
 
@@ -80,7 +84,7 @@ export default function InternshipCreator() {
         setActiveStep(activeStep - 1);
     }
 
-    const [skillData, setSkillData] = useState([]);
+    // const [skillData, setSkillData] = useState([]);
     const [internshipData, setInternshipData] = useState({
         title: "",
         description: "",
@@ -169,7 +173,6 @@ export default function InternshipCreator() {
                     )}
                 </React.Fragment>
             </React.Fragment>
-
         </Container >
     );
 }
