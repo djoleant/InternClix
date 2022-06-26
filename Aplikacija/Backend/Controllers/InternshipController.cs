@@ -583,7 +583,7 @@ namespace Backend.Controllers
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> AddQuestions(List<String> questions, int internshipId)
         {
-            var internship=Context.Internships
+            var internship=await Context.Internships
             .Where(i=> i.ID==internshipId)
             .Include(s => s.InterviewQuestions)
             .FirstOrDefaultAsync();
@@ -595,7 +595,7 @@ namespace Backend.Controllers
                     {
                         Content=s
                     };
-                    //internship.InterviewQuestions.Add(question);
+                    internship.InterviewQuestions.Add(question);
                     await Context.SaveChangesAsync();
                 }
                 

@@ -283,7 +283,7 @@ namespace Backend.Controllers
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> AddRating(float skillImprovementScore, float benefitsScore, float overallScore, string positiveExp, string negativeExp, Boolean recommended, string interviewLevel, string generalImpression, int selectionLength, string employerid)
         {
-            var employer=Context.Employers
+            var employer=await Context.Employers
             .Where(i=> i.Id==employerid)
             .Include(i=>i.Ratings)
             .FirstOrDefaultAsync();
@@ -302,7 +302,7 @@ namespace Backend.Controllers
                 SelectionLength=selectionLength,
                 Likes=0,
                 Dislikes=0,
-                //Employer=employer
+                Employer=employer
             };
             await Context.Ratings.AddAsync(rating);
             await Context.SaveChangesAsync();
