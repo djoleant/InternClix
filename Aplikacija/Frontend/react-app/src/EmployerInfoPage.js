@@ -320,13 +320,13 @@ export default function EmployerInfoPage(props) {
                                     justifySelf: "center",
                                     alignSelf: "center",
                                 }}
-                                onChange={(event) => {
-                                    setSearch(event.target.value);
-                                }}
-                                id="outlined-basic-email"
-                                label="Search by internship title"
-                                variant="outlined"
-                            />
+                                autoFocus
+                                key="searchkey"
+                                onChange={(event) => { setSearch(event.target.value) }}
+                                variant="standard"
+                                label="Search"
+                                value={search}
+                            ></TextField>
                         </Grid>
                         <Grid container spacing={3} sx={{ mb: 4, mt: 1 }}>
                             <Grid container spacing={3} sx={{ pb: 2 }}>
