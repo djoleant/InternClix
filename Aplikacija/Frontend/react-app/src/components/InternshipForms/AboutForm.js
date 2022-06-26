@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Button, Paper, Divider } from '@mui/material';
 import TextInputField from '../CVFormFields/TextInputField';
 import { FieldArray, useFormikContext } from 'formik';
@@ -11,8 +11,12 @@ export default function AboutForm() {
 
 
     const { values } = useFormikContext();
-    
-    const [skillData, setSkillData] = useState(null);
+    useEffect(() => {
+        getSkills();
+        getCategories();
+        console.log("a");
+    }, []);
+    const [skillData, setSkillData] = useState([]);
     const getSkills = async () => {
       const response = await fetch(
         "http://localhost:7240/CV/GetSkills",
@@ -24,20 +28,21 @@ export default function AboutForm() {
         const fetchData = await response.json();
         console.log(fetchData);
         setSkillData(fetchData.skills
-          .map((cards, index) =>
-          ({
-            id: cards.id,
-            label: cards.name
-          })
-          ));
+        //   .map((cards, index) =>
+        //   ({
+        //     id: cards.id,
+        //     label: cards.name
+        //   })
+        //   )
+          );
       }
     };
 
     
-    const [categoryData, setCategoryData] = useState(null);
+    const [categoryData, setCategoryData] = useState([]);
     const getCategories = async () => {
       const response = await fetch(
-        "http://localhost:7240/Internship/Categories",
+        "http://localhost:7240/Internship/GetCategories",
         {
           credentials: "include",
         }
