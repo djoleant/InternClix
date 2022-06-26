@@ -134,11 +134,14 @@ namespace Backend.Controllers
             var employer = logged != null ? await Context.Employers
             .Where(u => u.Id == logged.Id)
             .Include(u => u.Internships)
+            .ThenInclude(i=>i.InterviewQuestions)
             .FirstOrDefaultAsync() : null;
 
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
                 .Include(i => i.Employer)
+                .ThenInclude(i=>i.Ratings)
+                .Include(i=> i.InterviewQuestions)
                 .Include(i => i.Categories)
                 .Include(i => i.Skills)
                 .FirstOrDefaultAsync();
@@ -162,11 +165,20 @@ namespace Backend.Controllers
                         internshipOwner,
                         internship.ID,
                         internship.Title,
+                        Location=internship.Employer.Address,
                         internship.Description,
                         internship.Duration,
                         internship.Compensation,
                         EmployerName = internship.Employer.CompanyName,
                         internship.Skills,
+                        internship.InterviewQuestions,
+                        Ratings=internship.Employer.Ratings
+                            .Select(c=>new {c.InterviewLevel}),
+                        Easy=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Easy").Count(),
+                        VeryEasy=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Very Easy").Count(),
+                        AboutRight=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="About Right").Count(),
+                        Difficult=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Difficult").Count(),
+                        ExtremelyDifficult=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Extremely Difficult").Count(),
                         Categories = internship.Categories
                             .Select(c => new { c.ID, c.Name })
                     }

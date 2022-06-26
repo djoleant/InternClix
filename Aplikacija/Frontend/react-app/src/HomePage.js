@@ -1,5 +1,7 @@
 //to be implemented
-import React, { useState, useEffect, useTheme} from "react";
+import { useState, useEffect} from "react";
+import React from 'react';
+import { ThemeProvider, useTheme } from '@mui/material/styles';
 import {
   Paper,
   CssBaseline,
@@ -31,8 +33,8 @@ import InfoIcon from '@mui/icons-material/Info';
 
 export default function HomePage(props) {
 
-  // const theme = useTheme();
-  // console.log(theme);
+   const theme = useTheme();
+   console.log(theme);
 
   const getEmployers = async () => {
     const response = await fetch(
@@ -73,47 +75,47 @@ export default function HomePage(props) {
       <CssBaseline />
       <React.Fragment>
         <Paper sx={{ p: 3, mb: 4 }} variant="outlined">
-          <Grid fullwidth style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center", height: "60%", marginBottom: 20 }}>
+          <Grid fullwidth style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center", marginBottom: 20 }}>
           <Typography style={{ color: "#618fba", alignSelf:"center",fontSize: 56, fontWeight: 800, marginLeft: 20, marginTop: 20 }}>Intern<span style={{backgroundColor:"#618fba", color:"white"}}>Clix </span> </Typography>
             <Typography style={{ alignSelf:"center", fontSize: 32, fontWeight: 800, marginLeft: 20, marginTop: 10, marginBottom:20 }}><SearchIcon size="large"/> Find Your Dream Internship.</Typography>
             <Statistics />
           </Grid>
-          <Grid fullwidth style={{ display: "flex", flexDirection: "row", height: 400 }}>
-            <Grid fullwidth style={{ width: "50%", backgroundColor: "whitesmoke", marginRight: 10 }}>
-              <Typography fullwidth style={{ fontSize: 20, fontWeight: 1000, backgroundColor: "#f50057" }}> STUDENT </Typography>
-              <Grid style={{ display: "flex", flexDirection: "row" }}>
+          <Grid fullwidth style={{ display: "flex", flexDirection: "row", flexWrap:"wrap" }}>
+            <Grid fullwidth style={{ display: "flex", flexDirection: "column",backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke" , marginRight: 10, marginLeft:10, justifyContent:"center", alignItems:"center" }}>
+              <Typography fullwidth style={{ fontSize: 20, fontWeight: 1000, backgroundColor: "#f50057", width:"100%" }}> STUDENT </Typography>
+              <Grid style={{ display: "flex", flexDirection: "row", flexWrap:"wrap", alignItems:"center", justifyContent:"center", flexWrap:"wrap",  marginTop:20 }}>
                 <Avatar
                   variant="rounded"
                   alt="Remy Sharp"
-                  src={process.env.PUBLIC_URL + "/images/student1.jpg"}
-                  sx={{ width: 200, height: 200, marginRight: 4, marginTop: 14, justifySelf: "flex-end" }}
+                  src={theme.palette.mode === 'dark' ? process.env.PUBLIC_URL + "/images/student2.jpg":process.env.PUBLIC_URL + "/images/student1.jpg"}
+                  sx={{ width: 200, height: 200, marginRight: 4,justifySelf: "flex-end" }}
                 />
-                <Grid style={{ alignSelf: "center", width: "60%", marginTop: 5 }}>
+                <Grid style={{ alignSelf: "center", width: "50%", marginTop: 10 }}>
                   <Typography style={{ fontSize: 20 }}>Register as a student and: </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • View internship offers </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Chat with employers </Typography>
-                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Rate employers </Typography>
+                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Rate former employers </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • See internship compatibility </Typography>
-                  <Button size="large"  href="http://localhost:3000/Register/student" variant="contained" style={{ marginTop: 40 }}>Register as student</Button>
+                  <Button size="large"  href="http://localhost:3000/Register/student" variant="contained" style={{ marginTop: 40, marginBottom:20, marginRight:28 }}>Register as student</Button>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid fullwidth style={{ width: "50%", backgroundColor: "whitesmoke", marginLeft: 10 }}>
-              <Typography fullwidth style={{ fontSize: 20, fontWeight: 1000, backgroundColor: "#618fba" }}> EMPLOYER </Typography>
-              <Grid style={{ display: "flex", flexDirection: "row" }}>
-                <Grid style={{ alignSelf: "center", justifyConntent: "flex-start", height: "80%", /*backgroundColor:"lightgrey"*/ marginLeft: 20, width: "55%", marginTop: 5 }}>
-                  <Typography style={{ fontSize: 20 }}>Register as an employer and: </Typography>
+            <Grid fullwidth style={{  backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke", marginLeft: 10, marginTop:6, marginBottom:1, marginRight:14 }}>
+              <Typography fullwidth style={{ fontSize: 20, fontWeight: 1000, backgroundColor: "#618fba",  width:"100%" }}> EMPLOYER </Typography>
+              <Grid style={{ display: "flex", flexDirection: "row", flexWrap:"wrap-reverse", alignItems:"center", justifyContent:"center",  marginTop:20}}>
+                <Grid style={{ alignSelf: "center", width: "50%", marginBottom:5, /*backgroundColor:"lightgrey"*/ marginLeft: 20,  marginTop: 10 }}>
+                  <Typography style={{ fontSize: 20}}>Register as an employer and: </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Post internship offers </Typography>
                   <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Hire prospective students </Typography>
-                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • See company ratings </Typography>
-                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Something 4 </Typography>
-                  <Button size="large"  href="http://localhost:3000/Register/employer"  variant="contained" style={{ backgroundColor: "#f50057", marginTop: 40 }}>Register as employer</Button>
+                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • See your company's ratings </Typography>
+                  <Typography style={{ marginLeft: 4, fontSize: 18 }}> • Chat with new applicants </Typography>
+                  <Button size="large"  href="http://localhost:3000/Register/employer"  variant="contained" style={{ order:100, backgroundColor: "#f50057", marginTop: 40, marginBottom:20, marginRight:12}}>Register as employer</Button>
                 </Grid>
                 <Avatar
                   variant="rounded"
                   alt="Remy Sharp"
-                  src={process.env.PUBLIC_URL + "/images/employer1.jpg"}
-                  sx={{ width: 200, height: 200, marginRight: 1, marginTop: 14, justifySelf: "flex-end" }}
+                  src={theme.palette.mode === 'dark' ? process.env.PUBLIC_URL + "/images/employer2.jpg":process.env.PUBLIC_URL + "/images/employer1.jpg"}
+                  sx={{ width: 200, height: 200, marginRight: 1, justifySelf: "flex-end" }}
                 />
 
               </Grid>

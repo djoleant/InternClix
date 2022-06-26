@@ -9,7 +9,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import PaidIcon from '@mui/icons-material/Paid';
 import Avatar from "@mui/material/Avatar";
-import background from "../resources/lbp.jpg";
+//import background from "../resources/lbp.jpg";
 import { useNavigate } from "react-router-dom";
 
 

@@ -371,15 +371,16 @@ export default function EmployerInfoPage(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Grid
-                        container
+                        item xs={12} md={6} lg={6} 
                         style={{
                             marginTop: 3,
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "center",
                         }}
-                        spacing={3}
-                        sx={{ mb: 4 }}
+                        spacing={1}
+                        sx={{ mb: 2 }}
+
                     >
                         {employerData.ratings.map((el, index) => (
                             <ExperienceCard

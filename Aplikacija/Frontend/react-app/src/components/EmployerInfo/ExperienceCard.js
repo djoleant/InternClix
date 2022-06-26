@@ -1,5 +1,6 @@
 import Container from "@mui/material/Container";
 import React, { useState } from "react";
+import { ThemeProvider, useTheme } from '@mui/material/styles';
 import { Button, Typography } from "@mui/material";
 import {
   Paper,
@@ -17,11 +18,12 @@ import IconButton from "@mui/material/IconButton";
 import Star from "@mui/icons-material/Star";
 
 export default function ExperienceCard(props) {
+  const theme=useTheme();
   return (
     <Container component="main">
       <CssBaseline />
       <React.Fragment>
-        <Paper sx={{ p: 2, ml: 2 }} variant="outlined">
+        <Paper sx={{ p: 2, ml: 1, mb:2 }} variant="outlined">
           <Grid
             container
             style={{
@@ -29,9 +31,10 @@ export default function ExperienceCard(props) {
               marginLeft: 3,
               display: "flex",
               flexDirection: "column",
-              alignItems: "flex-start",
+              alignItems: "space-around",
+              justifyContent:"space-around"
             }}
-            spacing={3}
+            spacing={2}
             
           >
             {/* <Typography     align="center" sx={{ m: 1, fontWeight:"1000" }}> Random Internship Title </Typography>
@@ -45,7 +48,7 @@ export default function ExperienceCard(props) {
                 
                 //backgroundColor:"red"
               }}
-              spacing={3}
+              spacing={2}
               sx={{ mb: 4 }}
             >
               <Typography
@@ -56,13 +59,13 @@ export default function ExperienceCard(props) {
               {props.recommended == true ? (
                 <Button align="right" variant="outlined" disabled style={{ display: "flex", flexDirection: "row", marginLeft:30, marginBottom:3 }}>
                   <ThumbUpIcon
-                    style={{ marginLeft: 3, color: "green", fontWeight: 400  }}
+                    style={{ marginLeft: 3, color: "green", fontWeight: 200  }}
                   ></ThumbUpIcon>
                   <Typography
                     style={{
                       marginLeft: 5,
                       color: "green",
-                      fontWeight: "bold",
+                      fontWeight: "400",
                     }}
                   >
                     {" "}
@@ -75,7 +78,7 @@ export default function ExperienceCard(props) {
                     style={{ color: "red" }}
                   ></ThumbDownIcon>
                   <Typography
-                    style={{ marginLeft: 5, color: "red", fontWeight: 400 }}
+                    style={{ marginLeft: 2,  color: "red", fontWeight: 400 }}
                   >
                     {" "}
                     Doesn't Recommend{" "}
@@ -85,7 +88,7 @@ export default function ExperienceCard(props) {
               <Divider style={{width:'88%', marginBottom:7}} />
               <Grid
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke",
                   display: "flex",
                   flexDirection: "row",
                   alignSelf: "flex-end",
@@ -118,14 +121,13 @@ export default function ExperienceCard(props) {
               container
               style={{
                 marginTop: 1,
-                marginLeft: 3,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
                 justofyContent: "center",
               }}
               spacing={3}
-              sx={{ mb: 4 }}
+              sx={{ mb: 2 }}
             >
               <Grid
                 container
@@ -221,7 +223,7 @@ export default function ExperienceCard(props) {
                 flexDirection: "column",
                 alignItems: "flex-start",
               }}
-              spacing={5}
+              spacing={3}
               sx={{ mb: 1 }}
             >
               <Divider style={{ width: "90%" }}></Divider>

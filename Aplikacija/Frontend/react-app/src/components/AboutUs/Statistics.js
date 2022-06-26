@@ -71,19 +71,19 @@ export default function AboutUsPage(props) {
                     <Typography style={{fontSize:28, fontWeight:"bolder"}}>{statisticsData.employerCount}</Typography>
                     <Typography style={{ fontSize:16}}>registered employer{statisticsData.employerCount==1?"":"s"}</Typography>
                 </Grid>
-                <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/>
-                <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                {/* <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/> */}
+                <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",/* border:"1px solid black", padding:"20px"*/}}>
                     <StarIcon fontSize="large"></StarIcon>
                     <Typography style={{/*color:"#618fba"*/ fontSize:28, fontWeight:"bolder"}}>{statisticsData.ratingCount}</Typography>
                     <Typography>employer rating{statisticsData.ratingCount==1?"":"s"}</Typography>
                 </Grid>
-                <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/>
-                <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                {/* <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/> */}
+                <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", /*border:"1px solid black", padding:"20px"*/}}>
                     <WorkHistoryIcon fontSize="large"></WorkHistoryIcon>
                     <Typography style={{ fontSize:28, fontWeight:"bolder"}}>{statisticsData.internshipCount}</Typography>
                     <Typography>internship offer{statisticsData.internshipCount==1?"":"s"}</Typography>
                 </Grid>
-                <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/>
+                {/* <Divider style={{marginLeft:20, marginRight:20}} orientation="vertical" flexItem/> */}
                 <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
                     <SchoolIcon fontSize="large"></SchoolIcon>
                     <Typography style={{fontSize:28, fontWeight:"bolder"}}>{statisticsData.studentCount}</Typography>

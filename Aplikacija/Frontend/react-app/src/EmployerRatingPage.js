@@ -1,6 +1,7 @@
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import React, { useState } from 'react';
+import React, { useState, useParams } from 'react';
+import { ThemeProvider, useTheme } from '@mui/material/styles';
 import {
     Button,
     Typography,
@@ -27,6 +28,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import HoverRating from './components/EmployerInfo/HoverRating';
 
 export default function EmployerRatingPage(props) {
+    const theme=useTheme();
+
+    const { id } = useParams();
 
     const [textValue, setTextValue] = useState("");
 
@@ -46,9 +50,20 @@ export default function EmployerRatingPage(props) {
 
      console.log(jobInt);
 
-    // console.log(experience.negativeExperience);
+    // const getEmployerRating = async () => {
+    //     const response = await fetch(
+    //         "http://localhost:7240/Employer/AddRating/" + skillImprovement+"/"+benefits+"/"+overall+"/"+positiveExperience+"/"+negativeExperience+"/"+recommend+"/"+jobInt+"/"+genImpression+"/"+durationSel+"/"+id,
+    //         {
+    //             credentials: "include",
+    //         }
+    //     );
+    //     if (response.ok) {
+    //         const fetchData = await response.json();
+    //         console.log(fetchData);
+    //         //setEmployerData(fetchData.employer);
+    //     }
+    // };
 
-    // console.log(durationSel);
 
     const onTextChange = (e) => setTextValue(e.target.value);
     const handleSubmit = () => console.log(textValue);
@@ -122,7 +137,7 @@ export default function EmployerRatingPage(props) {
                     Rate your internship experience
                 </Typography>
                 <Paper
-                    sx={{ p: 3, mb: 4, backgroundColor:"#f3f3f3" }}
+                    sx={{ p: 3, mb: 4, backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke", }}
                     variant="outlined"
                 >
                     <Typography component="h1" variant="h6" align="center" sx={{ m: 2 }}>
@@ -197,7 +212,7 @@ export default function EmployerRatingPage(props) {
 
                 </Box >
 
-                <Paper sx={{ p: 3, mb: 4, backgroundColor:"#f3f3f3"}} style={{ display:"flex", flexDirection:"column", alignItems:"space-between" }}
+                <Paper sx={{ p: 3, mb: 4, backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke",}} style={{ display:"flex", flexDirection:"column", alignItems:"space-between" }}
                     variant="outlined">
                             <Typography  align="center" sx={{ m: 2 }}> <LightbulbCircleIcon style={{color:"red"}}/> Remeber any interview questions? Please do share! </Typography>
                         {
@@ -279,7 +294,8 @@ export default function EmployerRatingPage(props) {
                     </FormControl>
                         
                     </Grid>
-                    <Button variant="contained" endIcon={<SendIcon/>}> Submit rating </Button>
+                    <Button onClick={() => { /*getEmployerRating*/ }}
+                    variant="contained" endIcon={<SendIcon/>}> Submit rating </Button>
                 </Box>
             </Paper>
                
