@@ -202,7 +202,7 @@ export default function Employers(props) {
                       </Grid>
                       <Divider light />
                       <CardActions style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
-                        <Typography style={{ color: "black", textAlign: "center", fontWeight: "1000", marginLeft: 7, fontSize: 20 }}><WorkHistoryIcon> </WorkHistoryIcon> {card.companyName}</Typography>
+                        <Typography style={{ textAlign: "center", fontWeight: "1000", marginLeft: 7, fontSize: 20 }}><WorkHistoryIcon> </WorkHistoryIcon> {card.companyName}</Typography>
                         {/* <Typography style={{textAlign:"center"}}>{card.about}</Typography> */}
                       </CardActions>
                     </Card>

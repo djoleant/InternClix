@@ -176,7 +176,7 @@ export default function Chat() {
               <ListItem
                 button
                 key={index}
-                onClick={() => { setCurrentChat(chat.key); navigate("/Chat/" + chat.key); }}
+                onClick={() => { setCurrentChat(chat.key); navigate("/Chat/" + chat.key); console.log(chat.key) }}
                 selected={chat.key == id}
               >
                 <ListItemIcon>

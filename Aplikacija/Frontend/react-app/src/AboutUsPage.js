@@ -35,7 +35,7 @@ export default function AboutUsPage(props) {
     <Container component="main">
       <CssBaseline />
       <React.Fragment>
-        <Paper sx={{ p: 3, mb: 4 }} variant="outlined">
+        <Paper sx={{ p: 3, mb: 4, mt: 2 }} variant="outlined">
           {/* <Box
                     component="form"
                     sx={{
@@ -133,7 +133,7 @@ export default function AboutUsPage(props) {
                 </Typography>
                 <Avatar
                   alt="Remy Sharp"
-                  src={process.env.PUBLIC_URL+"/images/estojny.jpg"}
+                  src={process.env.PUBLIC_URL + "/images/estojny.jpg"}
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography
@@ -212,7 +212,7 @@ export default function AboutUsPage(props) {
                 </Typography>
                 <Avatar
                   alt="Remy Sharp"
-                  src={process.env.PUBLIC_URL+"/images/djstojny.jpg"}
+                  src={process.env.PUBLIC_URL + "/images/djstojny.jpg"}
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography
@@ -292,7 +292,7 @@ export default function AboutUsPage(props) {
                 </Typography>
                 <Avatar
                   alt="Remy Sharp"
-                  src={process.env.PUBLIC_URL+"/images/mstojny.jpg"}
+                  src={process.env.PUBLIC_URL + "/images/mstojny.jpg"}
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography

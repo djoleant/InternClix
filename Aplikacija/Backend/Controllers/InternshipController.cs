@@ -134,14 +134,14 @@ namespace Backend.Controllers
             var employer = logged != null ? await Context.Employers
             .Where(u => u.Id == logged.Id)
             .Include(u => u.Internships)
-            .ThenInclude(i=>i.InterviewQuestions)
+            .ThenInclude(i => i.InterviewQuestions)
             .FirstOrDefaultAsync() : null;
 
             var internship = await Context.Internships
                 .Where(i => i.ID == internshipId)
                 .Include(i => i.Employer)
-                .ThenInclude(i=>i.Ratings)
-                .Include(i=> i.InterviewQuestions)
+                .ThenInclude(i => i.Ratings)
+                .Include(i => i.InterviewQuestions)
                 .Include(i => i.Categories)
                 .Include(i => i.Skills)
                 .FirstOrDefaultAsync();
@@ -165,20 +165,21 @@ namespace Backend.Controllers
                         internshipOwner,
                         internship.ID,
                         internship.Title,
-                        Location=internship.Employer.Address,
+                        Location = internship.Employer.Address,
                         internship.Description,
                         internship.Duration,
                         internship.Compensation,
                         EmployerName = internship.Employer.CompanyName,
+                        EmployerId = internship.Employer.Id,
                         internship.Skills,
                         internship.InterviewQuestions,
-                        Ratings=internship.Employer.Ratings
-                            .Select(c=>new {c.InterviewLevel}),
-                        Easy=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Easy").Count(),
-                        VeryEasy=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Very Easy").Count(),
-                        AboutRight=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="About Right").Count(),
-                        Difficult=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Difficult").Count(),
-                        ExtremelyDifficult=internship.Employer.Ratings.Where(i=>i.InterviewLevel=="Extremely Difficult").Count(),
+                        Ratings = internship.Employer.Ratings
+                            .Select(c => new { c.InterviewLevel }),
+                        Easy = internship.Employer.Ratings.Where(i => i.InterviewLevel == "Easy").Count(),
+                        VeryEasy = internship.Employer.Ratings.Where(i => i.InterviewLevel == "Very Easy").Count(),
+                        AboutRight = internship.Employer.Ratings.Where(i => i.InterviewLevel == "About Right").Count(),
+                        Difficult = internship.Employer.Ratings.Where(i => i.InterviewLevel == "Difficult").Count(),
+                        ExtremelyDifficult = internship.Employer.Ratings.Where(i => i.InterviewLevel == "Extremely Difficult").Count(),
                         Categories = internship.Categories
                             .Select(c => new { c.ID, c.Name })
                     }
@@ -256,7 +257,13 @@ namespace Backend.Controllers
             var internships = await Context.Internships
             .Include(i => i.Skills)
             .Include(i => i.Categories)
+            .Include(i => i.Employer)
             .ToListAsync();
+            var logged = await UserManager.GetUserAsync(User);
+            var student = logged != null ? await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.Wishlist)
+            .FirstOrDefaultAsync() : null;
             if (internships != null)
             {
                 return new JsonResult(new
@@ -267,13 +274,15 @@ namespace Backend.Controllers
                         Internships = internships.Select(internship => new
                         {
                             id = internship.ID,
+                            internship.Employer.Address,
                             internship.Title,
                             internship.Description,
                             internship.Duration,
                             internship.Compensation,
                             internship.Skills,
                             Categories = internship.Categories
-                            .Select(c => new {c.ID, c.Name})
+                            .Select(c => new { c.ID, c.Name }),
+                            wishlisted = (student != null) ? student.Wishlist.Exists(i => i.ID == internship.ID) : false
 
 
                         })
@@ -349,7 +358,7 @@ namespace Backend.Controllers
                     }
                     foreach (var appl in internship.InternshipApplications)
                     {
-                        if (appl.ID != applicationId) //dodati eentualno slanje poruke
+                        if (appl.ID != applicationId && appl.Status == "Applied") //dodati eentualno slanje poruke
                         {
                             appl.Status = "Denied";
                             appl.Date = DateTime.Now;
@@ -595,32 +604,33 @@ namespace Backend.Controllers
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> AddQuestions(List<String> questions, int internshipId)
         {
-            var internship=await Context.Internships
-            .Where(i=> i.ID==internshipId)
+            var internship = await Context.Internships
+            .Where(i => i.ID == internshipId)
             .Include(s => s.InterviewQuestions)
             .FirstOrDefaultAsync();
-            if(internship!=null)
+            if (internship != null)
             {
-                foreach(String s in questions)
+                foreach (String s in questions)
                 {
                     var question = new InterviewQuestion
                     {
-                        Content=s
+                        Content = s
                     };
                     internship.InterviewQuestions.Add(question);
                     await Context.SaveChangesAsync();
                 }
-                
-            return new JsonResult(new { succeeded = true });
+
+                return new JsonResult(new { succeeded = true });
             }
-            else{
+            else
+            {
                 return new JsonResult(new
                 {
                     succeeded = false,
                     error = "Internship Not Found"
                 });
             }
-            
+
 
         }
 

@@ -460,7 +460,7 @@ export default function App() {
             }
           />
           <Route
-            path="*"
+            path="/SuccessRating"
             element={
               <Header
                 Component={SuccessRating}

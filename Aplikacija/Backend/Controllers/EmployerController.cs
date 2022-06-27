@@ -333,29 +333,30 @@ namespace Backend.Controllers
         public async Task<JsonResult> GetEmployerInternships(string employerID)
         {
             var logged = await UserManager.GetUserAsync(User);
-            var employer=await Context.Employers
-            .Where(u=>u.Id==employerID)
+            var employer = await Context.Employers
+            .Where(u => u.Id == employerID)
             .FirstOrDefaultAsync();
             var student = await Context.Students
             .Where(u => u.Id == logged.Id)
-            .Include(u => u.PreviousInternships)
-            .ThenInclude(i => i.Employer)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(i => i.Internship)
+            .ThenInclude(x => x.Employer)
             .FirstOrDefaultAsync();
 
-            if (student != null && employer!=null)
+            if (student != null && employer != null)
             {
                 return new JsonResult(new
                 {
                     succeeded = true,
-                    internships = new 
+                    internships = new
                     {
-                        Employer=employer.CompanyName,
-                        Internships=student.PreviousInternships
-                        .Where(u=>u.Employer==employer)
+                        Employer = employer.CompanyName,
+                        Internships = student.InternshipApplications
+                        .Where(u => u.Status == "Finished" && u.Internship.Employer == employer)
                         .Select(a => new
                         {
-                            InternshipID = a.ID,
-                            a.Title
+                            InternshipID = a.Internship.ID,
+                            a.Internship.Title
                         })
                     }
 
@@ -378,34 +379,36 @@ namespace Backend.Controllers
         public async Task<JsonResult> GetRatingStatus(string employerID)
         {
             var logged = await UserManager.GetUserAsync(User);
-            var employer=await Context.Employers
-            .Where(u=>u.Id==employerID)
-            .Include(u=>u.Internships)
-            .ThenInclude(u=>u.PreviousStudents)
-            .FirstOrDefaultAsync();
+            // var employer = await Context.Employers
+            // .Where(u => u.Id == employerID)
+            // .Include(u => u.Internships)
+            // .ThenInclude(u => u.InternshipApplications)
+            // .ThenInclude(u => u.Internship)
+            // .FirstOrDefaultAsync();
             var student = await Context.Students
             .Where(u => u.Id == logged.Id)
-            .Include(u => u.PreviousInternships)
+            .Include(u => u.InternshipApplications)
+            .ThenInclude(u => u.Internship)
             .ThenInclude(i => i.Employer)
             .FirstOrDefaultAsync();
 
-            if (student != null && employer!=null)
+            if (student != null)
             {
-                var studentInternships=student.PreviousInternships;
-                var finished=false;
-                foreach(var s in studentInternships)
+                var studentInternships = student.InternshipApplications.Where(s => s.Status == "Finished");
+                var finished = false;
+                foreach (var s in studentInternships)
                 {
-                    if(employer.Internships.Contains(s))
+                    if (s.Internship.Employer.Id == employerID)
                     {
-                        finished=true;
+                        finished = true;
                     }
                 }
                 return new JsonResult(new
                 {
                     succeeded = true,
-                    status = new 
+                    status = new
                     {
-                        Status=(finished==true)?1:-1
+                        Status = (finished == true) ? 1 : -1
                     }
 
                 }

@@ -13,6 +13,7 @@ import ComboBox from './components/ComboBox';
 import { useNavigate } from "react-router-dom";
 import InternshipCard from './components/InternshipCard';
 import background from "./resources/stojny.jpg";
+import SmallInternshipCard from './components/StudentProfile/SmallInternshipCard';
 
 
 export default function Internships(props) {
@@ -54,7 +55,7 @@ export default function Internships(props) {
 
     return (
 
-        <Container component="main" >
+        <>
             <CssBaseline />
             <React.Fragment>
                 <Paper
@@ -63,9 +64,9 @@ export default function Internships(props) {
                     justifyContent="center"
 
                 >
-                    <Grid style={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center" }}>
-                        <Grid container xs={12} md={6} lg={6} style={{ display:"flex", flexDirection:"row", padding: "10px", width:"90%", justifyContent:"center", alignItems:"center" }}>
-                            <TextField style={{marginBottom:5}}
+                    <Grid style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                        <Grid container xs={12} md={6} lg={6} style={{ display: "flex", flexDirection: "row", padding: "10px", width: "90%", justifyContent: "center", alignItems: "center" }}>
+                            <TextField style={{ marginBottom: 5 }}
                                 onChange={(event) => { setSearch(event.target.value) }}
                                 id="outlined-basic-email"
                                 label="Search by internship name"
@@ -73,8 +74,8 @@ export default function Internships(props) {
                                 fullWidth
                             />
 
-                            
-                    
+
+
                         </Grid>
 
                     </Grid>
@@ -83,26 +84,32 @@ export default function Internships(props) {
 
 
                     {internshipData != null && (
-                        <Grid container spacing={1}
-                            /*xs={12} md={6} lg={6}*/
-                            >
+                        <Grid container spacing={2}
+                        /*xs={12} md={6} lg={6}*/
+                        >
 
                             {internshipData.internships
                                 .filter(c => c.title.toLowerCase().includes(search.toLowerCase()))
                                 .map((cards, index) => {
-                                    const { title, description, duration, compensation, skills, categories, id } = cards;
+                                    const { title, description, duration, compensation, skills, categories, id, address, wishlisted } = cards;
                                     console.log(cards);
                                     return (
-                                        <InternshipCard
-                                        index={index}
-                                        title={title}
-                                        description={description}
-                                        duration={duration}
-                                        compensation={compensation}
-                                        skills={skills}
-                                        categories={categories}
-                                        link = {"/Internship/" + id  }
-                                         />
+                                        <Grid item xs={12} md={6} lg={4}>
+                                            <SmallInternshipCard
+                                                index={index}
+                                                title={title}
+                                                description={description}
+                                                duration={duration}
+                                                compensation={compensation}
+                                                skills={skills}
+                                                categories={categories}
+                                                link={"/Internship/" + id}
+                                                location={address}
+                                                showBookmark={localStorage.getItem("role") === "Student"}
+                                                wishlisted={wishlisted}
+                                                internshipID={id}
+                                            />
+                                        </Grid>
 
                                     );
                                 })}
@@ -114,6 +121,6 @@ export default function Internships(props) {
 
             </React.Fragment>
 
-        </Container >
+        </ >
     );
 }

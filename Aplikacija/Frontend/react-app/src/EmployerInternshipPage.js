@@ -16,7 +16,7 @@ import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import PaidIcon from '@mui/icons-material/Paid';
 import SkillChips from './components/InternshipPage/SkillChips';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import TechStack from './components/EmployerInfo/TechStack';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
@@ -107,6 +107,7 @@ export default function EmployerInternsipPage() {
         difficult: 0,
         extremelyDifficult: 0,
         categories: [],
+        employerId: ""
     })
     const [applied, setApplied] = useState(false);
 
@@ -142,7 +143,12 @@ export default function EmployerInternsipPage() {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <Typography align="center" style={{ fontSize: 23 }} >{internship.employerName} has listed this internship</Typography>
+                    <Typography align="center" style={{ fontSize: 23 }} >
+                        <NavLink to={"/Employer/" + internship.employerId} style={{ color: '#f50057' }}>
+                            {internship.employerName}
+                        </NavLink>
+                        {" has listed this internship"}
+                    </Typography>
                     {
                         applied ?
                             <Typography variant="h5" sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2, mt: 2 }}>

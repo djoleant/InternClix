@@ -49,7 +49,7 @@ export default function AcceptApplicationDialog({ name, studentId, internshipId,
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Accpet internship application?"}
+                    {"Accept internship application?"}
                 </DialogTitle>
 
                 <DialogContent>
@@ -72,7 +72,7 @@ export default function AcceptApplicationDialog({ name, studentId, internshipId,
                         Cancel
                     </Button>
                     <Button onClick={acceptApplication} autoFocus>
-                        Accpet
+                        Accept
                     </Button>
                 </DialogActions>
             </Dialog>

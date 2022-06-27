@@ -18,12 +18,12 @@ import IconButton from "@mui/material/IconButton";
 import Star from "@mui/icons-material/Star";
 
 export default function ExperienceCard(props) {
-  const theme=useTheme();
+  const theme = useTheme();
   return (
     <Container component="main">
       <CssBaseline />
       <React.Fragment>
-        <Paper sx={{ p: 2, ml: 1, mb:2 }} variant="outlined">
+        <Paper sx={{ p: 2, ml: 1, mb: 2 }} variant="outlined">
           <Grid
             container
             style={{
@@ -32,10 +32,10 @@ export default function ExperienceCard(props) {
               display: "flex",
               flexDirection: "column",
               alignItems: "space-around",
-              justifyContent:"space-around"
+              justifyContent: "space-around"
             }}
             spacing={2}
-            
+
           >
             {/* <Typography     align="center" sx={{ m: 1, fontWeight:"1000" }}> Random Internship Title </Typography>
                             <Typography     align="center" sx={{ m: 1 }}>  Location </Typography>
@@ -45,21 +45,21 @@ export default function ExperienceCard(props) {
               style={{
                 marginTop: 1,
                 marginLeft: 3,
-                
+
                 //backgroundColor:"red"
               }}
               spacing={2}
               sx={{ mb: 4 }}
             >
               <Typography
-                variant="h5" align="left" style={{marginBottom:4}}
+                variant="h5" align="left" style={{ marginBottom: 4 }}
               >
                 Rating #{props.id}{" "}
               </Typography>
               {props.recommended == true ? (
-                <Button align="right" variant="outlined" disabled style={{ display: "flex", flexDirection: "row", marginLeft:30, marginBottom:3 }}>
+                <Button align="right" variant="outlined" disabled style={{ display: "flex", flexDirection: "row", marginLeft: 30, marginBottom: 3 }}>
                   <ThumbUpIcon
-                    style={{ marginLeft: 3, color: "green", fontWeight: 200  }}
+                    style={{ marginLeft: 3, color: "green", fontWeight: 200 }}
                   ></ThumbUpIcon>
                   <Typography
                     style={{
@@ -73,22 +73,22 @@ export default function ExperienceCard(props) {
                   </Typography>
                 </Button>
               ) : (
-                <Button variant="outlined" align="right" disabled style={{ display: "flex", flexDirection: "row", justifySelf:"flex-end", marginLeft:30, marginBottom:3 }}>
+                <Button variant="outlined" align="right" disabled style={{ display: "flex", flexDirection: "row", justifySelf: "flex-end", marginLeft: 30, marginBottom: 3 }}>
                   <ThumbDownIcon
                     style={{ color: "red" }}
                   ></ThumbDownIcon>
                   <Typography
-                    style={{ marginLeft: 2,  color: "red", fontWeight: 400 }}
+                    style={{ marginLeft: 2, color: "red", fontWeight: 400 }}
                   >
                     {" "}
                     Doesn't Recommend{" "}
                   </Typography>
                 </Button>
               )}
-              <Divider style={{width:'88%', marginBottom:7}} />
+              <Divider style={{ width: '88%', marginBottom: 7 }} />
               <Grid
                 style={{
-                  backgroundColor: theme.palette.mode === 'dark' ?  "#3a3b3c":"whitesmoke",
+                  backgroundColor: theme.palette.mode === 'dark' ? "#3a3b3c" : "whitesmoke",
                   display: "flex",
                   flexDirection: "row",
                   alignSelf: "flex-end",
@@ -114,146 +114,145 @@ export default function ExperienceCard(props) {
                     <ThumbDownIcon />
                   </IconButton>
                 </Typography> */}
+                </Grid>
               </Grid>
-            </Grid>
-            
-            <Grid
-              container
-              style={{
-                marginTop: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justofyContent: "center",
-              }}
-              spacing={3}
-              sx={{ mb: 2 }}
-            >
+
               <Grid
                 container
                 style={{
                   marginTop: 1,
-                  marginLeft: 3,
                   display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justofyContent: "flex-start",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justofyContent: "center",
                 }}
                 spacing={3}
-                sx={{ mb: 3.5 }}
+                sx={{ mb: 2, pl: 2 }}
               >
-                <Button
+                <Grid
+                  container
                   style={{
-                    width: 60,
-                    marginLeft: 7,
-                    marginRight: 20,
                     marginTop: 1,
-                    color: "black",
+                    marginLeft: 3,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justofyContent: "flex-start",
                   }}
-                  variant="contained"
-                  disabled
+                  spacing={3}
+                  sx={{ mb: 3.5, pl: 2 }}
                 >
-                  {props.skillImprovementScore}{" "}
-                  <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
-                </Button>
-                <Typography>Skill improvement Score</Typography>
+                  <Button
+                    style={{
+                      width: 60,
+                      marginLeft: 7,
+                      marginRight: 20,
+                      marginTop: 1,
+
+                    }}
+                    variant="contained"
+                    disabled
+                  >
+                    {props.skillImprovementScore}{" "}
+                    <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
+                  </Button>
+                  <Typography>Skill improvement Score</Typography>
+                </Grid>
+                <Grid
+                  container
+                  style={{
+                    marginLeft: 3,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justofyContent: "flex-start",
+                  }}
+                  spacing={3}
+                  sx={{ mb: 3.5, pl: 2 }}
+                >
+                  <Button
+                    style={{
+                      width: 60,
+                      marginLeft: 7,
+                      marginRight: 20,
+                      marginTop: 1,
+
+                    }}
+                    variant="contained"
+                    disabled
+                  >
+                    {props.benefitsScore}{" "}
+                    <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
+                  </Button>
+                  <Typography>Company Benefits Score</Typography>
+                </Grid>
+                <Grid
+                  container
+                  style={{
+                    marginLeft: 3,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justofyContent: "flex-start",
+                  }}
+                  spacing={3}
+                  sx={{ mb: 2, pl: 2 }}
+                >
+                  <Button
+                    style={{
+                      width: 60,
+                      marginLeft: 7,
+                      marginRight: 20,
+                      marginTop: 1,
+                    }}
+                    variant="contained"
+                    disabled
+                  >
+                    {props.overallScore}{" "}
+                    <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
+                  </Button>
+                  <Typography>Overall Company Score</Typography>
+                </Grid>
               </Grid>
               <Grid
                 container
                 style={{
                   marginLeft: 3,
                   display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justofyContent: "flex-start",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
                 }}
                 spacing={3}
-                sx={{ mb: 3.5 }}
+                sx={{ mb: 1 }}
               >
-                <Button
-                  style={{
-                    width: 60,
-                    marginLeft: 7,
-                    marginRight: 20,
-                    marginTop: 1,
-                    color: "black",
-                  }}
-                  variant="contained"
-                  disabled
+                <Divider style={{ width: "90%" }}></Divider>
+                <Typography
+
+                  align="center"
+                  sx={{ m: 1, fontWeight: "1000" }}
                 >
-                  {props.benefitsScore}{" "}
-                  <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
-                </Button>
-                <Typography>Company Benefits Score</Typography>
-              </Grid>
-              <Grid
-                container
-                style={{
-                  marginLeft: 3,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justofyContent: "flex-start",
-                }}
-                spacing={3}
-                sx={{ mb: 2 }}
-              >
-                <Button
-                  style={{
-                    width: 60,
-                    marginLeft: 7,
-                    marginRight: 20,
-                    marginTop: 1,
-                    color: "black",
-                  }}
-                  variant="contained"
-                  disabled
+                  {" "}
+                  POSITIVE EXPERIENCE{" "}
+                </Typography>
+                <Typography align="center" sx={{ m: 1 }}>
+                  {" "}
+                  {props.positiveExperience}{" "}
+                </Typography>
+
+                <Typography
+
+                  align="center"
+                  sx={{ m: 1, fontWeight: "1000" }}
                 >
-                  {props.overallScore}{" "}
-                  <StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />
-                </Button>
-                <Typography>Overall Company Score</Typography>
+                  {" "}
+                  NEGATIVE EXPERIENCE{" "}
+                </Typography>
+                <Typography align="center" sx={{ m: 1 }}>
+                  {" "}
+                  {props.negativeExperience}{" "}
+                </Typography>
               </Grid>
             </Grid>
-            <Grid
-              container
-              style={{
-                marginLeft: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-              }}
-              spacing={3}
-              sx={{ mb: 1 }}
-            >
-              <Divider style={{ width: "90%" }}></Divider>
-              <Typography
-
-                align="center"
-                sx={{ m: 1, color: "black", fontWeight: "1000" }}
-              >
-                {" "}
-                POSITIVE EXPERIENCE{" "}
-              </Typography>
-              <Typography align="center" sx={{ m: 1 }}>
-                {" "}
-                {props.positiveExperience}{" "}
-              </Typography>
-
-              <Typography
-
-                align="center"
-                sx={{ m: 1, color: "black", fontWeight: "1000" }}
-              >
-                {" "}
-                NEGATIVE EXPERIENCE{" "}
-              </Typography>
-              <Typography align="center" sx={{ m: 1 }}>
-                {" "}
-                {props.negativeExperience}{" "}
-              </Typography>
-            </Grid>
-          </Grid>
           </Grid>
         </Paper>
       </React.Fragment>

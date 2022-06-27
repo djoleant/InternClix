@@ -50,7 +50,7 @@ export default function EmployerRatingPage(props) {
 
     async function _submitForm(values, actions) {
 
-        // const response = await fetch("http://localhost:7240/Employer/AddRating/"+rating.skillImprovement+"/"+rating.benefits+"/"+rating.overall+"/"+experience.positiveExperience+"/"+experience.negativeExperience+"/"+recommend+"/"+jobInt+"/"+genImpression+"/"+durationSel+"/"+id, {
+        // const response = await fetch("http://localhost:7240/Employer/AddRating/" + rating.skillImprovement + "/" + rating.benefits + "/" + rating.overall + "/" + experience.positiveExperience + "/" + experience.negativeExperience + "/" + recommend + "/" + jobInt + "/" + genImpression + "/" + durationSel + "/" + id, {
         //     method: "POST",
         //     credentials: "include",
         //     headers: {
@@ -228,7 +228,7 @@ export default function EmployerRatingPage(props) {
                     <Box sx={{ mb: 3 }} variant="outlined">
                         <Divider sx={{ mt: 5, mb: 3 }} >JOB INTERVIEW AND SELECTION PROCESS</Divider>
 
-                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography component="subtitle1" align="center" sx={{ m: 2 }}> General impression of the job interview? </Typography>
                             <FormControl style={{ alignItems: "column", justifyContent: "column" }}>
                                 <RadioGroup style={{ alignItems: "column", justifyContent: "column" }}
@@ -325,22 +325,22 @@ export default function EmployerRatingPage(props) {
                     </Box >
                     <Box sx={{ mb: 3, position: "relative" }} variant="outlined">
                         <Divider sx={{ mt: 5, mb: 3 }} > RATINGS </Divider>
-                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }} >
-                            <Typography  sx={{ m: 2 }}> Skill improvement </Typography>
+                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }} >
+                            <Typography sx={{ m: 2 }}> Skill improvement </Typography>
                             <HoverRating value={skillImprovement} onChange={(e) => { setSkillImprovement(parseFloat(e.target.value)) }} />
 
                         </Grid>
-                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Typography  sx={{ m: 2 }}> Company Benefits </Typography>
+                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Typography sx={{ m: 2 }}> Company Benefits </Typography>
                             <HoverRating value={benefits} onChange={(e) => { setBenefits(parseFloat(e.target.value)) }} />
                         </Grid>
-                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Typography  align="center" sx={{ m: 2 }}> Overall Company Rating </Typography>
+                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Typography align="center" sx={{ m: 2 }}> Overall Company Rating </Typography>
                             <HoverRating value={overall} onChange={(e) => { setOverall(parseFloat(e.target.value)) }} />
                         </Grid>
                         <Divider sx={{ mt: 5, mb: 3 }} > FINAL VERDICT </Divider>
-                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
-                            <Typography  align="center" sx={{ m: 2 }}> Would you recommend this internship? </Typography>
+                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                            <Typography align="center" sx={{ m: 2 }}> Would you recommend this internship? </Typography>
                             <FormControl style={{ alignItems: "column", justifyContent: "column" }}>
                                 <RadioGroup style={{ alignItems: "column", justifyContent: "column" }}
                                     aria-labelledby="demo-controlled-radio-buttons-group"

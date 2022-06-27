@@ -65,6 +65,8 @@ export default function SingleChat({ id, updateChats }) {
     if (ref.current != null) {
       if (isScrolledIntoView(ref.current)) setScrollDown(true);
     }
+    console.log(message)
+    console.log(id)
     if (message.senderId == id)
       setMessages((posts) => [...posts, message]);
     updateChats();
@@ -86,7 +88,7 @@ export default function SingleChat({ id, updateChats }) {
     return () => {
       connection.off("RecieveMessage" /*+ id*/);
     };
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (loading) {

@@ -102,23 +102,23 @@ export default function SmallInternshipCard({
                         <PaidIcon style={{ color: "red", marginRight: 5 }} fontSize="small" />
                         {"$ " + compensation}
                     </Typography> : <></>}
+                    <Typography
+                        align="left"
+                        variant="body2"
+                        sx={{
+                            display: '-webkit-box',
+                            overflow: 'hidden',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,
+                            mb: 1
+                        }}
+                    >
+                        {description}
+                    </Typography>
                     <SkillChips skills={skills} />
 
                 </Grid>
             </Grid>
-            <Typography
-                align="left"
-                variant="body2"
-                sx={{
-                    display: '-webkit-box',
-                    overflow: 'hidden',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 3,
-                    mb: 1
-                }}
-            >
-                {description}
-            </Typography>
             <Button sx={{ mb: -2 }} onClick={() => { if (link != undefined) navigate(link) }}>View internship</Button>
             {(time != undefined) ? time : <></>}
         </Card>
