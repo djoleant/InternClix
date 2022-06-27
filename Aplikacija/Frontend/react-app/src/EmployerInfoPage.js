@@ -42,6 +42,10 @@ export default function EmployerInfoPage(props) {
 
     const [search, setSearch] = useState("");
 
+    const [ratingStatus, setRatingStatus] = useState({
+        status:"",
+    });
+
     const navigate = useNavigate();
 
     function TabPanel(props) {
@@ -78,6 +82,20 @@ export default function EmployerInfoPage(props) {
             const fetchData = await response.json();
             console.log(fetchData);
             setEmployerData(fetchData.employer);
+        }
+    };
+
+    const getRatingStatus = async () => {
+        const response = await fetch(
+            "http://localhost:7240/Employer/GetRatingStatus/" + id,
+            {
+                credentials: "include",
+            }
+        );
+        if (response.ok) {
+            const fetchData2 = await response.json();
+            console.log(fetchData2);
+            setRatingStatus(fetchData2.status);
         }
     };
 
@@ -135,6 +153,7 @@ export default function EmployerInfoPage(props) {
 
     useEffect(() => {
         getEmployerInfo();
+        getRatingStatus();
         getCategoryInfo();
     }, []);
 
@@ -161,7 +180,9 @@ export default function EmployerInfoPage(props) {
                 <Grid item xs={12} md={10}>
                     <Typography variant="h3" align="left">
                         {employerData != undefined ? employerData.companyName : ""}
-                        {role != "Student"?"":(<Button variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
+                        {console.log("Status: "+ratingStatus.status)}
+                        {role != "Student" || ratingStatus.status!==1?"":(<Button  variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
+                        {role != "Student" || ratingStatus.status!==-1?"":(<Button disabled variant="contained" style={{marginLeft:"20px"}}> CAN'T RATE THIS EMPLOYER</Button>)}
                     </Typography>
                     <Typography align="left">{employerData.about}</Typography>
                     <Box sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "flex", mt: 1 }}>
@@ -387,7 +408,7 @@ export default function EmployerInfoPage(props) {
                         spacing={1}
                         sx={{ mb: 2 }}
 
-                    >
+                    >   {employerData.ratings==undefined || employerData.ratings.length==0?(<Typography>Currently no ratings to display</Typography>):""}
                         {employerData.ratings.map((el, index) => (
                             <ExperienceCard
                                 id={el.id}

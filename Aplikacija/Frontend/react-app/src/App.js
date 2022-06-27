@@ -24,6 +24,7 @@ import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
 import { loadUserData, clearData } from "./actions/Auth";
 import NotFoundPage from "./components/NotFoundPage";
+import SuccessRating from "./components/SuccessRating";
 import AdminPage from "./AdminPage";
 
 const getDesignTokens = (mode) => ({
@@ -453,6 +454,15 @@ export default function App() {
             element={
               <Header
                 Component={NotFoundPage}
+                ThemeHandler={colorMode.toggleColorMode}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Header
+                Component={SuccessRating}
                 ThemeHandler={colorMode.toggleColorMode}
               />
             }

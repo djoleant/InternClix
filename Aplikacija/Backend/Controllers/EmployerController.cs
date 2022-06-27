@@ -327,6 +327,101 @@ namespace Backend.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetEmployerInternships/{employerID}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetEmployerInternships(string employerID)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var employer=await Context.Employers
+            .Where(u=>u.Id==employerID)
+            .FirstOrDefaultAsync();
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.PreviousInternships)
+            .ThenInclude(i => i.Employer)
+            .FirstOrDefaultAsync();
+
+            if (student != null && employer!=null)
+            {
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    internships = new 
+                    {
+                        Employer=employer.CompanyName,
+                        Internships=student.PreviousInternships
+                        .Where(u=>u.Employer==employer)
+                        .Select(a => new
+                        {
+                            InternshipID = a.ID,
+                            a.Title
+                        })
+                    }
+
+                }
+                );
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRatingStatus/{employerID}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetRatingStatus(string employerID)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var employer=await Context.Employers
+            .Where(u=>u.Id==employerID)
+            .Include(u=>u.Internships)
+            .ThenInclude(u=>u.PreviousStudents)
+            .FirstOrDefaultAsync();
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.PreviousInternships)
+            .ThenInclude(i => i.Employer)
+            .FirstOrDefaultAsync();
+
+            if (student != null && employer!=null)
+            {
+                var studentInternships=student.PreviousInternships;
+                var finished=false;
+                foreach(var s in studentInternships)
+                {
+                    if(employer.Internships.Contains(s))
+                    {
+                        finished=true;
+                    }
+                }
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    status = new 
+                    {
+                        Status=(finished==true)?1:-1
+                    }
+
+                }
+                );
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Student Not Found"
+                });
+            }
+        }
+
+
 
     }
 }

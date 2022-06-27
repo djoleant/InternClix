@@ -1,6 +1,6 @@
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { useParams } from "react-router-dom";
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import {
@@ -33,11 +33,80 @@ export default function EmployerRatingPage(props) {
 
     const { id } = useParams();
 
+    const getPrevInternships = async () => {
+        console.log("ID" + id)
+        const response = await fetch(
+            "http://localhost:7240/Employer/GetEmployerInternships/" + id,
+            {
+                credentials: "include",
+            }
+        );
+        if (response.ok) {
+            const fetchData = await response.json();
+            //console.log(fetchData);
+            setEmployerData(fetchData.internships);
+        }
+    };
+
+    async function _submitForm(values, actions) {
+
+        // const response = await fetch("http://localhost:7240/Employer/AddRating/"+rating.skillImprovement+"/"+rating.benefits+"/"+rating.overall+"/"+experience.positiveExperience+"/"+experience.negativeExperience+"/"+recommend+"/"+jobInt+"/"+genImpression+"/"+durationSel+"/"+id, {
+        //     method: "POST",
+        //     credentials: "include",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(values)
+        // })
+        // actions.setSubmitting(false);
+        // if (response.ok) {
+        //     const data = await response.json();
+        //     console.log(data);
+        // }
+        console.log(experienceP,experienceN,recommend,jobInt,genImpression,durationSel)
+    }
+
+    const [employerData, setEmployerData] = useState({
+        employer:"",
+       internships: [
+            {
+              internshipID: "",
+              title: "",
+            },
+          ],
+    });
+
+    const [ratingData, setRatingData] = useState({
+        skillImprovementScore:"",
+        benefitsScore:"",
+        overallScore:"",
+        positiveExp:"",
+        negativeExp:"",
+        recommended:false,
+        interviewLevel:"",
+        generalImpression:"",
+        selectionLength:"",
+        employerID:id
+    });
+
+    const [questionsData, setQuestionData] = useState({
+        internshipId:0,
+        questions:[],
+    });
+
+    useEffect(() => {
+        getPrevInternships();
+    }, []);
+
+
     const [textValue, setTextValue] = useState("");
 
     const [questionList, setquestionList] = useState([{question:""}]);
 
-    const [experience, setExperience] = useState({positiveExperience:""}, {negativeExperience:""});
+    const [experienceP, setPExperience] = useState({positiveExperience:""});
+
+    const [experienceN, setNExperience] = useState({positiveExperience:""});
 
     const [durationSel, setDurationSel] = useState({durationSel:0});
 
@@ -49,7 +118,7 @@ export default function EmployerRatingPage(props) {
 
     const [rating, setRating] = useState({skillImprovement:0}, {benefits:0}, {overall:0});
 
-     console.log(jobInt);
+     //console.log(jobInt);
 
     // const getEmployerRating = async () => {
     //     const response = await fetch(
@@ -87,11 +156,17 @@ export default function EmployerRatingPage(props) {
         setquestionList(list);
     }
 
-    const handleExperienceChange=(event)=>{
+    const handlePExperienceChange=(event)=>{
         const {value, name}=event.target;
-        const list=[experience];
+        const list=[experienceP];
         list[name]=value;
-        setExperience(list);
+        setPExperience(list);
+    }
+    const handleNExperienceChange=(event)=>{
+        const {value, name}=event.target;
+        const list=[experienceN];
+        list[name]=value;
+        setNExperience(list);
     }
 
     const handleDurationSelChange=(event)=>{
@@ -127,6 +202,7 @@ export default function EmployerRatingPage(props) {
         const list=[rating];
         list[name]=value;
         setRating(list);
+        console.log("Ratings "+rating.skillImprovement);
     }
 
     return (
@@ -153,13 +229,24 @@ export default function EmployerRatingPage(props) {
                
                     <Typography variant="h5" justifyContent="center" sx={{ mt: 2, mb: 2 }}>
                         <StarHalfIcon sx={{ mr: 2 }} />
-                        Internship experience @ 
+                        Internship experience @ {employerData.employer}
                     </Typography>
                 
 
                     <Grid container xs={12} style={{top:10, alignItems : "center", justifyContent:"center"}}>
-                        <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> How long was your internship? </Typography>
-                        <TextField name={""} style={{marginLeft:25}} label={"Duration of internship"} fullWidth />
+                        <Typography  component="subtitle1"  align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
+                        <Select fullWidth style={{marginLeft:26}}
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            //value={age}
+                            //onChange={handleJobIntChange}
+                            >
+                                {   (employerData.internships!=undefined)?
+                                    employerData.internships.map((el,index)=>(
+                                        <MenuItem key={index} value={el.internshipID}>{el.title}</MenuItem>
+                                    )):""
+                                }
+                            </Select>
 
                     </Grid>
                 </Grid>
@@ -177,9 +264,9 @@ export default function EmployerRatingPage(props) {
                                 onChange={handleGenImpressionChange}
                             >
                                 <Grid  style={{display : "inline-block"}}>
-                                    <FormControlLabel value="Positive" control={<Radio />} label="Positive" />
-                                    <FormControlLabel value="Neutral" control={<Radio />} label="Neutral" />
-                                    <FormControlLabel value="Negative" control={<Radio />} label="Negative" />
+                                    <FormControlLabel value="Positive" control={<Radio onChange={handleGenImpressionChange} />} label="Positive" />
+                                    <FormControlLabel value="Neutral" control={<Radio onChange={handleGenImpressionChange} />} label="Neutral" />
+                                    <FormControlLabel value="Negative" control={<Radio onChange={handleGenImpressionChange} />} label="Negative" />
                                 </Grid>
                                 
                                 </RadioGroup>
@@ -252,11 +339,11 @@ export default function EmployerRatingPage(props) {
                     <Grid container spacing={3} sx={{ mb: 4 }}>
                     
                     <Grid item xs={12}>
-                        <TextField type="name" name={"positiveExperience"} label={"Positive experience"} onChange={(event)=>handleExperienceChange(event)} fullWidth multiline rows={4}/>
+                        <TextField type="name" name={"positiveExperience"} label={"Positive experience"} onChange={(event)=>handlePExperienceChange(event)} fullWidth multiline rows={4}/>
                     </Grid>
 
                     <Grid item xs={12} >
-                        <TextField type="name" name={"negativeExperience"} label={"Negative experience"} onChange={(event)=>handleExperienceChange(event)} fullWidth multiline rows={4}/>
+                        <TextField type="name" name={"negativeExperience"} label={"Negative experience"} onChange={(event)=>handleNExperienceChange(event)} fullWidth multiline rows={4}/>
                     </Grid>
                     </Grid>
 
@@ -267,14 +354,15 @@ export default function EmployerRatingPage(props) {
                     <Grid container xs={12} style={{alignItems : "center", justifyContent:"center"}} >
                         <Typography  component="subtitle1"  sx={{ m: 2 }}> Skill improvement </Typography>
                         <HoverRating />
+                       
                     </Grid>
                     <Grid container xs={12} style={{alignItems : "center", justifyContent:"center"}}>
                         <Typography  component="subtitle1"  sx={{ m: 2 }}> Company Benefits </Typography>
-                        <HoverRating />
+                        <HoverRating onChange={handleRatingChange}/>
                     </Grid>
                     <Grid container xs={12} style={{alignItems : "center", justifyContent:"center"}}>
                         <Typography  component="subtitle1" align="center" sx={{ m: 2 }}> Overall Company Rating </Typography>
-                        <HoverRating />
+                        <HoverRating onChange={handleRatingChange}/>
                     </Grid>
                     <Divider sx={{ mt: 5, mb: 3 }} > FINAL VERDICT </Divider>
                     <Grid container xs={12} style={{top:10, alignItems : "center", justifyContent:"center"}}>
@@ -295,7 +383,7 @@ export default function EmployerRatingPage(props) {
                     </FormControl>
                         
                     </Grid>
-                    <Button /*onClick={() => { /*getEmployerRating}}*/
+                    <Button onClick= {_submitForm}
                     variant="contained" endIcon={<SendIcon/>}> Submit rating </Button>
                 </Box>
             </Paper>
