@@ -33,6 +33,7 @@ export default function SignIn({ reloadHeader }) {
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [errorText, setErrorText] = React.useState("");
 
     const history = useNavigate();
     const dispatch = useDispatch();
@@ -43,6 +44,10 @@ export default function SignIn({ reloadHeader }) {
         if (response.succeeded) {
             dispatch(authActions.checkIfLogged(reloadHeader))
             reloadHeader();
+            history("/");
+        }
+        else {
+            setErrorText("Username or password is incorrect")
         }
 
 
@@ -84,7 +89,7 @@ export default function SignIn({ reloadHeader }) {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="Username"
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -101,10 +106,13 @@ export default function SignIn({ reloadHeader }) {
                         autoComplete="current-password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
-                    />
+                    /> */}
+                    <Typography color="error" variant="subtitle1">
+                        {errorText}
+                    </Typography>
                     <Button
                         type="submit"
                         fullWidth
@@ -114,15 +122,15 @@ export default function SignIn({ reloadHeader }) {
                     >
                         Sign In
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
+                    <Grid container justifyContent={"flex-end"}>
+                        {/* <Grid item xs>
                             <Link href="#" variant="body2">
                                 Forgot password?
                             </Link>
-                        </Grid>
+                        </Grid> */}
                         <Grid item>
                             <NavLink style={{ color: '#f50057' }}
-                                to="/Register" >
+                                to="/Register/student" >
                                 {"Don't have an account? Register"}
                             </NavLink>
                         </Grid>

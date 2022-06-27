@@ -84,30 +84,33 @@ export const checkIfLogged = (reloadHeader) => {
     };
 };
 
-export const register = (firstName, lastName, email, username, password) => {
-    return async (dispatch) => {
-        const response = await fetch("/auth/register", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                'Access-Control-Request-Method': 'GET, POST, DELETE, PUT, OPTIONS',
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                FirstName: firstName,
-                LastName: lastName,
-                Email: email,
-                UserName: username,
-                Password: password,
-            }),
-        });
+export const register = async (firstName, lastName, email, username, password, companyName, role) => {
 
-        const data = await response.json();
+    const response = await fetch("http://localhost:7240/Auth/Register", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+            'Access-Control-Request-Method': 'GET, POST, DELETE, PUT, OPTIONS',
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            username: username,
+            password: password,
+            companyName: companyName,
+            role, role
+        }),
+        credentials: "include"
+    });
 
-        return data;
-    };
+    const data = await response.json();
+    
+
+    return data;
 };
 
 export const clearData = () => {

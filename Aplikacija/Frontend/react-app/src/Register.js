@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RoleToggle from './components/RoleToggle';
 import { useState } from 'react';
+import { register } from "./actions/Auth"
 
 
 function Copyright(props) {
@@ -40,6 +41,24 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    if (data.get("password").length < 6) {
+      setPassHelper("Password must be at least 6 characters long.");
+    }
+    else if (role === "student") {
+      console.log("e")
+      register(data.get("firstName"), data.get("lastName"), data.get("email"), data.get("username"), data.get("password"), "IGNORE", 1).then(d => {
+        if (d.succeeded) {
+          navigate("/SignIn");
+        }
+      });
+    }
+    else if (role === "employer") {
+      register("IGNORE", "IGNORE", data.get("email"), data.get("username"), data.get("password"), data.get("companyName"), 2).then(d => {
+        if (d.succeeded) {
+          navigate("/SignIn");
+        }
+      });
+    }
   };
 
   const [role, setRole] = useState(0);
@@ -71,6 +90,8 @@ export default function SignUp() {
       navigate("/Register/student")
   }, [])
 
+  const [passHelper, setPassHelper] = useState("");
+
   return (
 
     <Container component="main" maxWidth="xs">
@@ -90,7 +111,7 @@ export default function SignUp() {
           Register
         </Typography>
         <RoleToggle setStudent={setStudentRole} setEmployer={setEmployerRole} selected={role} />
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
 
             {
@@ -145,19 +166,31 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                helperText={passHelper}
+                error={passHelper !== ""}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to shoot myself."
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Button
             type="submit"

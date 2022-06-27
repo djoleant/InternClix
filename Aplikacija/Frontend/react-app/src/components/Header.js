@@ -83,7 +83,6 @@ export const Header = (props) => {
       navigate("/InternshipCreator");
     }
   }
-
   return (
     <React.Fragment>
       <AppBar sx={{ display: location.pathname.includes("/Chat") ? "none" : "" }} position="sticky">
@@ -236,7 +235,8 @@ export const Header = (props) => {
                         ))}
 
                       <MenuItem onClick={ThemeHandler}>
-                        <Switch />
+                        <Switch checked={localStorage.getItem("mode") === "dark"} />
+
                       </MenuItem>
                     </Menu>
                   </Box>
@@ -249,7 +249,7 @@ export const Header = (props) => {
                     <Typography textAlign="center">Register</Typography>
                   </MenuItem >
                   <MenuItem onClick={ThemeHandler}>
-                    <Switch />
+                    <Switch checked={localStorage.getItem("mode") === "dark"} />
                   </MenuItem>
                 </>
             }
