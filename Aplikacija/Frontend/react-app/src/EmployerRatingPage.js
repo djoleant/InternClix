@@ -64,7 +64,7 @@ export default function EmployerRatingPage(props) {
         //     const data = await response.json();
         //     console.log(data);
         // }
-        console.log(experienceP, experienceN, recommend, jobInterview, genImpression, durationSel, skillImprovement, benefits, overall)
+        console.log(skillImprovement, benefits, overall)
     }
 
     const [employerData, setEmployerData] = useState({

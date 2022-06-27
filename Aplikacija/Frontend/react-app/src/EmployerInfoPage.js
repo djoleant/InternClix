@@ -183,7 +183,7 @@ export default function EmployerInfoPage(props) {
                         {console.log("Status: "+ratingStatus.status)}
                         {role != "Student" || ratingStatus.status!==1?"":(<Button  variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
                         {role != "Student" || ratingStatus.status!==-1?"":(<Button disabled variant="contained" style={{marginLeft:"20px"}}> CAN'T RATE THIS EMPLOYER</Button>)}
-                        {role != "Student" ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)}
+                        {/* {role != "Student" ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)} */}
                     </Typography>
                     <Typography align="left">{employerData.about}</Typography>
                     <Box sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "flex", mt: 1 }}>
