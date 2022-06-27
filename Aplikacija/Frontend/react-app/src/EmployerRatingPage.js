@@ -64,7 +64,7 @@ export default function EmployerRatingPage(props) {
         //     const data = await response.json();
         //     console.log(data);
         // }
-        console.log(experienceP, experienceN, recommend, jobInterview, genImpression, durationSel, skillImprovement)
+        console.log(experienceP, experienceN, recommend, jobInterview, genImpression, durationSel, skillImprovement, benefits, overall)
     }
 
     const [employerData, setEmployerData] = useState({
@@ -75,19 +75,6 @@ export default function EmployerRatingPage(props) {
                 title: "",
             },
         ],
-    });
-
-    const [ratingData, setRatingData] = useState({
-        skillImprovementScore: "",
-        benefitsScore: "",
-        overallScore: "",
-        positiveExp: "",
-        negativeExp: "",
-        recommended: false,
-        interviewLevel: "",
-        generalImpression: "",
-        selectionLength: "",
-        employerID: id
     });
 
     const [questionsData, setQuestionData] = useState({
@@ -106,19 +93,21 @@ export default function EmployerRatingPage(props) {
 
     const [experienceP, setPExperience] = useState({ positiveExperience: "" });
 
-    const [experienceN, setNExperience] = useState({ positiveExperience: "" });
+    const [experienceN, setNExperience] = useState({ negativeExperience: "" });
 
     const [durationSel, setDurationSel] = useState({ durationSel: 0 });
 
     const [genImpression, setGenImpression] = useState("Neutral");
 
-    const [jobInt, setJobInt] = useState({ jobInt: "" });
-
     const [recommend, setRecommend] = useState({ recommend: "" });
 
-    const [rating, setRating] = useState({ skillImprovement: 0 }, { benefits: 0 }, { overall: 0 });
-
     const [jobInterview, setJobInterview] = useState("Easy");
+
+    const [skillImprovement, setSkillImprovement] = useState(2.5);
+
+    const [benefits, setBenefits] = useState(2.5);
+
+    const [overall, setOverall] = useState(2.5);
 
     //console.log(jobInt);
 
@@ -179,39 +168,16 @@ export default function EmployerRatingPage(props) {
     }
 
     const handleGenImpressionChange = (event) => {
-        // const { value, name } = event.target;
-        // const list = [genImpression];
-        // list[name] = value;
         setGenImpression(event.target.value);
     }
 
-    const handleJobIntChange = (event) => {
-        const { value, name } = event.target;
-        const list = [jobInt];
-        list[name] = value;
-        setJobInt(list);
-    }
-
     const handleRecommendChange = (event) => {
-        const { value, name } = event.target;
-        const list = [recommend];
-        list[name] = value;
-        setRecommend(list);
-    }
-
-    const handleRatingChange = (event) => {
-        const { value, name } = event.target;
-        const list = [rating];
-        list[name] = value;
-        setRating(list);
-        console.log("Ratings " + rating.skillImprovement);
+        setRecommend(event.target.value);
     }
 
     const handleJobInterviewChange = (event) => {
         setJobInterview(event.target.value);
     }
-
-    const [skillImprovement, setSkillImprovement] = useState(2.5);
 
     return (
 
@@ -241,7 +207,7 @@ export default function EmployerRatingPage(props) {
                         </Typography>
 
 
-                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography component="subtitle1" align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
                             <Select fullWidth style={{ marginLeft: 26 }}
                                 labelId="demo-simple-select-standard-label"
@@ -262,7 +228,7 @@ export default function EmployerRatingPage(props) {
                     <Box sx={{ mb: 3 }} variant="outlined">
                         <Divider sx={{ mt: 5, mb: 3 }} >JOB INTERVIEW AND SELECTION PROCESS</Divider>
 
-                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography component="subtitle1" align="center" sx={{ m: 2 }}> General impression of the job interview? </Typography>
                             <FormControl style={{ alignItems: "column", justifyContent: "column" }}>
                                 <RadioGroup style={{ alignItems: "column", justifyContent: "column" }}
@@ -281,7 +247,7 @@ export default function EmployerRatingPage(props) {
                             </FormControl>
                         </Grid>
                         <br></br>
-                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                                 <Typography component="subtitle1" align="center" sx={{ m: 2 }}> How would you rate the difficulty of the job interview? </Typography>
                                 <Select fullWidth
@@ -300,7 +266,7 @@ export default function EmployerRatingPage(props) {
 
                         </Grid>
                         <br></br>
-                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography align="center" sx={{ m: 2 }}> How many weeks did the selection process last? </Typography>
                             <TextField onChange={(event) => handleDurationSelChange(event)} name={"durationSel"} label={"Duration of selection process"} fullWidth />
 
@@ -359,27 +325,27 @@ export default function EmployerRatingPage(props) {
                     </Box >
                     <Box sx={{ mb: 3, position: "relative" }} variant="outlined">
                         <Divider sx={{ mt: 5, mb: 3 }} > RATINGS </Divider>
-                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }} >
-                            <Typography component="subtitle1" sx={{ m: 2 }}> Skill improvement </Typography>
+                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }} >
+                            <Typography  sx={{ m: 2 }}> Skill improvement </Typography>
                             <HoverRating value={skillImprovement} onChange={(e) => { setSkillImprovement(parseFloat(e.target.value)) }} />
 
                         </Grid>
-                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Typography component="subtitle1" sx={{ m: 2 }}> Company Benefits </Typography>
-                            <HoverRating onChange={handleRatingChange} />
+                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Typography  sx={{ m: 2 }}> Company Benefits </Typography>
+                            <HoverRating value={benefits} onChange={(e) => { setBenefits(parseFloat(e.target.value)) }} />
                         </Grid>
-                        <Grid container xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Typography component="subtitle1" align="center" sx={{ m: 2 }}> Overall Company Rating </Typography>
-                            <HoverRating onChange={handleRatingChange} />
+                        <Grid item xs={12} style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Typography  align="center" sx={{ m: 2 }}> Overall Company Rating </Typography>
+                            <HoverRating value={overall} onChange={(e) => { setOverall(parseFloat(e.target.value)) }} />
                         </Grid>
                         <Divider sx={{ mt: 5, mb: 3 }} > FINAL VERDICT </Divider>
-                        <Grid container xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
-                            <Typography component="subtitle1" align="center" sx={{ m: 2 }}> Would you recommend this internship? </Typography>
+                        <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
+                            <Typography  align="center" sx={{ m: 2 }}> Would you recommend this internship? </Typography>
                             <FormControl style={{ alignItems: "column", justifyContent: "column" }}>
                                 <RadioGroup style={{ alignItems: "column", justifyContent: "column" }}
                                     aria-labelledby="demo-controlled-radio-buttons-group"
                                     name="controlled-radio-buttons-group"
-                                    //value={value}
+                                    value={recommend}
                                     onChange={handleRecommendChange}
                                 >
                                     <Grid container style={{ alignItems: "center", justifyContent: "center" }}>
