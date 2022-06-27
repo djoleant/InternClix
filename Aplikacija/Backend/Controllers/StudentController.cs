@@ -76,7 +76,7 @@ namespace Backend.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("ApplyToInternship/{internshipId}")]
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> ApplyToInternship(int internshipId)
@@ -110,6 +110,37 @@ namespace Backend.Controllers
                 student.InternshipApplications.Add(application);
                 await Context.SaveChangesAsync();
                 return new JsonResult(new { succeeded = true });
+            }
+            else
+            {
+                return new JsonResult(new { succeeded = false, errors = "Student or Inernship Not Found" });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetApplication/{internshipId}")]
+        [Authorize(Roles = "Student, Admin")]
+        public async Task<JsonResult> GetApplication(int internshipId)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var student = await Context.Students
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.InternshipApplications)
+            .FirstOrDefaultAsync();
+
+            var internship = await Context.Internships
+            .Include(i => i.InternshipApplications)
+            .ThenInclude(a => a.Student)
+            .Where(i => i.ID == internshipId)
+            .FirstOrDefaultAsync();
+
+            if (student != null && internship != null)
+            {
+                if (internship.InternshipApplications.Where(a => a.Student.Id == student.Id).Count() != 0)
+                {
+                    return new JsonResult(new { succeeded = true, applied = true });
+                }
+                return new JsonResult(new { succeeded = true, applied = false });
             }
             else
             {

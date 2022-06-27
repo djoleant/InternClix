@@ -78,7 +78,7 @@ export default function InternshipsTable() {
             <Typography variant="h4" sx={{ mt: 1, display: (currentName == "") ? "none" : "" }}>{currentName + "'s applications"}</Typography>
             <Box sx={{ overflowX: "scroll", maxWidth: "95vw", p: 2, mr: 2 }}>
                 <TableContainer component={Paper}>
-                    <Table aria-label="customized table" sx={{ minWidth: "700px" }}>
+                    <Table aria-label="customized table" >
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell>Internship</StyledTableCell>

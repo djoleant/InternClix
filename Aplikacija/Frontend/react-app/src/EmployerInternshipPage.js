@@ -18,6 +18,7 @@ import SkillChips from './components/InternshipPage/SkillChips';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import { useParams } from 'react-router-dom';
 import TechStack from './components/EmployerInfo/TechStack';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
 
 
@@ -64,28 +65,54 @@ export default function EmployerInternsipPage() {
         }
     }
 
+    const handleApply = async () => {
+        const response = await fetch("http://localhost:7240/Student/ApplyToInternship/" + id, {
+            credentials: "include",
+            method: "PUT"
+        });
+        const data = await response.json();
+        if (data.succeeded) {
+
+        } else {
+            alert("You have already applied");
+        }
+        setApplied(true);
+    }
+
+    const checkApplication = async () => {
+        const response = await fetch("http://localhost:7240/Student/GetApplication/" + id, {
+            credentials: "include"
+        });
+        const data = await response.json();
+        if (data.succeeded) {
+            setApplied(data.applied);
+        }
+    }
+
     const [internship, setInternship] = useState({
         internshipOwner: false,
-        id:"",
+        id: "",
         title: "",
         location: "",
         description: "",
         duration: 0,
         compensation: 0,
-        employerName:"",
+        employerName: "",
         skills: [],
-        interviewQuestions:[],
-        ratings:[],
-        easy:0,
-        veryEasy:0,
-        aboutRight:0,
-        difficult:0,
-        extremelyDifficult:0,
-        categories:[],
+        interviewQuestions: [],
+        ratings: [],
+        easy: 0,
+        veryEasy: 0,
+        aboutRight: 0,
+        difficult: 0,
+        extremelyDifficult: 0,
+        categories: [],
     })
+    const [applied, setApplied] = useState(false);
 
     useEffect(() => {
         getInternship();
+        checkApplication();
     }, []);
 
     return (
@@ -98,7 +125,7 @@ export default function EmployerInternsipPage() {
                 </Grid>
                 <Grid item xs={12} md={10}>
                     <Typography variant='h3' align="left">{internship.title}</Typography>
-                    
+
                     <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <LocationOnIcon style={{ color: "red", marginRight: 5 }} /> {internship.location} </Typography>
                     <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: "red", marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
                     <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: "red", marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
@@ -115,65 +142,90 @@ export default function EmployerInternsipPage() {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                <Typography align="center" style={{fontSize:23}} >{internship.employerName} has listed this internship</Typography>
-                <Divider style={{marginTop:20, marginBottom:20}}>INTERNSHIP DESCRIPTION </Divider>
+                    <Typography align="center" style={{ fontSize: 23 }} >{internship.employerName} has listed this internship</Typography>
+                    {
+                        applied ?
+                            <Typography variant="h5" sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2, mt: 2 }}>
+                                <CheckCircleOutlineRoundedIcon color={"success"} />
+                                Applied to this internship
+                            </Typography> :
+                            <Button
+                                variant="contained"
+                                sx={{ display: localStorage.getItem("role") === "Student" ? "" : "none" }}
+                                onClick={handleApply}
+                            >
+                                Apply to internship
+                            </Button>
+                    }
+                    <Divider style={{ marginTop: 20, marginBottom: 20 }}>INTERNSHIP DESCRIPTION </Divider>
                     <Typography align="center">{internship.description}</Typography>
-                    <Button variant="contained" sx={{ display: localStorage.getItem("role") === "Student" ? "" : "none" }}>Apply to internship</Button>
-                    <Divider style={{marginTop:20, marginBottom:20}}>CATEGORIES </Divider>
+                    <Divider style={{ marginTop: 20, marginBottom: 20 }}>CATEGORIES </Divider>
                     <TechStack categories={internship.categories}></TechStack>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <ApplicantList internshipSkills={internship.skills.map(s => s.name)} internshipId={id} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <Typography style={{fontSize:23}}>Information about the technical interview</Typography>
-                <Divider style={{marginTop:20, marginBottom:20}}>INTERVIEW LEVEL</Divider>
-                    <Grid style={{display:"flex",flexDirection:"row", flexWrap:"wrap", justifyContent:"space-around"}}>
-                        
-                        <Grid style={{display:"flex",flexDirection:"column"}}>
-                            <Typography> {internship.veryEasy} {internship.veryEasy==1?"person":"people"} rated the interview as <Button disabled style={{color:"black", backgroundColor:"#00a572", marginBottom:3}}>Very Easy</Button> </Typography>
-                            <Typography> {internship.easy} {internship.easy==1?"person":"people"} rated the interview as <Button disabled style={{color:"black",backgroundColor:"#c7ea46", marginBottom:3}}> Easy</Button> </Typography>
-                            <Typography> {internship.aboutRight} {internship.aboutRight==1?"person":"people"} rated the interview as <Button disabled style={{color:"black",backgroundColor:"#ffe87c", marginBottom:3}}> About Right</Button> </Typography>
-                            <Typography> {internship.difficult} {internship.difficult==1?"person":"people"} rated the interview as <Button disabled style={{color:"black",backgroundColor:"#f94449", marginBottom:3}}> Difficult</Button> </Typography>
-                            <Typography> {internship.extremelyDifficult} {internship.extremelyDifficult==1?"person":"people"} rated the interview as <Button disabled style={{color:"black", backgroundColor:"#800020", marginBottom:3}}> Extremely Difficult</Button> </Typography>
+                    <Typography style={{ fontSize: 23 }}>Information about the technical interview</Typography>
+                    <Divider style={{ marginTop: 20, marginBottom: 20 }}>INTERVIEW LEVEL</Divider>
+                    <Grid style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around" }}>
+
+                        <Grid style={{ display: "flex", flexDirection: "column" }}>
+                            <Typography> {internship.veryEasy} {internship.veryEasy == 1 ? "person" : "people"} rated the interview as <Button disabled style={{ color: "black", backgroundColor: "#00a572", marginBottom: 3 }}>Very Easy</Button> </Typography>
+                            <Typography> {internship.easy} {internship.easy == 1 ? "person" : "people"} rated the interview as <Button disabled style={{ color: "black", backgroundColor: "#c7ea46", marginBottom: 3 }}> Easy</Button> </Typography>
+                            <Typography> {internship.aboutRight} {internship.aboutRight == 1 ? "person" : "people"} rated the interview as <Button disabled style={{ color: "black", backgroundColor: "#ffe87c", marginBottom: 3 }}> About Right</Button> </Typography>
+                            <Typography> {internship.difficult} {internship.difficult == 1 ? "person" : "people"} rated the interview as <Button disabled style={{ color: "black", backgroundColor: "#f94449", marginBottom: 3 }}> Difficult</Button> </Typography>
+                            <Typography> {internship.extremelyDifficult} {internship.extremelyDifficult == 1 ? "person" : "people"} rated the interview as <Button disabled style={{ color: "black", backgroundColor: "#800020", marginBottom: 3 }}> Extremely Difficult</Button> </Typography>
                         </Grid>
-                        <Grid style={{display:"flex",flexDirection:"column", alignSelf:"center"}}>
-                        {
-                            (internship.veryEasy==0 && internship.easy==0 && internship.difficult==0 && internship.extremelyDifficult==0 && internship.aboutRight==0)?"":<Typography style={{marginBottom:5}}>Usually rated as:</Typography>
-                        }
-                        
-                        {
-                            (internship.veryEasy==0 && internship.easy==0 && internship.difficult==0 && internship.extremelyDifficult==0 && internship.aboutRight==0)?(<Button disabled variant="outlined" style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black", marginBottom:3}}> No ratings</Button>):
-                            (internship.veryEasy>internship.easy && internship.veryEasy>internship.difficult && internship.veryEasy>internship.extremelyDifficult&& internship.veryEasy>internship.aboutRight)?
-                            <Button disabled style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black", backgroundColor:"#00a572", marginBottom:3}}>Very Easy</Button>
-                            :(internship.easy>internship.aboutRight && internship.difficult && internship.extremelyDifficult)?
-                            <Button disabled style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black",backgroundColor:"#c7ea46", marginBottom:3}}> Easy</Button>
-                            :(internship.aboutRight>internship.difficult && internship.aboutRight>internship.extremelyDifficult)?
-                            <Button disabled style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black",backgroundColor:"#ffe87c", marginBottom:3}}> About Right</Button>
-                            :(internship.difficult>internship.extremelyDifficult)?
-                            <Button disabled style={{width: '10em',
-                            height: '2em', fontSize:26,color:"black",backgroundColor:"#f94449", marginBottom:3}}> Difficult</Button>:<Button disabled style={{width: '10em',
-                            height: "60%", fontSize:26,color:"black", backgroundColor:"#800020", marginBottom:3}}> Extremely Difficult</Button> 
-                            
-                        }
+                        <Grid style={{ display: "flex", flexDirection: "column", alignSelf: "center" }}>
+                            {
+                                (internship.veryEasy == 0 && internship.easy == 0 && internship.difficult == 0 && internship.extremelyDifficult == 0 && internship.aboutRight == 0) ? "" : <Typography style={{ marginBottom: 5 }}>Usually rated as:</Typography>
+                            }
+
+                            {
+                                (internship.veryEasy == 0 && internship.easy == 0 && internship.difficult == 0 && internship.extremelyDifficult == 0 && internship.aboutRight == 0) ? (<Button disabled variant="outlined" style={{
+                                    width: '10em',
+                                    height: '2em', fontSize: 26, color: "black", marginBottom: 3
+                                }}> No ratings</Button>) :
+                                    (internship.veryEasy > internship.easy && internship.veryEasy > internship.difficult && internship.veryEasy > internship.extremelyDifficult && internship.veryEasy > internship.aboutRight) ?
+                                        <Button disabled style={{
+                                            width: '10em',
+                                            height: '2em', fontSize: 26, color: "black", backgroundColor: "#00a572", marginBottom: 3
+                                        }}>Very Easy</Button>
+                                        : (internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
+                                            <Button disabled style={{
+                                                width: '10em',
+                                                height: '2em', fontSize: 26, color: "black", backgroundColor: "#c7ea46", marginBottom: 3
+                                            }}> Easy</Button>
+                                            : (internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
+                                                <Button disabled style={{
+                                                    width: '10em',
+                                                    height: '2em', fontSize: 26, color: "black", backgroundColor: "#ffe87c", marginBottom: 3
+                                                }}> About Right</Button>
+                                                : (internship.difficult > internship.extremelyDifficult) ?
+                                                    <Button disabled style={{
+                                                        width: '10em',
+                                                        height: '2em', fontSize: 26, color: "black", backgroundColor: "#f94449", marginBottom: 3
+                                                    }}> Difficult</Button> : <Button disabled style={{
+                                                        width: '10em',
+                                                        height: "60%", fontSize: 26, color: "black", backgroundColor: "#800020", marginBottom: 3
+                                                    }}> Extremely Difficult</Button>
+
+                            }
                         </Grid>
-                        </Grid>
-                        <Divider style={{marginTop:20, marginBottom:20}}>SHARED INTERVIEW QUESTIONS ({internship.interviewQuestions!=undefined?internship.interviewQuestions.length:"0"})</Divider>
+                    </Grid>
+                    <Divider style={{ marginTop: 20, marginBottom: 20 }}>SHARED INTERVIEW QUESTIONS ({internship.interviewQuestions != undefined ? internship.interviewQuestions.length : "0"})</Divider>
                     {
                         //console.log(internship.interviewQuestions)
-                        internship.interviewQuestions!=undefined && internship.interviewQuestions.length>0?
-                        internship.interviewQuestions.map((el,index)=>(
-                            <Grid style={{}} key={index}>
-                                <Typography > <LiveHelpIcon sx={{fontSize:25}} style={{color:"red"}}/>
-                                    {"   "+(index+1)}. {" "+el.content}
-                                </Typography>
-                                <Divider style={{marginTop:20, marginBottom:20}}></Divider>
-                            </Grid>
-                        )):<Typography style={{marginTop:20, marginBottom:10}}>No questions to display</Typography>
+                        internship.interviewQuestions != undefined && internship.interviewQuestions.length > 0 ?
+                            internship.interviewQuestions.map((el, index) => (
+                                <Grid style={{}} key={index}>
+                                    <Typography > <LiveHelpIcon sx={{ fontSize: 25 }} style={{ color: "red" }} />
+                                        {"   " + (index + 1)}. {" " + el.content}
+                                    </Typography>
+                                    <Divider style={{ marginTop: 20, marginBottom: 20 }}></Divider>
+                                </Grid>
+                            )) : <Typography style={{ marginTop: 20, marginBottom: 10 }}>No questions to display</Typography>
 
 
                     }

@@ -128,7 +128,7 @@ export default function CVView({ refProp, displayOrder, accentColor, cvFont, dis
             <Paper sx={{ p: 3, width: 950, borderRadius: 0 }} variant="outlined" ref={refProp}>
                 <Grid container spacing={3} sx={{ backgroundColor: accentColor, borderRadius: "0px 0px 200px 0px", color: calculateColor(accentColor) }} >
                     <Grid item xs={3} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <Avatar src={info.picture} sx={{ width: 200, height: 200 }} />
+                        <Avatar src={process.env.PUBLIC_URL + "/resources/" + info.picture} sx={{ width: 200, height: 200 }} />
                     </Grid>
                     <Grid item xs={9}>
                         <Typography variant='h2' align="left">{info.name + " " + info.lastName}</Typography>
