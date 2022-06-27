@@ -21,11 +21,13 @@ namespace Models
 
         public DbSet<Experience> Experiences { get; set; }
 
+        public DbSet<InternshipApplication> InternshipApplication { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             base.OnModelCreating(modelBuilder);
-            
+
 
 
             modelBuilder.Entity<ApplicationUser>()
@@ -33,18 +35,18 @@ namespace Models
                 .WithOne(x => x.Sender)
                 .HasForeignKey("SenderId");
 
-            
+
             modelBuilder.Entity<Internship>()
                 .HasMany(x => x.AppliedStudents)
-                .WithMany(x=>x.AppliedInternships);
+                .WithMany(x => x.AppliedInternships);
 
             modelBuilder.Entity<Internship>()
                 .HasMany(x => x.PreviousStudents)
-                .WithMany(x=>x.PreviousInternships);
+                .WithMany(x => x.PreviousInternships);
 
             modelBuilder.Entity<Internship>()
                 .HasMany(x => x.WishlistStudents)
-                .WithMany(x=>x.Wishlist);
+                .WithMany(x => x.Wishlist);
 
 
         }
@@ -54,7 +56,7 @@ namespace Models
         public InternClixDbContext(DbContextOptions options) : base(options)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-            
+
 
         }
     }

@@ -190,6 +190,32 @@ namespace Backend.Controllers
             }
         }
 
+        [Route("GetApplicationsStatistics")]
+        [HttpGet]
+        [Authorize(Roles = " Admin")]
+        public JsonResult GetApplicationsStatistics()
+        {
+            try
+            {
+                var applications = Context.InternshipApplication;
+                return new JsonResult(new
+                {
+                    succeeded = true,
+                    statistics =
+                        new
+                        {
+                            Applied = applications.Where(a => a.Status == "Applied").Count(),
+                            Finished = applications.Where(a => a.Status == "Finished").Count(),
+                            Accepted = applications.Where(a => a.Status == "Accepted").Count(),
+                            Denied = applications.Where(a => a.Status == "Denied").Count(),
+                        }
+                });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { succeeded = false, errors = e.Message });
+            }
+        }
 
 
     }
