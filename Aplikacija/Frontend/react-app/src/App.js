@@ -209,12 +209,13 @@ export let changeTheme;
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 export default function App() {
-  const [mode, setMode] = React.useState("light");
+  const [mode, setMode] = React.useState(localStorage.getItem("mode") ?? "light");
   const colorMode = React.useMemo(
     () => ({
       // The dark mode switch would invoke this method
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        localStorage.setItem("mode", localStorage.getItem("mode") === "light" ? "dark" : "light");
       },
     }),
     []

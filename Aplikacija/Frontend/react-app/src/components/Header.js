@@ -23,7 +23,7 @@ import { Divider } from "@mui/material";
 import { logout } from "../actions/Auth";
 
 const pages = ["Home", "Internships", "Employers", "About"];
-const settings = ["Account", "CV Creator", "CV Export", "Logout"];
+const settings = ["Account", "CV Creator", "CV Export", "Logout", "Admin Dashboard", "Post internship"];
 
 export const Header = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -64,6 +64,7 @@ export const Header = (props) => {
     console.log(option);
     if (option === "Logout") {
       await logout();
+      localStorage.setItem("role", "Guest");
       reloadHeader();
       navigate("/SignIn")
     } else if (option === "Account") {
@@ -75,8 +76,13 @@ export const Header = (props) => {
     else if (option === "CV Export") {
       navigate("/CVGenerator")
     }
+    else if (option === "Admin Dashboard") {
+      navigate("/AdminDashboard")
+    }
+    else if (option === "Post internship") {
+      navigate("/InternshipCreator");
+    }
   }
-
   return (
     <React.Fragment>
       <AppBar sx={{ display: location.pathname.includes("/Chat") ? "none" : "" }} position="sticky">
@@ -212,7 +218,13 @@ export const Header = (props) => {
                       {settings
                         .filter((setting) => {
                           if (role === "Employer") {
-                            return setting !== "CV Creator" && setting != "CV Export";
+                            return setting !== "CV Creator" && setting != "CV Export" && setting !== "Admin Dashboard";
+                          }
+                          if (role === "Admin") {
+                            return setting !== "CV Creator" && setting != "CV Export" && setting !== "Post internship";
+                          }
+                          if (role === "Student") {
+                            return setting !== "Admin Dashboard" && setting !== "Post internship";
                           }
                           return true;
                         })
@@ -223,7 +235,8 @@ export const Header = (props) => {
                         ))}
 
                       <MenuItem onClick={ThemeHandler}>
-                        <Switch />
+                        <Switch checked={localStorage.getItem("mode") === "dark"} />
+
                       </MenuItem>
                     </Menu>
                   </Box>
@@ -236,7 +249,7 @@ export const Header = (props) => {
                     <Typography textAlign="center">Register</Typography>
                   </MenuItem >
                   <MenuItem onClick={ThemeHandler}>
-                    <Switch />
+                    <Switch checked={localStorage.getItem("mode") === "dark"} />
                   </MenuItem>
                 </>
             }

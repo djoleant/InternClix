@@ -183,6 +183,7 @@ export default function EmployerInfoPage(props) {
                         {console.log("Status: "+ratingStatus.status)}
                         {role != "Student" || ratingStatus.status!==1?"":(<Button  variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
                         {role != "Student" || ratingStatus.status!==-1?"":(<Button disabled variant="contained" style={{marginLeft:"20px"}}> CAN'T RATE THIS EMPLOYER</Button>)}
+                        {role != "Student" ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)}
                     </Typography>
                     <Typography align="left">{employerData.about}</Typography>
                     <Box sx={{ display: employerData.id !== localStorage.getItem("id") ? "none" : "flex", mt: 1 }}>
@@ -334,7 +335,7 @@ export default function EmployerInfoPage(props) {
                                         (<TechStack categories={el.ime}/>)
                                     })
                                 } */}
-                            <TechStack categories={categoryData.categories} />
+                            <TechStack categories={categoryData === undefined ? [] : categoryData.categories} />
                         </Grid>
                     </Box>
                 </TabPanel>
@@ -398,7 +399,7 @@ export default function EmployerInfoPage(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Grid
-                        item xs={12} md={6} lg={6} 
+                        item xs={12} md={6} lg={6}
                         style={{
                             marginTop: 3,
                             display: "flex",

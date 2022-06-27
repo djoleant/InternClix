@@ -33,7 +33,7 @@ export default function NewMessageDialog({ loadChats }) {
         fetch("http://localhost:7240/Chat/sendMessage/" + receiver.id, {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ content: message }),
+            body: JSON.stringify({ content: message, type: "IGNORE" }),
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",

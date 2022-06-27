@@ -18,7 +18,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import SendIcon from "@mui/icons-material/Send";
 import MailIcon from "@mui/icons-material/Mail";
 import { Button, Fab } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
+import ChatIcon from "@mui/icons-material/MenuRounded";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import SkillsCategoriesEditor from "./components/AdminPages/SkillsCategoriesEditor";
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';

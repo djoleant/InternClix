@@ -61,7 +61,7 @@ export default function ChipTransferList({ chipData, leftTitle, rightTitle, fiel
                                                 label={data.label}
                                                 onClick={() => {
                                                     if (!selected)
-                                                        arrayHelpers.push(data);
+                                                        arrayHelpers.push(data.label);
                                                 }}
                                                 variant={selected ? "outlined" : "filled"}
 
@@ -93,7 +93,7 @@ export default function ChipTransferList({ chipData, leftTitle, rightTitle, fiel
                                 values[fieldName].map((val, index) => (
                                     <Chip
                                         key={index}
-                                        label={val.label}
+                                        label={val}
                                         onDelete={() => { arrayHelpers.remove(index) }}
 
                                     />

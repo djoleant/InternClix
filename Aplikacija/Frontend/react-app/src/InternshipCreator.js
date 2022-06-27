@@ -20,7 +20,7 @@ import Requirements from './components/InternshipForms/Requirements';
 
 
 //import { theme, useStyle } from './styles';
-const steps = ['About', 'Requirements'];
+const steps = ['About', 'Submit'];
 
 
 
@@ -31,8 +31,7 @@ export default function InternshipCreator() {
             case 0:
                 return <AboutForm />
             case 1:
-                // return <Requirements skillData={skillData} />;
-                return <Requirements/>;
+                return <React.Fragment>By submitting new internship on InternClix platform you are obligated to follow the terms of use.</React.Fragment>;
             default:
                 return <React.Fragment>Not Found</React.Fragment>;
         }
@@ -52,7 +51,7 @@ export default function InternshipCreator() {
 
 
     async function _submitForm(values, actions) {
-
+        console.log(values);
         const response = await fetch("http://localhost:7240/Internship/PostInternship", {
             method: "POST",
             credentials: "include",
@@ -72,6 +71,8 @@ export default function InternshipCreator() {
 
     function _handleSubmit(values, actions) {
         if (isLastStep) {
+            console.log(values);
+            console.log(actions);
             _submitForm(values, actions);
         } else {
             setActiveStep(activeStep + 1);
@@ -156,7 +157,7 @@ export default function InternshipCreator() {
                                                 size="large"
 
                                             >
-                                                {isLastStep ? 'Save changes' : 'Next'}
+                                                {isLastStep ? 'Submit' : 'Next'}
                                             </Button>
                                             {isSubmitting && (
                                                 <CircularProgress
