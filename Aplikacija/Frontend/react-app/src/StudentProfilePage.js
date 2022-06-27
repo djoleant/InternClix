@@ -72,9 +72,9 @@ export default function StudentProfilePage({ type, reloadHeader }) {
         if (response.ok) {
             const fetchData = await response.json();
             console.log(fetchData)
-            if (fetchData.cv.education.length > 0) {
-                setInfo(fetchData.cv);
-            }
+            //if (fetchData.cv.education.length > 0) {
+            setInfo(fetchData.cv);
+            //}
         }
 
     }
