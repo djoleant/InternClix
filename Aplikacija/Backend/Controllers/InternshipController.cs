@@ -171,6 +171,7 @@ namespace Backend.Controllers
                         internship.Compensation,
                         EmployerName = internship.Employer.CompanyName,
                         EmployerId = internship.Employer.Id,
+                        Picture = internship.Employer.Picture,
                         internship.Skills,
                         internship.InterviewQuestions,
                         Ratings = internship.Employer.Ratings
@@ -632,6 +633,54 @@ namespace Backend.Controllers
             }
 
 
+        }
+
+        [HttpPut]
+        [Route("EditInternship/{internshipId}/{title}/{description}/{duration}/{compensation}")]
+        [Authorize(Roles = "Employer, Admin")]
+        public async Task<JsonResult> EditInternship(int internshipId, string title, string description, int duration, int compensation)
+        {
+            var logged = await UserManager.GetUserAsync(User);
+            var employer = await Context.Employers
+            .Where(u => u.Id == logged.Id)
+            .Include(u => u.Internships)
+            .ThenInclude(i => i.InterviewQuestions)
+            .FirstOrDefaultAsync();
+
+            var internship = await Context.Internships
+                .Where(i => i.ID == internshipId)
+                .Include(i => i.Employer)
+                .FirstOrDefaultAsync();
+            if (!(logged is Admin || (internship != null ? internship.Employer.Id : "a") == (employer != null ? employer.Id : "b")))
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Incorrect authorization"
+                });
+            }
+
+            if (internship != null)
+            {
+                internship.Title = title;
+                internship.Description = description;
+                internship.Duration = duration;
+                internship.Compensation = compensation;
+                Context.Internships.Update(internship);
+                await Context.SaveChangesAsync();
+                return new JsonResult(new
+                {
+                    succeeded = true
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    succeeded = false,
+                    error = "Internship Not Found"
+                });
+            }
         }
 
     }
