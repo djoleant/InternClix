@@ -600,7 +600,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        [Route("AddQuestions")]
+        [Route("AddQuestions/{internshipId}")]
         [Authorize(Roles = "Student, Admin")]
         public async Task<JsonResult> AddQuestions(List<String> questions, int internshipId)
         {

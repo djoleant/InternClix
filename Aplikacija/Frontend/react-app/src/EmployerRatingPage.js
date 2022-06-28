@@ -20,6 +20,7 @@ import {
     FormControlLabel,
     IconButton
 } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import RadioGroup from '@mui/material/RadioGroup';
 import SendIcon from '@mui/icons-material/Send';
@@ -30,6 +31,8 @@ import HoverRating from './components/EmployerInfo/HoverRating';
 
 export default function EmployerRatingPage(props) {
     const theme = useTheme();
+
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
@@ -50,21 +53,20 @@ export default function EmployerRatingPage(props) {
 
     async function _submitForm(values, actions) {
 
-        // const response = await fetch("http://localhost:7240/Employer/AddRating/" + rating.skillImprovement + "/" + rating.benefits + "/" + rating.overall + "/" + experience.positiveExperience + "/" + experience.negativeExperience + "/" + recommend + "/" + jobInt + "/" + genImpression + "/" + durationSel + "/" + id, {
-        //     method: "POST",
-        //     credentials: "include",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(values)
-        // })
-        // actions.setSubmitting(false);
-        // if (response.ok) {
-        //     const data = await response.json();
-        //     console.log(data);
-        // }
-        console.log(skillImprovement, benefits, overall)
+        const response = await fetch("http://localhost:7240/Employer/AddRating/" + skillImprovement + "/" + benefits + "/" + overall + "/" + experienceP + "/" + experienceN + "/" + recommend + "/" + jobInterview + "/" + genImpression + "/" + durationSel + "/" + id, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            navigate("/SuccessRating");
+        }
+        //console.log(skillImprovement, benefits, overall, genImpression, jobInterview, durationSel,experienceP,experienceN, recommend)
     }
 
     const [employerData, setEmployerData] = useState({
@@ -91,15 +93,17 @@ export default function EmployerRatingPage(props) {
 
     const [questionList, setquestionList] = useState([{ question: "" }]);
 
-    const [experienceP, setPExperience] = useState({ positiveExperience: "" });
+    const [experienceP, setPExperience] = useState("Cool");
 
-    const [experienceN, setNExperience] = useState({ negativeExperience: "" });
+    const [experienceN, setNExperience] = useState("Not cool");
 
-    const [durationSel, setDurationSel] = useState({ durationSel: 0 });
+    const [durationSel, setDurationSel] = useState(0);
 
     const [genImpression, setGenImpression] = useState("Neutral");
 
-    const [recommend, setRecommend] = useState({ recommend: "" });
+    const [recommend, setRecommend] = useState(true);
+
+    const [intQ, setintQ] = useState(0);
 
     const [jobInterview, setJobInterview] = useState("Easy");
 
@@ -148,23 +152,18 @@ export default function EmployerRatingPage(props) {
     }
 
     const handlePExperienceChange = (event) => {
-        const { value, name } = event.target;
-        const list = [experienceP];
-        list[name] = value;
-        setPExperience(list);
+        setPExperience(event.target.value);
     }
     const handleNExperienceChange = (event) => {
-        const { value, name } = event.target;
-        const list = [experienceN];
-        list[name] = value;
-        setNExperience(list);
+        setNExperience(event.target.value);
     }
 
     const handleDurationSelChange = (event) => {
-        const { value, name } = event.target;
-        const list = [durationSel];
-        list[name] = value;
-        setDurationSel(list);
+        setDurationSel(event.target.value);
+    }
+
+    const handleIntQChange = (event) => {
+        setintQ(event.target.value);
     }
 
     const handleGenImpressionChange = (event) => {
@@ -208,12 +207,12 @@ export default function EmployerRatingPage(props) {
 
 
                         <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
-                            <Typography component="subtitle1" align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
+                            <Typography align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
                             <Select fullWidth style={{ marginLeft: 26 }}
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
-                            //value={age}
-                            //onChange={handleJobIntChange}
+                                value={intQ}
+                                onChange={handleIntQChange}
                             >
                                 {(employerData.internships != undefined) ?
                                     employerData.internships.map((el, index) => (

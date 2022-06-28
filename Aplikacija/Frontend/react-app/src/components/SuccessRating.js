@@ -9,12 +9,12 @@ export default function SuccessRating() {
                   variant="rounded"
                   alt="Remy Sharp"
                   src={process.env.PUBLIC_URL + "/images/success.jpg"}
-                  sx={{ width: 360, height: 150, marginTop: 14, justifySelf: "center" }}
+                  sx={{ width: 560, height: 250, marginTop: 14, justifySelf: "center" }}
                 />
             </Grid>
             <Grid style={{alignItems:"flex-start"}}>
-            <Typography style={{color:"#8298cb", fontWeight:"bold", fontSize:60, justifySelf:"flex-start", alignSelf:"flex-start"}}>Sucess!</Typography>
-            <Typography style={{color:"#8298cb", fontWeight:"bold", fontSize:25}}>You have successfully rated the employer!</Typography>
+            <Typography style={{color:"#618fba", fontWeight:"bold", fontSize:60, justifySelf:"flex-start", alignSelf:"flex-start"}}>Sucess!</Typography>
+            <Typography style={{color:"#618fba", fontWeight:"bold", fontSize:25}}>Your rating has been submitted!</Typography>
             <Button variant="contained" href="http://localhost:3000/" style={{marginTop:30, backgroundColor:"#f50057"}}>GO BACK TO HOME PAGE</Button>
             </Grid>
             
@@ -23,3 +23,7 @@ export default function SuccessRating() {
 
     )
 }
+
+
+
+

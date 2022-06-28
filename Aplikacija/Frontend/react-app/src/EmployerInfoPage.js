@@ -86,16 +86,19 @@ export default function EmployerInfoPage(props) {
     };
 
     const getRatingStatus = async () => {
-        const response = await fetch(
-            "http://localhost:7240/Employer/GetRatingStatus/" + id,
-            {
-                credentials: "include",
+        if(role=="Student")
+        {
+            const response = await fetch(
+                "http://localhost:7240/Employer/GetRatingStatus/" + id,
+                {
+                    credentials: "include",
+                }
+            );
+            if (response.ok) {
+                const fetchData2 = await response.json();
+                console.log(fetchData2);
+                setRatingStatus(fetchData2.status);
             }
-        );
-        if (response.ok) {
-            const fetchData2 = await response.json();
-            console.log(fetchData2);
-            setRatingStatus(fetchData2.status);
         }
     };
 
@@ -180,7 +183,7 @@ export default function EmployerInfoPage(props) {
                 <Grid item xs={12} md={10}>
                     <Typography variant="h3" align="left">
                         {employerData != undefined ? employerData.companyName : ""}
-                        {console.log("Status: "+ratingStatus.status)}
+                        {/* {console.log("Status: "+ratingStatus.status)} */}
                         {role != "Student" || ratingStatus.status!==1?"":(<Button  variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
                         {role != "Student" || ratingStatus.status!==-1?"":(<Button disabled variant="contained" style={{marginLeft:"20px"}}> CAN'T RATE THIS EMPLOYER</Button>)}
                         {/* {role != "Student" ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)} */}
@@ -399,18 +402,20 @@ export default function EmployerInfoPage(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Grid
-                        item xs={12} md={6} lg={6}
+                        container
                         style={{
                             marginTop: 3,
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "center",
+                            //flexWrap:"wrap"
                         }}
                         spacing={1}
                         sx={{ mb: 2 }}
 
                     >   {employerData.ratings==undefined || employerData.ratings.length==0?(<Typography>Currently no ratings to display</Typography>):""}
                         {employerData.ratings.map((el, index) => (
+                            <Grid item xs={12} md={6} lg={6} key={index}>
                             <ExperienceCard
                                 id={el.id}
                                 overallScore={el.overallScore}
@@ -423,6 +428,7 @@ export default function EmployerInfoPage(props) {
                                 dislikes={el.dislikes}
                                 key={index}
                             />
+                            </Grid>
                         ))}
                     </Grid>
                 </TabPanel>
