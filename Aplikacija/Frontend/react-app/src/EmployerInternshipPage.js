@@ -198,17 +198,17 @@ export default function EmployerInternsipPage() {
                                             width: '10em',
                                             height: '2em', fontSize: 26, color: "black", backgroundColor: "#00a572", marginBottom: 3
                                         }}>Very Easy</Button>
-                                        : (internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
+                                        : (internship.easy>internship.veryEasy && internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
                                             <Button disabled style={{
                                                 width: '10em',
                                                 height: '2em', fontSize: 26, color: "black", backgroundColor: "#c7ea46", marginBottom: 3
                                             }}> Easy</Button>
-                                            : (internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
+                                            : (internship.aboutRight>internship.easy && internship.aboutRight>internship.veryEasy && internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
                                                 <Button disabled style={{
                                                     width: '10em',
                                                     height: '2em', fontSize: 26, color: "black", backgroundColor: "#ffe87c", marginBottom: 3
                                                 }}> About Right</Button>
-                                                : (internship.difficult > internship.extremelyDifficult) ?
+                                                : (internship.difficult>internship.veryEasy && internship.difficult>internship.easy && internship.difficult>internship.aboutRight && internship.difficult > internship.extremelyDifficult) ?
                                                     <Button disabled style={{
                                                         width: '10em',
                                                         height: '2em', fontSize: 26, color: "black", backgroundColor: "#f94449", marginBottom: 3
