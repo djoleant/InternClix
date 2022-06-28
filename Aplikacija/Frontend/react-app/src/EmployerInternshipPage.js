@@ -19,7 +19,7 @@ import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import { NavLink, useParams } from 'react-router-dom';
 import TechStack from './components/EmployerInfo/TechStack';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
-
+import EditInternshipDialog from './components/InternshipPage/EditInternship';
 
 
 export default function EmployerInternsipPage() {
@@ -122,7 +122,7 @@ export default function EmployerInternsipPage() {
             <CssBaseline />
             <Grid container spacing={3}  >
                 <Grid item xs={12} md={2} sx={{ display: "flex", justifyContent: "center" }}>
-                    <Avatar src={internship.picture} alt="Logo" sx={{ width: 140, height: 140 }} />
+                    <Avatar src={process.env.PUBLIC_URL + "/resources/" + internship.picture} alt="Logo" sx={{ width: 140, height: 140 }} />
                 </Grid>
                 <Grid item xs={12} md={10}>
                     <Typography variant='h3' align="left">{internship.title}</Typography>
@@ -131,7 +131,16 @@ export default function EmployerInternsipPage() {
                     <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: "red", marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
                     <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: "red", marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
                     <SkillChips skills={internship.skills} />
-
+                    <Box sx={{ display: "flex", mt: 2 }}>
+                        <EditInternshipDialog
+                            currentCompensation={parseInt(internship.compensation)}
+                            currentDuration={parseInt(internship.duration)}
+                            currentDescription={internship.description}
+                            currentTitle={internship.title}
+                            internshipId={internship.id}
+                            update={getInternship}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
             <Box >
@@ -226,7 +235,7 @@ export default function EmployerInternsipPage() {
                         internship.interviewQuestions != undefined && internship.interviewQuestions.length > 0 ?
                             internship.interviewQuestions.map((el, index) => (
                                 <Grid style={{}} key={index}>
-                                    <Typography style={{display:"flex", justifyContent:"center"}}> <LiveHelpIcon sx={{ fontSize: 25 }} style={{ color: "red" }} />
+                                    <Typography style={{ display: "flex", justifyContent: "center" }}> <LiveHelpIcon sx={{ fontSize: 25 }} style={{ color: "red" }} />
                                         {"   " + (index + 1)}. {" " + el.content}
                                     </Typography>
                                     <Divider style={{ marginTop: 20, marginBottom: 20, }}></Divider>
