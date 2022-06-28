@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function SmallInternshipCard({
     title = "Title",
-    companyName = "Company name",
+    companyName,
     description = "Description...",
     showBookmark = false,
     duration,
@@ -22,7 +22,8 @@ export default function SmallInternshipCard({
     banner,
     maxWidth = "100%",
     wishlisted = false,
-    internshipID
+    internshipID,
+    picture
 }) {
 
     const navigate = useNavigate();
@@ -69,24 +70,29 @@ export default function SmallInternshipCard({
     return (
         <Card variant="outlined" sx={{ p: 3, maxWidth: maxWidth }}>
             <Grid container>
-                <Grid item xs={12}>
-                    {(banner != undefined) ? banner : <></>}
+                <Grid item xs={2} sx={{ display: picture == undefined ? "none" : "" }}>
+                    <Avatar src={process.env.PUBLIC_URL + "/resources/" + picture} sx={{ width: 70, height: 70 }}></Avatar>
                 </Grid>
-                <Grid item xs={10}>
-                    <Typography variant="h5" align="left">{title}</Typography>
+                <Grid container item xs={picture == undefined ? 12 : 10}>
+                    <Grid item xs={12}>
+                        {(banner != undefined) ? banner : <></>}
+                    </Grid>
+                    <Grid item xs={10}>
+                        <Typography variant="h5" align="left">{title}</Typography>
+                    </Grid>
+                    <Grid item xs={2} sx={{ display: (showBookmark ? "flex" : "none"), flexDirection: "row-reverse" }}>
+                        <Checkbox
+                            icon={<BookmarkBorderIcon />}
+                            checkedIcon={<BookmarkIcon />}
+                            checked={inWishlist}
+                            onChange={handleWishlist}
+                        />
+                    </Grid>
+                    <Divider sx={{ width: "100%" }} />
+                    <Typography variant="subtitle1" align="left" sx={{ display: companyName == undefined ? "none" : "" }}>{companyName}</Typography>
                 </Grid>
-                <Grid item xs={2} sx={{ display: (showBookmark ? "flex" : "none"), flexDirection: "row-reverse" }}>
-                    <Checkbox
-                        icon={<BookmarkBorderIcon />}
-                        checkedIcon={<BookmarkIcon />}
-                        checked={inWishlist}
-                        onChange={handleWishlist}
-                    />
-                </Grid>
-            </Grid>
 
-            <Divider />
-            <Typography variant="subtitle1" align="left">{companyName}</Typography>
+            </Grid>
             <Grid container spacing={3}  >
 
                 <Grid item xs={12} md={12}>

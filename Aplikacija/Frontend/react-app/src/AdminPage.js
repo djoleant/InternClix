@@ -178,7 +178,7 @@ export default function AdminPage() {
                             </Typography>
                         </ListItemButton>
                     </Box>
-                    <Box sx={{ p: 1 }}>
+                    {/* <Box sx={{ p: 1 }}>
                         <ListItemButton
                             onClick={() => { setPage(2) }}
                             selected={page === 2}
@@ -190,7 +190,7 @@ export default function AdminPage() {
                                 Statistics
                             </Typography>
                         </ListItemButton>
-                    </Box>
+                    </Box> */}
                 </List>
             </Drawer>
             <Main open={open} sx={{ pt: 7 }}>
@@ -200,7 +200,7 @@ export default function AdminPage() {
                         <SkillsCategoriesEditor /> :
                         page === 1 ?
                             <InternshipsTable /> :
-                            <AboutUsPage />
+                            <></>
 
                 }
             </Main>

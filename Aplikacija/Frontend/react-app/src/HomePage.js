@@ -30,6 +30,7 @@ import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import SearchIcon from '@mui/icons-material/Search';
 import Search from "@mui/icons-material/Search";
 import InfoIcon from '@mui/icons-material/Info';
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage(props) {
 
@@ -69,6 +70,8 @@ export default function HomePage(props) {
   useEffect(() => {
     getEmployers();
   }, []);
+
+  const navigate = useNavigate();
 
 
   return (
@@ -145,7 +148,7 @@ export default function HomePage(props) {
 
               return (
                 <Grid item >
-                  <Card key={index} style={{ width: 350, height: 230 }}>
+                  <Card key={index} style={{ width: 350, height: 230, cursor: "pointer" }} onClick={() => { navigate("/Employer/" + card.id) }}>
 
                     <CardMedia />
 
@@ -177,7 +180,7 @@ export default function HomePage(props) {
                       <Avatar
                         variant="rounded"
                         alt="Remy Sharp"
-                        src={process.env.PUBLIC_URL + "/resources/realstojny.jpg"}
+                        src={process.env.PUBLIC_URL + "/resources/" + card.picture}
                         sx={{ width: 110, height: 110, marginRight: 1, marginTop: 14, justifySelf: "flex-end" }}
                       />
                     </Grid>

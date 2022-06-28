@@ -127,11 +127,11 @@ export default function EmployerInternsipPage() {
                 <Grid item xs={12} md={10}>
                     <Typography variant='h3' align="left">{internship.title}</Typography>
 
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <LocationOnIcon style={{ color: "red", marginRight: 5 }} /> {internship.location} </Typography>
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: "red", marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: "red", marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <LocationOnIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.location} </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
                     <SkillChips skills={internship.skills} />
-                    <Box sx={{ display: "flex", mt: 2 }}>
+                    <Box sx={{ display: internship.internshipOwner ? "flex" : "none", mt: 2 }}>
                         <EditInternshipDialog
                             currentCompensation={parseInt(internship.compensation)}
                             currentDuration={parseInt(internship.duration)}
@@ -207,17 +207,17 @@ export default function EmployerInternsipPage() {
                                             width: '10em',
                                             height: '2em', fontSize: 26, color: "black", backgroundColor: "#00a572", marginBottom: 3
                                         }}>Very Easy</Button>
-                                        : (internship.easy>internship.veryEasy && internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
+                                        : (internship.easy > internship.veryEasy && internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
                                             <Button disabled style={{
                                                 width: '10em',
                                                 height: '2em', fontSize: 26, color: "black", backgroundColor: "#c7ea46", marginBottom: 3
                                             }}> Easy</Button>
-                                            : (internship.aboutRight>internship.easy && internship.aboutRight>internship.veryEasy && internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
+                                            : (internship.aboutRight > internship.easy && internship.aboutRight > internship.veryEasy && internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
                                                 <Button disabled style={{
                                                     width: '10em',
                                                     height: '2em', fontSize: 26, color: "black", backgroundColor: "#ffe87c", marginBottom: 3
                                                 }}> About Right</Button>
-                                                : (internship.difficult>internship.veryEasy && internship.difficult>internship.easy && internship.difficult>internship.aboutRight && internship.difficult > internship.extremelyDifficult) ?
+                                                : (internship.difficult > internship.veryEasy && internship.difficult > internship.easy && internship.difficult > internship.aboutRight && internship.difficult > internship.extremelyDifficult) ?
                                                     <Button disabled style={{
                                                         width: '10em',
                                                         height: '2em', fontSize: 26, color: "black", backgroundColor: "#f94449", marginBottom: 3
