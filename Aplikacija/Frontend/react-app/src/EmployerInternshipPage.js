@@ -226,10 +226,10 @@ export default function EmployerInternsipPage() {
                         internship.interviewQuestions != undefined && internship.interviewQuestions.length > 0 ?
                             internship.interviewQuestions.map((el, index) => (
                                 <Grid style={{}} key={index}>
-                                    <Typography > <LiveHelpIcon sx={{ fontSize: 25 }} style={{ color: "red" }} />
+                                    <Typography style={{display:"flex", justifyContent:"center"}}> <LiveHelpIcon sx={{ fontSize: 25 }} style={{ color: "red" }} />
                                         {"   " + (index + 1)}. {" " + el.content}
                                     </Typography>
-                                    <Divider style={{ marginTop: 20, marginBottom: 20 }}></Divider>
+                                    <Divider style={{ marginTop: 20, marginBottom: 20, }}></Divider>
                                 </Grid>
                             )) : <Typography style={{ marginTop: 20, marginBottom: 10 }}>No questions to display</Typography>
 

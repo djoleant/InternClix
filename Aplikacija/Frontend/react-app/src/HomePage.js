@@ -161,10 +161,10 @@ export default function HomePage(props) {
                       {
                         (<Button disabled style={{ marginLeft: 5, height: 32, backgroundColor: "white", marginBottom: 30, color: "black" }} >
                           {
-                            card.ratings.length > 0 ? card.ratings.reduce((acc, current) => acc += current.overallScore, 0) / card.ratings.length : "0 RATINGS"
+                            card.ratings > 0 ? Math.round(card.ratings*2)/2: "0 RATINGS"
                           }
                           {
-                            card.ratings.length > 0 ? (<StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />) : ""
+                            card.ratings > 0 ? (<StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />) : ""
                           }
 
                         </Button>)

@@ -61,8 +61,31 @@ export default function EmployerRatingPage(props) {
                 'Content-Type': 'application/json'
             }
         })
-        if (response.ok) {
-            const data = await response.json();
+        // if (response.ok) {
+        //     const data = await response.json();
+        //     console.log(data);
+        //     navigate("/SuccessRating");
+        // }
+
+        var qs="";//="[";
+        questionList.forEach((element,index) => {
+            qs+=element.question;
+            (index!=questionList.length-1)?qs+=",\n":qs+="";
+        });
+        //qs+="]";
+        console.log(qs);
+
+        const response2 = await fetch("http://localhost:7240/Internship/AddQuestions/" + intQ, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([qs])
+        })
+        if (response2.ok && response.ok) {
+            const data = await response2.json();
             console.log(data);
             navigate("/SuccessRating");
         }
@@ -129,7 +152,6 @@ export default function EmployerRatingPage(props) {
     //     }
     // };
 
-
     const onTextChange = (e) => setTextValue(e.target.value);
     const handleSubmit = () => console.log(textValue);
     const handleReset = () => setTextValue("");
@@ -138,6 +160,8 @@ export default function EmployerRatingPage(props) {
         setquestionList([...questionList, { question: "" }])
     }
 
+    console.log(questionList);
+    
     const handleQuestionRemove = (index) => {
         const list = [...questionList];
         list.splice(index, 1);
@@ -191,7 +215,7 @@ export default function EmployerRatingPage(props) {
                     variant="outlined"
                 >
                     <Typography component="h1" variant="h6" align="center" sx={{ m: 2 }}>
-                        Leave a public rating of your former/current employer in <span style={{ color: 'red', fontWeight: 'bold' }}> under 60 seconds! </span> The experience you share will prove valuable for other internship seekers looking for work!
+                        Leave a public rating of your former employer in <span style={{ color: 'red', fontWeight: 'bold' }}> a matter of minutes! </span> The experience you share will prove valuable for other internship seekers looking for work!
                     </Typography>
                 </Paper>
                 <Paper
@@ -208,7 +232,7 @@ export default function EmployerRatingPage(props) {
 
                         <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
-                            <Select fullWidth style={{ marginLeft: 26 }}
+                            <Select fullWidth style={{ marginLeft: 4, marginRight: 6}}
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
                                 value={intQ}
