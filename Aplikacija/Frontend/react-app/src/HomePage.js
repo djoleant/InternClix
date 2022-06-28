@@ -70,9 +70,14 @@ export default function HomePage(props) {
     getEmployers();
   }, []);
 
+
   return (
     <Box
-      sx={{ backgroundImage: "url(" + process.env.PUBLIC_URL + "/images/bg1.png" + ")" }}
+      sx={{
+        backgroundImage: theme.palette.mode === 'dark' ?
+          "url(" + process.env.PUBLIC_URL + "/images/darkbg.jpg" + ")"
+          : "url(" + process.env.PUBLIC_URL + "/images/lightbg.png" + ")"
+      }}
     >
       <CssBaseline />
       <React.Fragment>
@@ -161,7 +166,7 @@ export default function HomePage(props) {
                       {
                         (<Button disabled style={{ marginLeft: 5, height: 32, backgroundColor: "white", marginBottom: 30, color: "black" }} >
                           {
-                            card.ratings > 0 ? Math.round(card.ratings*2)/2: "0 RATINGS"
+                            card.ratings > 0 ? Math.round(card.ratings * 2) / 2 : "0 RATINGS"
                           }
                           {
                             card.ratings > 0 ? (<StarRateIcon style={{ fontSize: "medium", marginLeft: 3 }} />) : ""

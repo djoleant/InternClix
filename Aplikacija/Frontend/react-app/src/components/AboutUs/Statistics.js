@@ -63,7 +63,7 @@ export default function AboutUsPage(props) {
             <Paper
                 sx={{ p: 3, mb: 1, mr:4 }}
                 variant="outlined"
-                style={{boxShadow: "5px 3px 1px #ffff"}}
+                style={{opacity: 0.8}}
             >
             <Grid container style={{display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
                 <Grid style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
