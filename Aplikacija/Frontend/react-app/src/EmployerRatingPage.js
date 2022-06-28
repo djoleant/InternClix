@@ -67,10 +67,10 @@ export default function EmployerRatingPage(props) {
         //     navigate("/SuccessRating");
         // }
 
-        var qs="";//="[";
-        questionList.forEach((element,index) => {
-            qs+=element.question;
-            (index!=questionList.length-1)?qs+=",\n":qs+="";
+        var qs = "";//="[";
+        questionList.forEach((element, index) => {
+            qs += element.question;
+            (index != questionList.length - 1) ? qs += ",\n" : qs += "";
         });
         //qs+="]";
         console.log(qs);
@@ -82,7 +82,7 @@ export default function EmployerRatingPage(props) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify([qs])
+            body: JSON.stringify(questionList.map(q => q.question))
         })
         if (response2.ok && response.ok) {
             const data = await response2.json();
@@ -161,7 +161,7 @@ export default function EmployerRatingPage(props) {
     }
 
     console.log(questionList);
-    
+
     const handleQuestionRemove = (index) => {
         const list = [...questionList];
         list.splice(index, 1);
@@ -232,7 +232,7 @@ export default function EmployerRatingPage(props) {
 
                         <Grid item xs={12} style={{ top: 10, alignItems: "center", justifyContent: "center" }}>
                             <Typography align="center" sx={{ m: 2 }}> Choose one of your previous internships </Typography>
-                            <Select fullWidth style={{ marginLeft: 4, marginRight: 6}}
+                            <Select fullWidth style={{ marginLeft: 4, marginRight: 6 }}
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
                                 value={intQ}

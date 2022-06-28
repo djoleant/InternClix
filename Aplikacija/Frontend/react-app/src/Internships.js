@@ -91,7 +91,7 @@ export default function Internships(props) {
                             {internshipData.internships
                                 .filter(c => c.title.toLowerCase().includes(search.toLowerCase()))
                                 .map((cards, index) => {
-                                    const { title, description, duration, compensation, skills, categories, id, address, wishlisted } = cards;
+                                    const { title, description, duration, compensation, skills, categories, id, address, wishlisted, picture, companyName } = cards;
                                     console.log(cards);
                                     return (
                                         <Grid item xs={12} md={6} lg={4}>
@@ -108,6 +108,8 @@ export default function Internships(props) {
                                                 showBookmark={localStorage.getItem("role") === "Student"}
                                                 wishlisted={wishlisted}
                                                 internshipID={id}
+                                                picture={picture}
+                                                companyName={companyName}
                                             />
                                         </Grid>
 

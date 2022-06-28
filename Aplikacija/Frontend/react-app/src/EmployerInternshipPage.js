@@ -127,11 +127,11 @@ export default function EmployerInternsipPage() {
                 <Grid item xs={12} md={10}>
                     <Typography variant='h3' align="left">{internship.title}</Typography>
 
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <LocationOnIcon style={{ color: "red", marginRight: 5 }} /> {internship.location} </Typography>
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: "red", marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
-                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: "red", marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <LocationOnIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.location} </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <QueryBuilderIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.duration + " " + (internship.duration > 1 ? "weeks" : "week")}  </Typography>
+                    <Typography align="left" sx={{ m: 1, display: "flex", flexDirection: "row" }}> <PaidIcon style={{ color: theme.palette.secondary.main, marginRight: 5 }} /> {internship.compensation + " $"}  </Typography>
                     <SkillChips skills={internship.skills} />
-                    <Box sx={{ display: "flex", mt: 2 }}>
+                    <Box sx={{ display: internship.internshipOwner ? "flex" : "none", mt: 2 }}>
                         <EditInternshipDialog
                             currentCompensation={parseInt(internship.compensation)}
                             currentDuration={parseInt(internship.duration)}

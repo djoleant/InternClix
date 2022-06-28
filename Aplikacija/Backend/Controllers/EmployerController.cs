@@ -258,6 +258,7 @@ namespace Backend.Controllers
                     {
                         Employers = employers.Select(emp => new
                         {
+                            emp.Id,
                             emp.Picture,
                             emp.CompanyName,
                             emp.About,

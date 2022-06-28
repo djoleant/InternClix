@@ -276,6 +276,8 @@ namespace Backend.Controllers
                         {
                             id = internship.ID,
                             internship.Employer.Address,
+                            internship.Employer.CompanyName,
+                            internship.Employer.Picture,
                             internship.Title,
                             internship.Description,
                             internship.Duration,

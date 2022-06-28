@@ -21,6 +21,7 @@ import Switch from "./ThemeSwitch";
 import { changeTheme } from "../App";
 import { Divider } from "@mui/material";
 import { logout } from "../actions/Auth";
+import { useTheme } from "@emotion/react";
 
 const pages = ["Home", "Internships", "Employers", "About"];
 const settings = ["Account", "CV Creator", "CV Export", "Logout", "Admin Dashboard", "Post internship"];
@@ -52,6 +53,8 @@ export const Header = (props) => {
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const [picture, setPicture] = useState(localStorage.getItem("picture"));
+
+  const theme = useTheme();
 
   const reloadHeader = () => {
     setRole(localStorage.getItem("role"));
@@ -97,7 +100,7 @@ export const Header = (props) => {
           <Typography style={{ justifySelf: "center" }}>
             Runtime Terror stands in solidarity with the Ukrainan people. {"  "}{" "}
             <Link
-              style={{ color: "red" }}
+              style={{ color: theme.palette.secondary.main }}
               href="https://war.ukraine.ua/support-ukraine/"
             >
               {" "}
