@@ -202,29 +202,30 @@ export default function EmployerInternsipPage() {
                                     width: '10em',
                                     height: '2em', fontSize: 26, color: "black", marginBottom: 3
                                 }}> No ratings</Button>) :
-                                    (internship.veryEasy > internship.easy && internship.veryEasy > internship.difficult && internship.veryEasy > internship.extremelyDifficult && internship.veryEasy > internship.aboutRight) ?
+                                (internship.extremelyDifficult >= internship.easy && internship.extremelyDifficult >= internship.veryEasy && internship.extremelyDifficult >= internship.difficult && internship.extremelyDifficult >= internship.aboutRight) ?
+                                <Button disabled style={{
+                                                width: '10em',
+                                                height: "60%", fontSize: 26, color: "black", backgroundColor: "#800020", marginBottom: 3
+                                            }}> Extremely Difficult</Button>
+                                : (internship.difficult>=internship.veryEasy && internship.difficult >= internship.aboutRight && internship.difficult>=internship.easy && internship.difficult >=internship.extremelyDifficult) ?
+                                    <Button disabled style={{
+                                                width: '10em',
+                                                height: '2em', fontSize: 26, color: "black", backgroundColor: "#f94449", marginBottom: 3
+                                            }}> Difficult</Button>
+                                    : (internship.aboutRight>internship.easy && internship.aboutRight>internship.veryEasy && internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
                                         <Button disabled style={{
                                             width: '10em',
-                                            height: '2em', fontSize: 26, color: "black", backgroundColor: "#00a572", marginBottom: 3
-                                        }}>Very Easy</Button>
-                                        : (internship.easy>internship.veryEasy && internship.easy > internship.aboutRight && internship.difficult && internship.extremelyDifficult) ?
+                                            height: '2em', fontSize: 26, color: "black", backgroundColor: "#ffe87c", marginBottom: 3
+                                        }}> About Right</Button>
+                                        : (internship.easy>=internship.veryEasy && internship.easy>=internship.difficult && internship.easy>=internship.aboutRight && internship.easy >= internship.extremelyDifficult) ?
                                             <Button disabled style={{
-                                                width: '10em',
-                                                height: '2em', fontSize: 26, color: "black", backgroundColor: "#c7ea46", marginBottom: 3
-                                            }}> Easy</Button>
-                                            : (internship.aboutRight>internship.easy && internship.aboutRight>internship.veryEasy && internship.aboutRight > internship.difficult && internship.aboutRight > internship.extremelyDifficult) ?
-                                                <Button disabled style={{
-                                                    width: '10em',
-                                                    height: '2em', fontSize: 26, color: "black", backgroundColor: "#ffe87c", marginBottom: 3
-                                                }}> About Right</Button>
-                                                : (internship.difficult>internship.veryEasy && internship.difficult>internship.easy && internship.difficult>internship.aboutRight && internship.difficult > internship.extremelyDifficult) ?
-                                                    <Button disabled style={{
-                                                        width: '10em',
-                                                        height: '2em', fontSize: 26, color: "black", backgroundColor: "#f94449", marginBottom: 3
-                                                    }}> Difficult</Button> : <Button disabled style={{
-                                                        width: '10em',
-                                                        height: "60%", fontSize: 26, color: "black", backgroundColor: "#800020", marginBottom: 3
-                                                    }}> Extremely Difficult</Button>
+                                        width: '10em',
+                                        height: '2em', fontSize: 26, color: "black", backgroundColor: "#c7ea46", marginBottom: 3
+                                    }}> Easy</Button>
+                                            : <Button disabled style={{
+                                    width: '10em',
+                                    height: '2em', fontSize: 26, color: "black", backgroundColor: "#00a572", marginBottom: 3
+                                }}>Very Easy</Button>
 
                             }
                         </Grid>
