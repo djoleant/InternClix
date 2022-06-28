@@ -6,7 +6,7 @@ import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import AcceptApplicationDialog from "../Dialogs/AcceptApplicationDialog";
 import DenyApplicationDialog from "../Dialogs/DenyApplicationDialog";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ApplicantInfo({ applicant, internshipSkills, remove }) {
 
@@ -19,6 +19,8 @@ export default function ApplicantInfo({ applicant, internshipSkills, remove }) {
         });
         remove();
     }
+
+    const navigate = useNavigate();
 
     return (
         <Grid container spacing={3} >
@@ -106,6 +108,7 @@ export default function ApplicantInfo({ applicant, internshipSkills, remove }) {
                 <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "row-reverse" }}>
                     <Button
                         variant="contained"
+                        onClick={() => { navigate("/Student/" + applicant.id) }}
                     >View applicant's CV</Button>
                 </Grid>
             </Grid>

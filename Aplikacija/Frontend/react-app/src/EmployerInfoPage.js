@@ -43,7 +43,7 @@ export default function EmployerInfoPage(props) {
     const [search, setSearch] = useState("");
 
     const [ratingStatus, setRatingStatus] = useState({
-        status:"",
+        status: "",
     });
 
     const navigate = useNavigate();
@@ -86,8 +86,7 @@ export default function EmployerInfoPage(props) {
     };
 
     const getRatingStatus = async () => {
-        if(role=="Student")
-        {
+        if (role == "Student") {
             const response = await fetch(
                 "http://localhost:7240/Employer/GetRatingStatus/" + id,
                 {
@@ -184,8 +183,8 @@ export default function EmployerInfoPage(props) {
                     <Typography variant="h3" align="left">
                         {employerData != undefined ? employerData.companyName : ""}
                         {/* {console.log("Status: "+ratingStatus.status)} */}
-                        {role != "Student" || ratingStatus.status!==1?"":(<Button  variant="contained" style={{marginLeft:"20px"}} onClick={() => { navigate("/EmployerRatingPage/"+id) }}> RATE THIS EMPLOYER </Button>)}
-                        {role != "Student" || ratingStatus.status!==-1?"":(<Button disabled variant="contained" style={{marginLeft:"20px"}}> CAN'T RATE THIS EMPLOYER</Button>)}
+                        {role != "Student" || ratingStatus.status !== 1 ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)}
+                        {role != "Student" || ratingStatus.status !== -1 ? "" : (<Button disabled variant="contained" style={{ marginLeft: "20px" }}> CAN'T RATE THIS EMPLOYER</Button>)}
                         {/* {role != "Student" ? "" : (<Button variant="contained" style={{ marginLeft: "20px" }} onClick={() => { navigate("/EmployerRatingPage/" + id) }}> RATE THIS EMPLOYER </Button>)} */}
                     </Typography>
                     <Typography align="left">{employerData.about}</Typography>
@@ -250,19 +249,19 @@ export default function EmployerInfoPage(props) {
                         spacing={3}
                         sx={{ mb: 4 }}
                     >
-                        <Typography align="center" sx={{ m: 1 }}>
+                        <Typography align="center" sx={{ m: 1, display: "flex", alignItems: "center", gap: 1 }}>
                             {" "}
                             <ApartmentIcon style={{ color: "red" }} /> {employerData.address}{" "}
                         </Typography>
-                        <Typography align="center" sx={{ m: 1 }}>
+                        <Typography align="center" sx={{ m: 1, display: "flex", alignItems: "center", gap: 1 }}>
                             {" "}
                             <DraftsIcon style={{ color: "red" }} /> {employerData.email}{" "}
                         </Typography>
-                        <Typography align="center" sx={{ m: 1 }}>
+                        {/* <Typography align="center" sx={{ m: 1, display: "flex", alignItems: "center", gap: 1 }}>
                             {" "}
                             <PhoneIphoneIcon style={{ color: "red" }} /> {employerData.phoneNumber}{" "}
-                        </Typography>
-                        <Typography align="center" sx={{ m: 1 }}>
+                        </Typography> */}
+                        <Typography align="center" sx={{ m: 1, display: "flex", alignItems: "center", gap: 1 }}>
                             {" "}
                             <PublicIcon style={{ color: "red" }} /> http://{employerData.companyName.toLowerCase()}.com{" "}
                         </Typography>
@@ -371,6 +370,7 @@ export default function EmployerInfoPage(props) {
                                                     ? "none"
                                                     : "",
                                         }}
+                                        onClick={() => navigate("/InternshipCreator")}
                                     >
                                         Post Internship
                                     </Button>
@@ -413,21 +413,21 @@ export default function EmployerInfoPage(props) {
                         spacing={1}
                         sx={{ mb: 2 }}
 
-                    >   {employerData.ratings==undefined || employerData.ratings.length==0?(<Typography>Currently no ratings to display</Typography>):""}
+                    >   {employerData.ratings == undefined || employerData.ratings.length == 0 ? (<Typography>Currently no ratings to display</Typography>) : ""}
                         {employerData.ratings.map((el, index) => (
                             <Grid item xs={12} md={6} lg={6} key={index}>
-                            <ExperienceCard
-                                id={el.id}
-                                overallScore={el.overallScore}
-                                benefitsScore={el.benefitsScore}
-                                skillImprovementScore={el.skillImprovementScore}
-                                positiveExperience={el.positiveExperience}
-                                negativeExperience={el.negativeExperience}
-                                recommended={el.recommended}
-                                likes={el.likes}
-                                dislikes={el.dislikes}
-                                key={index}
-                            />
+                                <ExperienceCard
+                                    id={el.id}
+                                    overallScore={el.overallScore}
+                                    benefitsScore={el.benefitsScore}
+                                    skillImprovementScore={el.skillImprovementScore}
+                                    positiveExperience={el.positiveExperience}
+                                    negativeExperience={el.negativeExperience}
+                                    recommended={el.recommended}
+                                    likes={el.likes}
+                                    dislikes={el.dislikes}
+                                    key={index}
+                                />
                             </Grid>
                         ))}
                     </Grid>
