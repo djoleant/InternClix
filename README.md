@@ -1,4 +1,5 @@
 # **InternClix**
+## **This project was done by students as part of software engineering exam**
 
 | **Backend** | **Frontend** | **Components** | **Database** |
 | --- | --- | --- | --- |
