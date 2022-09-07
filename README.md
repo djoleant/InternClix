@@ -1,6 +1,6 @@
 # **InternClix**
 #### **This project was done by group of students as part of software engineering exam**
-Contributors:
+Contributors (students):
 - Đorđe Antić
 - Emilija Ćojbašić
 - Matija Špeletić
